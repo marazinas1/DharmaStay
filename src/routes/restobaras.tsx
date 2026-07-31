@@ -25,7 +25,7 @@ export const Route = createFileRoute("/restobaras")({
           name: "Dharma Stay restobaras",
           description: restobaras.seoDescription,
           url: `${SITE_URL}/restobaras`,
-          telephone: contact.phones[0].replace(/\s/g, ""),
+          telephone: (contact.phones[0] ?? "").replace(/\s/g, ""),
           address: {
             "@type": "PostalAddress",
             streetAddress: "Birutės g. 1",
