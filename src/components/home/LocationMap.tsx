@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import maplibregl from "maplibre-gl";
+import { Map as MapLibreMap, Marker, NavigationControl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 const COORDS: [number, number] = [22.248996, 55.983649];
@@ -12,11 +12,11 @@ export default function LocationMap() {
     const node = containerRef.current;
     if (!node) return;
 
-    let map: maplibregl.Map | null = null;
+    let map: MapLibreMap | null = null;
 
     const init = () => {
       if (map) return;
-      map = new maplibregl.Map({
+      map = new MapLibreMap({
         container: node,
         center: COORDS,
         zoom: 15.5,
@@ -41,7 +41,7 @@ export default function LocationMap() {
       });
 
       map.scrollZoom.disable();
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+      map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
 
       const el = document.createElement("div");
       el.setAttribute("aria-label", "Dharma Stay – Birutės g. 1, Telšiai");
@@ -53,7 +53,7 @@ export default function LocationMap() {
             stroke-linecap="round" stroke-dasharray="88 12" transform="rotate(-35 22 22)" />
           <circle cx="22" cy="22" r="5" fill="#5A6B5D" />
         </svg>`;
-      new maplibregl.Marker({ element: el }).setLngLat(COORDS).addTo(map);
+      new Marker({ element: el }).setLngLat(COORDS).addTo(map);
     };
 
     if (typeof IntersectionObserver === "undefined") {
