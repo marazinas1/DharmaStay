@@ -37,7 +37,7 @@ function StaysIndexPage() {
         lead={apartamentai.lead}
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: apartamentai.title }]}
       />
-      <div className="bg-linen pt-20 lg:pt-24">
+      <div className="-mt-8 bg-linen">
         <StaysSection headless />
       </div>
       <div className="bg-linen px-6 pb-24 lg:px-12 lg:pb-32">
