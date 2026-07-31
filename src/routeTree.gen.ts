@@ -10,33 +10,198 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApartamentaiRouteImport } from './routes/apartamentai'
+import { Route as ApieRouteImport } from './routes/apie'
+import { Route as BanketineSaleRouteImport } from './routes/banketine-sale'
+import { Route as DovanuKuponaiRouteImport } from './routes/dovanu-kuponai'
+import { Route as KontaktaiRouteImport } from './routes/kontaktai'
+import { Route as NamelisRouteImport } from './routes/namelis'
+import { Route as RestobarasRouteImport } from './routes/restobaras'
+import { Route as SaunaRouteImport } from './routes/sauna'
+import { Route as ApartamentaiIndexRouteImport } from './routes/apartamentai.index'
+import { Route as ApartamentaiStandartiniaiRouteImport } from './routes/apartamentai.standartiniai'
+import { Route as ApartamentaiSuTerasaRouteImport } from './routes/apartamentai.su-terasa'
+import { Route as ApieIndexRouteImport } from './routes/apie.index'
+import { Route as ApieTaisyklesRouteImport } from './routes/apie.taisykles'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApartamentaiRoute = ApartamentaiRouteImport.update({
+  id: '/apartamentai',
+  path: '/apartamentai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApieRoute = ApieRouteImport.update({
+  id: '/apie',
+  path: '/apie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BanketineSaleRoute = BanketineSaleRouteImport.update({
+  id: '/banketine-sale',
+  path: '/banketine-sale',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DovanuKuponaiRoute = DovanuKuponaiRouteImport.update({
+  id: '/dovanu-kuponai',
+  path: '/dovanu-kuponai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktaiRoute = KontaktaiRouteImport.update({
+  id: '/kontaktai',
+  path: '/kontaktai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NamelisRoute = NamelisRouteImport.update({
+  id: '/namelis',
+  path: '/namelis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RestobarasRoute = RestobarasRouteImport.update({
+  id: '/restobaras',
+  path: '/restobaras',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SaunaRoute = SaunaRouteImport.update({
+  id: '/sauna',
+  path: '/sauna',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApartamentaiIndexRoute = ApartamentaiIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ApartamentaiRoute,
+} as any)
+const ApartamentaiStandartiniaiRoute =
+  ApartamentaiStandartiniaiRouteImport.update({
+    id: '/standartiniai',
+    path: '/standartiniai',
+    getParentRoute: () => ApartamentaiRoute,
+  } as any)
+const ApartamentaiSuTerasaRoute = ApartamentaiSuTerasaRouteImport.update({
+  id: '/su-terasa',
+  path: '/su-terasa',
+  getParentRoute: () => ApartamentaiRoute,
+} as any)
+const ApieIndexRoute = ApieIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ApieRoute,
+} as any)
+const ApieTaisyklesRoute = ApieTaisyklesRouteImport.update({
+  id: '/taisykles',
+  path: '/taisykles',
+  getParentRoute: () => ApieRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apartamentai': typeof ApartamentaiRouteWithChildren
+  '/apie': typeof ApieRouteWithChildren
+  '/banketine-sale': typeof BanketineSaleRoute
+  '/dovanu-kuponai': typeof DovanuKuponaiRoute
+  '/kontaktai': typeof KontaktaiRoute
+  '/namelis': typeof NamelisRoute
+  '/restobaras': typeof RestobarasRoute
+  '/sauna': typeof SaunaRoute
+  '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
+  '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
+  '/apie/taisykles': typeof ApieTaisyklesRoute
+  '/apartamentai/': typeof ApartamentaiIndexRoute
+  '/apie/': typeof ApieIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/banketine-sale': typeof BanketineSaleRoute
+  '/dovanu-kuponai': typeof DovanuKuponaiRoute
+  '/kontaktai': typeof KontaktaiRoute
+  '/namelis': typeof NamelisRoute
+  '/restobaras': typeof RestobarasRoute
+  '/sauna': typeof SaunaRoute
+  '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
+  '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
+  '/apie/taisykles': typeof ApieTaisyklesRoute
+  '/apartamentai': typeof ApartamentaiIndexRoute
+  '/apie': typeof ApieIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apartamentai': typeof ApartamentaiRouteWithChildren
+  '/apie': typeof ApieRouteWithChildren
+  '/banketine-sale': typeof BanketineSaleRoute
+  '/dovanu-kuponai': typeof DovanuKuponaiRoute
+  '/kontaktai': typeof KontaktaiRoute
+  '/namelis': typeof NamelisRoute
+  '/restobaras': typeof RestobarasRoute
+  '/sauna': typeof SaunaRoute
+  '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
+  '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
+  '/apie/taisykles': typeof ApieTaisyklesRoute
+  '/apartamentai/': typeof ApartamentaiIndexRoute
+  '/apie/': typeof ApieIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/apartamentai'
+    | '/apie'
+    | '/banketine-sale'
+    | '/dovanu-kuponai'
+    | '/kontaktai'
+    | '/namelis'
+    | '/restobaras'
+    | '/sauna'
+    | '/apartamentai/standartiniai'
+    | '/apartamentai/su-terasa'
+    | '/apie/taisykles'
+    | '/apartamentai/'
+    | '/apie/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/banketine-sale'
+    | '/dovanu-kuponai'
+    | '/kontaktai'
+    | '/namelis'
+    | '/restobaras'
+    | '/sauna'
+    | '/apartamentai/standartiniai'
+    | '/apartamentai/su-terasa'
+    | '/apie/taisykles'
+    | '/apartamentai'
+    | '/apie'
+  id:
+    | '__root__'
+    | '/'
+    | '/apartamentai'
+    | '/apie'
+    | '/banketine-sale'
+    | '/dovanu-kuponai'
+    | '/kontaktai'
+    | '/namelis'
+    | '/restobaras'
+    | '/sauna'
+    | '/apartamentai/standartiniai'
+    | '/apartamentai/su-terasa'
+    | '/apie/taisykles'
+    | '/apartamentai/'
+    | '/apie/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApartamentaiRoute: typeof ApartamentaiRouteWithChildren
+  ApieRoute: typeof ApieRouteWithChildren
+  BanketineSaleRoute: typeof BanketineSaleRoute
+  DovanuKuponaiRoute: typeof DovanuKuponaiRoute
+  KontaktaiRoute: typeof KontaktaiRoute
+  NamelisRoute: typeof NamelisRoute
+  RestobarasRoute: typeof RestobarasRoute
+  SaunaRoute: typeof SaunaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +213,139 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apartamentai': {
+      id: '/apartamentai'
+      path: '/apartamentai'
+      fullPath: '/apartamentai'
+      preLoaderRoute: typeof ApartamentaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apie': {
+      id: '/apie'
+      path: '/apie'
+      fullPath: '/apie'
+      preLoaderRoute: typeof ApieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/banketine-sale': {
+      id: '/banketine-sale'
+      path: '/banketine-sale'
+      fullPath: '/banketine-sale'
+      preLoaderRoute: typeof BanketineSaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dovanu-kuponai': {
+      id: '/dovanu-kuponai'
+      path: '/dovanu-kuponai'
+      fullPath: '/dovanu-kuponai'
+      preLoaderRoute: typeof DovanuKuponaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontaktai': {
+      id: '/kontaktai'
+      path: '/kontaktai'
+      fullPath: '/kontaktai'
+      preLoaderRoute: typeof KontaktaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/namelis': {
+      id: '/namelis'
+      path: '/namelis'
+      fullPath: '/namelis'
+      preLoaderRoute: typeof NamelisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restobaras': {
+      id: '/restobaras'
+      path: '/restobaras'
+      fullPath: '/restobaras'
+      preLoaderRoute: typeof RestobarasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sauna': {
+      id: '/sauna'
+      path: '/sauna'
+      fullPath: '/sauna'
+      preLoaderRoute: typeof SaunaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apartamentai/': {
+      id: '/apartamentai/'
+      path: '/'
+      fullPath: '/apartamentai/'
+      preLoaderRoute: typeof ApartamentaiIndexRouteImport
+      parentRoute: typeof ApartamentaiRoute
+    }
+    '/apartamentai/standartiniai': {
+      id: '/apartamentai/standartiniai'
+      path: '/standartiniai'
+      fullPath: '/apartamentai/standartiniai'
+      preLoaderRoute: typeof ApartamentaiStandartiniaiRouteImport
+      parentRoute: typeof ApartamentaiRoute
+    }
+    '/apartamentai/su-terasa': {
+      id: '/apartamentai/su-terasa'
+      path: '/su-terasa'
+      fullPath: '/apartamentai/su-terasa'
+      preLoaderRoute: typeof ApartamentaiSuTerasaRouteImport
+      parentRoute: typeof ApartamentaiRoute
+    }
+    '/apie/': {
+      id: '/apie/'
+      path: '/'
+      fullPath: '/apie/'
+      preLoaderRoute: typeof ApieIndexRouteImport
+      parentRoute: typeof ApieRoute
+    }
+    '/apie/taisykles': {
+      id: '/apie/taisykles'
+      path: '/taisykles'
+      fullPath: '/apie/taisykles'
+      preLoaderRoute: typeof ApieTaisyklesRouteImport
+      parentRoute: typeof ApieRoute
+    }
   }
 }
 
+interface ApartamentaiRouteChildren {
+  ApartamentaiStandartiniaiRoute: typeof ApartamentaiStandartiniaiRoute
+  ApartamentaiSuTerasaRoute: typeof ApartamentaiSuTerasaRoute
+  ApartamentaiIndexRoute: typeof ApartamentaiIndexRoute
+}
+
+const ApartamentaiRouteChildren: ApartamentaiRouteChildren = {
+  ApartamentaiStandartiniaiRoute: ApartamentaiStandartiniaiRoute,
+  ApartamentaiSuTerasaRoute: ApartamentaiSuTerasaRoute,
+  ApartamentaiIndexRoute: ApartamentaiIndexRoute,
+}
+
+const ApartamentaiRouteWithChildren = ApartamentaiRoute._addFileChildren(
+  ApartamentaiRouteChildren,
+)
+
+interface ApieRouteChildren {
+  ApieTaisyklesRoute: typeof ApieTaisyklesRoute
+  ApieIndexRoute: typeof ApieIndexRoute
+}
+
+const ApieRouteChildren: ApieRouteChildren = {
+  ApieTaisyklesRoute: ApieTaisyklesRoute,
+  ApieIndexRoute: ApieIndexRoute,
+}
+
+const ApieRouteWithChildren = ApieRoute._addFileChildren(ApieRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApartamentaiRoute: ApartamentaiRouteWithChildren,
+  ApieRoute: ApieRouteWithChildren,
+  BanketineSaleRoute: BanketineSaleRoute,
+  DovanuKuponaiRoute: DovanuKuponaiRoute,
+  KontaktaiRoute: KontaktaiRoute,
+  NamelisRoute: NamelisRoute,
+  RestobarasRoute: RestobarasRoute,
+  SaunaRoute: SaunaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

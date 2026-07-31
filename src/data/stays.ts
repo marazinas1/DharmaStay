@@ -4,58 +4,62 @@ import standardImage from "@/assets/stay-standard.jpg";
 import standardImageWebp from "@/assets/stay-standard.webp";
 import terraceImage from "@/assets/stay-terrace.jpg";
 import terraceImageWebp from "@/assets/stay-terrace.webp";
+import { stayCopy, type StayCopy } from "@/content/lt/stays";
 
-export type Stay = {
-  id: string;
-  name: string;
-  description: string;
-  meta: string;
+export type StayId = "standard" | "terrace" | "cottage";
+export type StayHref = "/apartamentai/standartiniai" | "/apartamentai/su-terasa" | "/namelis";
+
+/**
+ * Language-neutral stay data (ids, prices, images, routes) merged with the
+ * Lithuanian copy from `src/content/lt/stays.ts`. Swap the copy module for a
+ * locale-aware lookup when translations land.
+ */
+export type Stay = StayCopy & {
+  id: StayId;
   priceFrom: number;
   image: string;
   imageWebp: string;
-  imageAlt: string;
-  href: string;
+  href: StayHref;
 };
 
-/** Placeholder data. Replaced by the booking engine (core) API in a later phase. */
-export const stays: Stay[] = [
+const stayData: Array<{
+  id: StayId;
+  priceFrom: number;
+  image: string;
+  imageWebp: string;
+  href: StayHref;
+}> = [
   {
     id: "standard",
-    name: "Standartiniai apartamentai",
-    description: "Ramūs dviviečiai ir keturviečiai butai senamiesčio širdyje.",
-    meta: "18–35 m² · Birutės g. 1",
     priceFrom: 40,
     image: standardImage,
     imageWebp: standardImageWebp,
-    imageAlt:
-      "Standartinių apartamentų miegamasis su šviesia kapitonuota lovos galvūte ir naktine lempa",
     href: "/apartamentai/standartiniai",
   },
   {
     id: "terrace",
-    name: "Apartamentai su terasa",
-    description: "Rytinė kava terasoje su vaizdu į miesto aikštę.",
-    meta: "Terasa · vaizdas į senamiestį",
     priceFrom: 40,
     image: terraceImage,
     imageWebp: terraceImageWebp,
-    imageAlt:
-      "Apartamentai su terasa – erdvus miegamasis su palmių lapų tapetais, veidrodine spinta ir pusryčių stalu",
     href: "/apartamentai/su-terasa",
   },
   {
     id: "cottage",
-    name: "Namelis su pirtimi ir kubilu",
-    description: "Atskiras namelis sodo tyloje – vakarui, kuris neskuba.",
-    meta: "65 m² · iki 6 svečių · Gražinos g. 1",
     priceFrom: 40,
     image: cottageImage,
     imageWebp: cottageImageWebp,
-    imageAlt:
-      "Namelio su pirtimi ir kubilu svetainė su virtuve, valgomojo stalu ir sofomis",
     href: "/namelis",
   },
 ];
+
+/** Placeholder data. Replaced by the booking engine (core) API in a later phase. */
+export const stays: Stay[] = stayData.map((stay) => ({ ...stay, ...stayCopy[stay.id] }));
+
+export function getStay(id: StayId): Stay {
+  const stay = stays.find((item) => item.id === id);
+  if (!stay) throw new Error(`Unknown stay: ${id}`);
+  return stay;
+}
 
 export const contact = {
   address: "Birutės g. 1, Telšiai 87130",

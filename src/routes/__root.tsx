@@ -12,22 +12,35 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { BookingProvider } from "@/components/site/BookingDialog";
+import { Enso } from "@/components/site/Enso";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeader } from "@/components/site/SiteHeader";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[70vh] items-center justify-center bg-linen px-6 py-32">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <Enso className="mx-auto h-12 w-12 text-sage/70" />
+        <p className="label-caps mt-8 text-stone">404</p>
+        <h1 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.75rem)] font-medium text-ink">
+          Puslapio nėra
+        </h1>
+        <p className="mt-4 text-base leading-relaxed text-stone">
+          Šis adresas neveikia arba puslapis buvo perkeltas. Grįžkite į pradžią arba peržiūrėkite
+          apartamentus.
         </p>
-        <div className="mt-6">
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="rounded-full bg-sage px-6 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
           >
-            Go home
+            Į pradžią
+          </Link>
+          <Link
+            to="/apartamentai"
+            className="rounded-full border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
+          >
+            Apartamentai
           </Link>
         </div>
       </div>
@@ -84,6 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Dharma Stay" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:locale", content: "lt_LT" },
     ],
     links: [
       {
@@ -101,7 +115,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="lt">
       <head>
         <HeadContent />
       </head>
@@ -119,8 +133,12 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <BookingProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <SiteHeader />
+        <main>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </main>
+        <SiteFooter />
       </BookingProvider>
     </QueryClientProvider>
   );

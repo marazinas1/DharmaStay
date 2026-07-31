@@ -7,8 +7,8 @@ import { IntroStrip } from "@/components/home/IntroStrip";
 import { LocationSection } from "@/components/home/LocationSection";
 import { Ratings } from "@/components/home/Ratings";
 import { StaysSection } from "@/components/home/StaysSection";
-import { SiteFooter } from "@/components/site/SiteFooter";
-import { SiteHeader } from "@/components/site/SiteHeader";
+import { pageHead } from "@/lib/seo";
+import { SITE_URL } from "@/data/nav";
 
 const title = "Dharma Stay — apartamentai ir namelis Telšiuose";
 const description =
@@ -16,16 +16,7 @@ const description =
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
+    ...pageHead({ path: "/", title, description }),
     scripts: [
       {
         type: "application/ld+json",
@@ -33,6 +24,7 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "LodgingBusiness",
           name: "Dharma Stay",
+          url: SITE_URL,
           description,
           email: "info@dharmastay.lt",
           telephone: "+37065911929",
@@ -54,17 +46,13 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <>
-      <SiteHeader />
-      <main>
-        <Hero />
-        <IntroStrip />
-        <StaysSection />
-        <LocationSection />
-        <ExtrasSection />
-        <Ratings />
-        <BookingBand />
-      </main>
-      <SiteFooter />
+      <Hero />
+      <IntroStrip />
+      <StaysSection />
+      <LocationSection />
+      <ExtrasSection />
+      <Ratings />
+      <BookingBand />
     </>
   );
 }
