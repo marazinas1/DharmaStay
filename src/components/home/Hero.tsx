@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 
 import heroImage from "@/assets/hero-oldtown.jpg";
@@ -70,12 +71,12 @@ export function Hero() {
             >
               Tikrinti laisvas datas
             </button>
-            <a
-              href="#apartamentai"
+            <Link
+              to="/apartamentai"
               className="rounded-full border border-warm-white/60 px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-warm-white hover:text-ink"
             >
               Apžiūrėti apartamentus
-            </a>
+            </Link>
           </div>
         </div>
 

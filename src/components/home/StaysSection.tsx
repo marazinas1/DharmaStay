@@ -1,8 +1,10 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 import { useBooking } from "@/components/site/BookingDialog";
 import { Reveal } from "@/components/site/Reveal";
 import { stays, type Stay } from "@/data/stays";
+import { cn } from "@/lib/utils";
 
 function StayCard({ stay, index }: { stay: Stay; index: number }) {
   const { open } = useBooking();
@@ -41,13 +43,13 @@ function StayCard({ stay, index }: { stay: Stay; index: number }) {
             >
               Rezervuoti
             </button>
-            <a
-              href={stay.href}
+            <Link
+              to={stay.href}
               className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:text-sage-deep"
             >
               Plačiau
               <ArrowRight className="arrow-nudge h-4 w-4" aria-hidden />
-            </a>
+            </Link>
           </div>
         </div>
       </article>
@@ -55,21 +57,23 @@ function StayCard({ stay, index }: { stay: Stay; index: number }) {
   );
 }
 
-export function StaysSection() {
+export function StaysSection({ headless = false }: { headless?: boolean }) {
   return (
     <section id="apartamentai" className="scroll-mt-24 bg-linen px-6 pb-24 lg:px-12 lg:pb-32">
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-2xl">
-          <p className="label-caps text-sage">Apgyvendinimas</p>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
-            Trys būdai pabūti Telšiuose
-          </h2>
-          <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-            Kiekviena erdvė paruošta tam pačiam – kad atvykę nieko nereikėtų spręsti.
-          </p>
-        </div>
+        {headless ? null : (
+          <div className="max-w-2xl">
+            <p className="label-caps text-sage">Apgyvendinimas</p>
+            <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
+              Trys būdai pabūti Telšiuose
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
+              Kiekviena erdvė paruošta tam pačiam – kad atvykę nieko nereikėtų spręsti.
+            </p>
+          </div>
+        )}
 
-        <div id="namelis" className="mt-14 grid scroll-mt-24 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className={cn("grid gap-8 md:grid-cols-2 lg:grid-cols-3", headless ? "" : "mt-14")}>
           {stays.map((stay, index) => (
             <StayCard key={stay.id} stay={stay} index={index} />
           ))}
