@@ -1,6 +1,9 @@
 import cottageImage from "@/assets/stay-cottage.jpg";
+import cottageImageWebp from "@/assets/stay-cottage.webp";
 import standardImage from "@/assets/stay-standard.jpg";
+import standardImageWebp from "@/assets/stay-standard.webp";
 import terraceImage from "@/assets/stay-terrace.jpg";
+import terraceImageWebp from "@/assets/stay-terrace.webp";
 
 export type Stay = {
   id: string;
@@ -9,6 +12,8 @@ export type Stay = {
   meta: string;
   priceFrom: number;
   image: string;
+  imageWebp: string;
+  imageAlt: string;
   href: string;
 };
 
@@ -21,6 +26,9 @@ export const stays: Stay[] = [
     meta: "18–35 m² · Birutės g. 1",
     priceFrom: 40,
     image: standardImage,
+    imageWebp: standardImageWebp,
+    imageAlt:
+      "Standartinių apartamentų miegamasis su šviesia kapitonuota lovos galvūte ir naktine lempa",
     href: "/apartamentai/standartiniai",
   },
   {
@@ -30,6 +38,9 @@ export const stays: Stay[] = [
     meta: "Terasa · vaizdas į senamiestį",
     priceFrom: 40,
     image: terraceImage,
+    imageWebp: terraceImageWebp,
+    imageAlt:
+      "Apartamentai su terasa – erdvus miegamasis su palmių lapų tapetais, veidrodine spinta ir pusryčių stalu",
     href: "/apartamentai/su-terasa",
   },
   {
@@ -39,6 +50,9 @@ export const stays: Stay[] = [
     meta: "65 m² · iki 6 svečių · Gražinos g. 1",
     priceFrom: 40,
     image: cottageImage,
+    imageWebp: cottageImageWebp,
+    imageAlt:
+      "Namelio su pirtimi ir kubilu svetainė su virtuve, valgomojo stalu ir sofomis",
     href: "/namelis",
   },
 ];
