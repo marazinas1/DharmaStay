@@ -61,7 +61,7 @@ TanStack Start already renders on the server. Concretely: fonts loaded via `<lin
 
 ## 6. Assumptions to confirm
 
-1. **Images** — I plan to reference the existing dharmastay.lt photo URLs from the context doc directly as placeholders. If any fail to load or look too dark/yellow for the airy tone, I'll substitute a generated warm boutique placeholder in the same crop. Say the word if you'd rather I generate all placeholders from the start.
+1. **Images** — confirmed: all placeholders are freshly generated warm, airy boutique images in the correct crops (wide hero, 4:3 stay cards, location image), already produced in `src/assets/`. The existing dharmastay.lt photos are not used; real enhanced Dharma photos come in a later phase.
 2. **Map** — a styled placeholder block with address and an "Atidaryti žemėlapyje" link (no Google Maps embed / API key yet).
 3. **Nav links** — Apartamentai, Namelis, Vieta, Kontaktai will scroll to home sections for now, since those pages don't exist yet; they become real routes in the next phase.
 4. **Language** — Lithuanian only, no language switcher this phase.
