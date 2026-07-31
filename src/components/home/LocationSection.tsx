@@ -58,7 +58,7 @@ export function LocationSection() {
                 alt="Telšių senamiestis prie Masčio ežero"
                 loading="lazy"
                 width={1200}
-                height={900}
+                height={912}
                 className="photo-zoom h-full w-full object-cover"
               />
             </div>
