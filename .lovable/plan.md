@@ -4,23 +4,13 @@ Design system untouched: sage/linen/ink, Fraunces + Inter, ensō motif. Only the
 
 ## A. Three real room photos on the cards
 
-One note before I wire them: in your table the filenames and the parenthetical descriptions don't line up with what's actually in the files.
+Mapped by filename, as you confirmed:
 
-| File | What the image actually shows |
-| --- | --- |
-| `Apartamentai_su_terasa.jpg` | bedroom with palm-leaf wallpaper, mirrored wardrobe, dining table |
-| `Standartiniai_apartamentai.jpg` | bed with tufted/capitone headboard, gold side table |
-| `namelis_su_pirtimi_ir_kubilu.jpg` | open-plan living room with kitchen and sofas |
-
-So the descriptions in your table are swapped between the two apartment files. I'll follow the **filenames** (they match the card names exactly):
-
-- Standartiniai apartamentai → `Standartiniai_apartamentai.jpg` (capitone headboard)
-- Apartamentai su terasa → `Apartamentai_su_terasa.jpg` (palm-leaf wallpaper)
+- Standartiniai apartamentai → `Standartiniai_apartamentai.jpg`
+- Apartamentai su terasa → `Apartamentai_su_terasa.jpg`
 - Namelis su pirtimi ir kubilu → `namelis_su_pirtimi_ir_kubilu.jpg`
 
-Say the word if you meant the descriptions instead and I'll swap the two apartment images.
-
-Each photo is center-cropped to 4:3, resized to 1200x900, tone-corrected (section D) and written to `src/assets/stay-standard.jpg`, `stay-terrace.jpg`, `stay-cottage.jpg` — the same filenames `stays.ts` already imports, so cards, hero references and the booking dialog all pick them up with no extra wiring. Existing 4:3 crop, `photo-zoom` hover and card layout stay as they are. Alt text updated to describe each real room.
+Each goes through the image pipeline (section D), center-cropped to 4:3, and lands on `src/assets/stay-standard.jpg`, `stay-terrace.jpg`, `stay-cottage.jpg` — the filenames `stays.ts` already imports, so cards, hero references and the booking dialog pick them up automatically. Existing 4:3 crop, hover zoom and card layout unchanged. Alt text updated to describe each real room.
 
 ## B. New hero image
 
@@ -42,18 +32,21 @@ Replaces `src/assets/hero-terrace.jpg`. Hero copy, gradient overlay, CTAs, ensō
 
 `LocationMap.tsx` is not rewritten — same MapLibre + Carto tiles, same coords `55.983649, 22.248996`, sage ensō marker, scroll-zoom disabled, `<ClientOnly>` + `React.lazy` + IntersectionObserver init. Performance is unaffected: the maplibre chunk still only downloads after hydration and the map only initializes when the band scrolls into view (200px rootMargin), so a bigger box costs nothing extra on first paint. The skeleton fallback takes the same heights to avoid layout shift.
 
-## D. Tone: build-time Pillow pass (preferred)
+## D. Image pipeline — optimization + unified tone (build-time)
 
-I'll use the **build-time** approach. It bakes the correction into the files, so there's zero runtime cost, no filter stacking with the map's grayscale, no risk of the artificial "everything under a wash" look, and each photo can be nudged individually toward the same target rather than all getting one blunt CSS filter.
+One reusable script, `scripts/optimize-images.py`, that I run whenever photos are added. Every image passes through the same pass, so new uploads are automatically optimized and tonally matched — no manual per-photo fiddling.
 
-One shared Python/Pillow function applied to all five photos (3 rooms, hero, location):
+What it does per image:
 
-- measure each image's mid-tone average and normalize exposure toward a common target (bounded, so nothing gets blown out)
-- per-channel white balance pull toward warm-neutral — kills the yellow cast in the room shots and any blue in the outdoor ones, while keeping a touch of warmth
-- restrained contrast (~1.03) and saturation (~0.94) for the airy, lightly desaturated boutique read
-- light unsharp mask after resize, quality 88 progressive JPEG
+1. **Resize** to the slot's target size (hero 1920x1080 16:9, cards 1200x900 4:3, location 1200x900), center-cropped to the right ratio. Never upscales beyond the source's usable resolution.
+2. **Tone unification:** mid-tone exposure normalization toward a shared target, per-channel white balance pull to warm-neutral (kills the yellow cast in the room shots, the blue in outdoor shots), contrast ~1.03, saturation ~0.94. Gentle — no crushed blacks, no filtered look.
+3. **Sharpen** with a light unsharp mask after resize, so detail survives the downscale.
+4. **Compress:** progressive JPEG, quality ~85, `optimize=True`, metadata stripped. Plus a **WebP** variant at the same size (quality ~82), typically 25–35% smaller.
+5. Markup uses `<picture>` with the WebP source and the JPEG fallback, `loading="lazy"` + `decoding="async"` on everything below the fold, and explicit `width`/`height` so nothing shifts. The hero stays eager and gets `fetchpriority="high"` plus a `preload` link in the route head so it remains a fast LCP.
 
-Correction is deliberately gentle — no crushed blacks, no heavy filter look. I'll screenshot the finished page so you can judge the set as a whole.
+Why build-time rather than a CSS filter: zero runtime cost, no filter stacking with the map's grayscale, no artificial wash, and each photo can be nudged individually toward the shared target instead of all getting one blunt filter.
+
+Result: sharp on retina, small on the wire, and all five photos read as one warm, airy, lightly desaturated boutique set.
 
 ## Nothing else changes
 
@@ -61,4 +54,4 @@ No palette, typography, spacing, copy, component structure, routes or motion cha
 
 ## Technical notes
 
-Files touched: `src/assets/*` (4 images), `src/data/stays.ts` (alt/tone only if needed), `src/components/home/Hero.tsx`, `src/components/home/LocationSection.tsx`. No new dependencies.
+Files touched: new `scripts/optimize-images.py`, `src/assets/*` (JPEG + WebP for 5 photos), `src/data/stays.ts`, `src/components/home/Hero.tsx`, `StaysSection.tsx`, `LocationSection.tsx`, `src/routes/index.tsx` (hero preload). No new runtime dependencies (Pillow is build-time only).
