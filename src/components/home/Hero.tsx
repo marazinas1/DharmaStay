@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
-import heroImage from "@/assets/hero-terrace.jpg";
+import heroImage from "@/assets/hero-oldtown.jpg";
+import heroImageWebp from "@/assets/hero-oldtown.webp";
 import { Enso } from "@/components/site/Enso";
 import { useBooking } from "@/components/site/BookingDialog";
 
@@ -34,13 +35,18 @@ export function Hero() {
 
   return (
     <section id="top" className="relative isolate min-h-[92vh] overflow-hidden">
-      <img
-        src={heroImage}
-        alt="Terasa su vaizdu į Telšių senamiestį šiltoje vakaro šviesoje"
-        width={1440}
-        height={1920}
-        className="hero-kenburns absolute inset-0 h-full w-full object-cover"
-      />
+      <picture>
+        <source srcSet={heroImageWebp} type="image/webp" />
+        <img
+          src={heroImage}
+          alt="Senamiesčio stogai ir bažnyčios bokštas auksinėje vakaro šviesoje"
+          width={1920}
+          height={1080}
+          fetchPriority="high"
+          decoding="async"
+          className="hero-kenburns absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
       <div className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/25 to-ink/55" />
 
       <div

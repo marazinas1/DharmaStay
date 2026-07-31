@@ -11,14 +11,18 @@ function StayCard({ stay, index }: { stay: Stay; index: number }) {
     <Reveal delay={index * 110}>
       <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift">
         <div className="aspect-[4/3] overflow-hidden">
-          <img
-            src={stay.image}
-            alt={stay.name}
-            loading="lazy"
-            width={1200}
-            height={900}
-            className="photo-zoom h-full w-full object-cover"
-          />
+          <picture>
+            <source srcSet={stay.imageWebp} type="image/webp" />
+            <img
+              src={stay.image}
+              alt={stay.imageAlt}
+              loading="lazy"
+              decoding="async"
+              width={1200}
+              height={900}
+              className="photo-zoom h-full w-full object-cover"
+            />
+          </picture>
         </div>
 
         <div className="flex flex-1 flex-col p-7">
