@@ -3,16 +3,17 @@ import { contact } from "@/data/stays";
 
 /** Small closing block used on the quieter service pages. */
 export function ContactCta({ title, text }: { title: string; text?: string }) {
+  const phone = contact.phones[0] ?? "";
   return (
     <div className="rounded-2xl bg-sage-deep px-8 py-12 text-center text-warm-white">
       <h2 className="font-display text-[clamp(1.6rem,3.2vw,2.125rem)] font-medium">{title}</h2>
       {text ? <p className="mx-auto mt-4 max-w-xl text-sm text-warm-white/80">{text}</p> : null}
       <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm font-medium">
         <a
-          href={`tel:${contact.phones[0].replace(/\s/g, "")}`}
+          href={`tel:${phone.replace(/\s/g, "")}`}
           className="rounded-full bg-warm-white px-6 py-3 text-ink transition-opacity hover:opacity-90"
         >
-          {contact.phones[0]}
+          {phone}
         </a>
         <a
           href={`mailto:${contact.email}`}
