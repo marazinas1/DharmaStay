@@ -3,6 +3,7 @@ import { ClientOnly } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 
 import locationImage from "@/assets/location-telsiai.jpg";
+import locationImageWebp from "@/assets/location-telsiai.webp";
 import { EnsoDivider } from "@/components/site/Enso";
 import { Reveal } from "@/components/site/Reveal";
 import { contact } from "@/data/stays";
@@ -53,24 +54,31 @@ export function LocationSection() {
 
           <Reveal delay={120} direction="right">
             <div className="group overflow-hidden rounded-2xl shadow-soft">
-              <img
-                src={locationImage}
-                alt="Telšių senamiestis prie Masčio ežero"
-                loading="lazy"
-                width={1200}
-                height={912}
-                className="photo-zoom h-full w-full object-cover"
-              />
-            </div>
-            <div className="mt-4 h-56 overflow-hidden rounded-2xl shadow-soft [filter:grayscale(1)_contrast(0.95)] sm:h-64">
-              <ClientOnly fallback={<MapSkeleton />}>
-                <Suspense fallback={<MapSkeleton />}>
-                  <LocationMap />
-                </Suspense>
-              </ClientOnly>
+              <picture>
+                <source srcSet={locationImageWebp} type="image/webp" />
+                <img
+                  src={locationImage}
+                  alt="Telšių senamiestis prie Masčio ežero"
+                  loading="lazy"
+                  decoding="async"
+                  width={1200}
+                  height={900}
+                  className="photo-zoom h-full w-full object-cover"
+                />
+              </picture>
             </div>
           </Reveal>
         </div>
+
+        <Reveal delay={80} className="mt-16">
+          <div className="h-[360px] overflow-hidden rounded-2xl shadow-soft [filter:grayscale(1)_contrast(0.95)] lg:h-[500px]">
+            <ClientOnly fallback={<MapSkeleton />}>
+              <Suspense fallback={<MapSkeleton />}>
+                <LocationMap />
+              </Suspense>
+            </ClientOnly>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
