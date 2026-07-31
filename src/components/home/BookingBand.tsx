@@ -8,7 +8,7 @@ export function BookingBand() {
     <section className="bg-sage px-6 py-24 text-warm-white lg:px-12">
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
         <Enso className="h-9 w-9 text-warm-white/60" />
-        <h2 className="mt-8 font-display text-[clamp(1.875rem,4.2vw,2.5rem)] leading-tight font-normal">
+        <h2 className="mt-8 font-display text-[clamp(1.875rem,4.2vw,2.5rem)] leading-tight font-medium">
           Pasitikrinkite datas
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-warm-white/85">

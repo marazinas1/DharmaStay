@@ -55,7 +55,7 @@ export function Hero() {
       >
         <div className="max-w-2xl">
           <p className="label-caps text-warm-white/75">Telšiai · Žemaitija</p>
-          <h1 className="mt-6 font-display text-[clamp(2.5rem,6vw,3.75rem)] leading-[1.08] font-normal text-warm-white">
+          <h1 className="mt-6 font-display text-[clamp(2.75rem,6.5vw,4.25rem)] leading-[1.08] font-medium text-warm-white">
             Vieta, kurioje lėtėja kvėpavimas
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-warm-white/85 sm:text-lg">

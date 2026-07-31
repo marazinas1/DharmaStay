@@ -23,7 +23,7 @@ export function LocationSection() {
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <Reveal direction="left">
             <p className="label-caps text-sage">Vieta</p>
-            <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-normal text-ink">
+            <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
               Telšiai, senamiesčio ritmu
             </h2>
             <div className="mt-6 space-y-4 text-base leading-[1.75] text-stone sm:text-lg">

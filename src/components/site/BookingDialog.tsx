@@ -45,7 +45,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
           <div className="p-6 sm:p-8">
             <DialogHeader className="space-y-3 text-left">
               <Enso className="h-8 w-8" />
-              <DialogTitle className="font-display text-2xl font-normal text-ink">
+              <DialogTitle className="font-display text-2xl font-medium text-ink">
                 Tikrinti laisvas datas
               </DialogTitle>
               <DialogDescription className="text-stone">
