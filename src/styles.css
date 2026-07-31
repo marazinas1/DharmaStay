@@ -191,9 +191,62 @@
     opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
 
+  &[data-direction="left"] {
+    transform: translateX(-28px);
+  }
+
+  &[data-direction="right"] {
+    transform: translateX(28px);
+  }
+
   &[data-visible="true"] {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Hero: slow Ken Burns drift on the background image. */
+@keyframes hero-kenburns {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.08) translate3d(-1.2%, -1%, 0);
+  }
+}
+
+@utility hero-kenburns {
+  animation: hero-kenburns 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Hero content fade/lift driven by --hero-progress (0 → 1). */
+@utility hero-fade {
+  opacity: calc(1 - var(--hero-progress, 0));
+  transform: translate3d(0, calc(var(--hero-progress, 0) * -40px), 0);
+  will-change: opacity, transform;
+}
+
+/* Desktop-only slow photo zoom inside rounded overflow-hidden frames. */
+@utility photo-zoom {
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (hover: hover) {
+    .group:hover &,
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+@utility arrow-nudge {
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (hover: hover) {
+    .group:hover &,
+    a:hover > & {
+      transform: translateX(4px);
+    }
   }
 }
 
@@ -207,6 +260,18 @@
   }
 
   .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-kenburns,
+  .photo-zoom,
+  .arrow-nudge {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .hero-fade {
     opacity: 1;
     transform: none;
   }

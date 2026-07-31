@@ -8,8 +8,8 @@ function StayCard({ stay, index }: { stay: Stay; index: number }) {
   const { open } = useBooking();
 
   return (
-    <Reveal delay={index * 120}>
-      <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift">
+    <Reveal delay={index * 110}>
+      <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift">
         <div className="aspect-[4/3] overflow-hidden">
           <img
             src={stay.image}
@@ -17,7 +17,7 @@ function StayCard({ stay, index }: { stay: Stay; index: number }) {
             loading="lazy"
             width={1200}
             height={900}
-            className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out hover:scale-[1.03]"
+            className="photo-zoom h-full w-full object-cover"
           />
         </div>
 
@@ -39,10 +39,10 @@ function StayCard({ stay, index }: { stay: Stay; index: number }) {
             </button>
             <a
               href={stay.href}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:text-sage-deep"
+              className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:text-sage-deep"
             >
               Plačiau
-              <ArrowRight className="h-4 w-4" aria-hidden />
+              <ArrowRight className="arrow-nudge h-4 w-4" aria-hidden />
             </a>
           </div>
         </div>
