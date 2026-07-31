@@ -100,4 +100,16 @@ No i18n library yet, but the swap later becomes mechanical:
 
 ## 7. Unchanged
 
+## 7. Logo sizing
+
+The mark currently renders visually small (header `h-11`, footer `h-16`), and the glyph sits inside padding so its optical height is smaller still.
+
+- Trim any remaining transparent padding on `logo-dharma.png` so the box equals the mark, then size the header logo to ~52px tall on desktop (tuned by eye against the nav baseline), ~40px on mobile, ~44px in the scrolled/solid header if the taller mark crowds the bar.
+- Footer logo scales proportionally to ~80–88px.
+- Crispness: re-export the mask at 2–3x the largest render size (or trace it to an inline SVG mask if the raster goes soft when enlarged) — same single-source mask, so no extra files per color.
+- Unchanged: `currentColor` painting via `mask-image` + `bg-current` (white over hero, ink on scrolled linen, white on sage-deep footer), header mark links to `/`, `aria-label` preserved.
+- Header grid/padding is adjusted so the taller logo doesn't increase the bar height disproportionately or push the nav.
+
+## 8. Unchanged
+
 Palette and tokens, fonts and the diacritic-clean heading CSS, ensō, logo currentColor behavior, Reveal / Ken Burns / hover motion, booking dialog (still the only booking entry point, no external redirects), MapLibre map, mock `stays.ts` as the data source. The root `notFoundComponent` is restyled to the boutique palette and renders inside the shared layout so a 404 still shows header and footer.
