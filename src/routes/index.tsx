@@ -1,24 +1,71 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { BookingBand } from "@/components/home/BookingBand";
+import { ExtrasSection } from "@/components/home/ExtrasSection";
+import { Hero } from "@/components/home/Hero";
+import { IntroStrip } from "@/components/home/IntroStrip";
+import { LocationSection } from "@/components/home/LocationSection";
+import { Ratings } from "@/components/home/Ratings";
+import { StaysSection } from "@/components/home/StaysSection";
+import { BookingProvider } from "@/components/site/BookingDialog";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeader } from "@/components/site/SiteHeader";
+
+const title = "Dharma Stay — apartamentai ir namelis Telšiuose";
+const description =
+  "Boutique apgyvendinimas Telšių senamiestyje: apartamentai, apartamentai su terasa ir namelis su pirtimi bei kubilu. Rezervuokite tiesiogiai.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LodgingBusiness",
+          name: "Dharma Stay",
+          description,
+          email: "info@dharmastay.lt",
+          telephone: "+37065911929",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Birutės g. 1",
+            addressLocality: "Telšiai",
+            postalCode: "87130",
+            addressCountry: "LT",
+          },
+          priceRange: "€€",
+        }),
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <BookingProvider>
+      <SiteHeader />
+      <main>
+        <Hero />
+        <IntroStrip />
+        <StaysSection />
+        <LocationSection />
+        <ExtrasSection />
+        <Ratings />
+        <BookingBand />
+      </main>
+      <SiteFooter />
+    </BookingProvider>
   );
 }
