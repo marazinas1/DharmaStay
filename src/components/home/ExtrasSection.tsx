@@ -23,7 +23,7 @@ export function ExtrasSection() {
                 <EnsoFrame>
                   <extra.icon className="h-5 w-5 text-sage" aria-hidden />
                 </EnsoFrame>
-                <h3 className="mt-4 font-display text-lg font-medium text-ink">{extra.title}</h3>
+                <h3 className="mt-4 font-display text-lg font-semibold text-ink">{extra.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-stone">{extra.text}</p>
               </div>
             </Reveal>

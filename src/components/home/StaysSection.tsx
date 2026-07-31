@@ -27,7 +27,7 @@ function StayCard({ stay, index }: { stay: Stay; index: number }) {
 
         <div className="flex flex-1 flex-col p-7">
           <p className="label-caps text-stone">Nuo {stay.priceFrom} €</p>
-          <h3 className="mt-3 font-display text-[1.375rem] leading-snug font-medium text-ink">
+          <h3 className="mt-3 font-display text-[1.375rem] leading-snug font-semibold text-ink">
             {stay.name}
           </h3>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-stone">{stay.description}</p>
@@ -61,7 +61,7 @@ export function StaysSection() {
       <div className="mx-auto max-w-7xl">
         <div className="max-w-2xl">
           <p className="label-caps text-sage">Apgyvendinimas</p>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-normal text-ink">
+          <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
             Trys būdai pabūti Telšiuose
           </h2>
           <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
