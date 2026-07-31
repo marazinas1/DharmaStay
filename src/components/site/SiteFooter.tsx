@@ -1,4 +1,5 @@
 import { Enso } from "@/components/site/Enso";
+import { Logo } from "@/components/site/Logo";
 import { contact } from "@/data/stays";
 
 const navItems = [
@@ -15,7 +16,7 @@ export function SiteFooter() {
         <div className="grid gap-12 md:grid-cols-3">
           <div>
             <Enso className="h-9 w-9 text-warm-white/60" />
-            <p className="mt-5 font-display text-xl tracking-[0.14em] uppercase">Dharma Stay</p>
+            <Logo className="mt-5 h-16 w-16 text-warm-white" />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-warm-white/70">
               Apgyvendinimas Telšių senamiestyje. Iš namų į namus.
             </p>

@@ -1,7 +1,9 @@
+import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { useBooking } from "@/components/site/BookingDialog";
+import { Logo } from "@/components/site/Logo";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -33,15 +35,17 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 lg:px-12">
-        <a
-          href="#top"
+        <Link
+          to="/"
+          hash="top"
+          aria-label="Dharma Stay — į pradžią"
           className={cn(
-            "font-display text-lg tracking-[0.18em] uppercase transition-colors",
+            "inline-flex items-center transition-colors",
             solid ? "text-ink" : "text-warm-white",
           )}
         >
-          Dharma Stay
-        </a>
+          <Logo className="h-11 w-11" />
+        </Link>
 
         <div className="flex items-center gap-8">
           <nav aria-label="Pagrindinė navigacija" className="hidden items-center gap-8 lg:flex">
