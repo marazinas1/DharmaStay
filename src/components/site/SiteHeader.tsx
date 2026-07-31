@@ -79,7 +79,7 @@ export function SiteHeader() {
             aria-label={menuOpen ? "Uždaryti meniu" : "Atidaryti meniu"}
             className={cn("lg:hidden", solid ? "text-ink" : "text-warm-white")}
           >
-            {menuOpen ? <Menu className="h-6 w-6" aria-hidden /> : <Menu className="h-6 w-6" aria-hidden />}
+            {menuOpen ? <X className="h-6 w-6" aria-hidden /> : <Menu className="h-6 w-6" aria-hidden />}
           </button>
         </div>
       </div>
