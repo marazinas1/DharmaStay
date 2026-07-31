@@ -28,7 +28,7 @@ export function useBooking() {
  */
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [stayId, setStayId] = useState<string>(stays[0].id);
+  const [stayId, setStayId] = useState<string>(stays[0]?.id ?? "standard");
 
   const open = useCallback((id?: string) => {
     if (id) setStayId(id);
