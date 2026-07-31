@@ -171,7 +171,6 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    font-optical-sizing: auto;
   }
 
   :focus-visible {
