@@ -7,7 +7,6 @@ import { IntroStrip } from "@/components/home/IntroStrip";
 import { LocationSection } from "@/components/home/LocationSection";
 import { Ratings } from "@/components/home/Ratings";
 import { StaysSection } from "@/components/home/StaysSection";
-import { BookingProvider } from "@/components/site/BookingDialog";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 
