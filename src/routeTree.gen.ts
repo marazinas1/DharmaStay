@@ -24,6 +24,7 @@ import { Route as ApartamentaiStandartiniaiRouteImport } from './routes/apartame
 import { Route as ApartamentaiSuTerasaRouteImport } from './routes/apartamentai.su-terasa'
 import { Route as ApieIndexRouteImport } from './routes/apie.index'
 import { Route as ApieTaisyklesRouteImport } from './routes/apie.taisykles'
+import { Route as RezervacijaPatvirtintaRouteImport } from './routes/rezervacija.patvirtinta'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -101,6 +102,11 @@ const ApieTaisyklesRoute = ApieTaisyklesRouteImport.update({
   path: '/taisykles',
   getParentRoute: () => ApieRoute,
 } as any)
+const RezervacijaPatvirtintaRoute = RezervacijaPatvirtintaRouteImport.update({
+  id: '/rezervacija/patvirtinta',
+  path: '/rezervacija/patvirtinta',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
   '/apie/taisykles': typeof ApieTaisyklesRoute
+  '/rezervacija/patvirtinta': typeof RezervacijaPatvirtintaRoute
   '/apartamentai/': typeof ApartamentaiIndexRoute
   '/apie/': typeof ApieIndexRoute
 }
@@ -131,6 +138,7 @@ export interface FileRoutesByTo {
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
   '/apie/taisykles': typeof ApieTaisyklesRoute
+  '/rezervacija/patvirtinta': typeof RezervacijaPatvirtintaRoute
   '/apartamentai': typeof ApartamentaiIndexRoute
   '/apie': typeof ApieIndexRoute
 }
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
   '/apie/taisykles': typeof ApieTaisyklesRoute
+  '/rezervacija/patvirtinta': typeof RezervacijaPatvirtintaRoute
   '/apartamentai/': typeof ApartamentaiIndexRoute
   '/apie/': typeof ApieIndexRoute
 }
@@ -168,6 +177,7 @@ export interface FileRouteTypes {
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
     | '/apie/taisykles'
+    | '/rezervacija/patvirtinta'
     | '/apartamentai/'
     | '/apie/'
   fileRoutesByTo: FileRoutesByTo
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
     | '/apie/taisykles'
+    | '/rezervacija/patvirtinta'
     | '/apartamentai'
     | '/apie'
   id:
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
     | '/apie/taisykles'
+    | '/rezervacija/patvirtinta'
     | '/apartamentai/'
     | '/apie/'
   fileRoutesById: FileRoutesById
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   NamelisRoute: typeof NamelisRoute
   RestobarasRoute: typeof RestobarasRoute
   SaunaRoute: typeof SaunaRoute
+  RezervacijaPatvirtintaRoute: typeof RezervacijaPatvirtintaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -323,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApieTaisyklesRouteImport
       parentRoute: typeof ApieRoute
     }
+    '/rezervacija/patvirtinta': {
+      id: '/rezervacija/patvirtinta'
+      path: '/rezervacija/patvirtinta'
+      fullPath: '/rezervacija/patvirtinta'
+      preLoaderRoute: typeof RezervacijaPatvirtintaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -366,6 +386,7 @@ const rootRouteChildren: RootRouteChildren = {
   NamelisRoute: NamelisRoute,
   RestobarasRoute: RestobarasRoute,
   SaunaRoute: SaunaRoute,
+  RezervacijaPatvirtintaRoute: RezervacijaPatvirtintaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

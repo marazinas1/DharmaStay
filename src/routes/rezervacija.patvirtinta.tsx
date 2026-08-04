@@ -7,6 +7,7 @@ import { PageSection } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
 import { rezervacija } from "@/content/lt/rezervacija";
+import { readStoredBooking, type StoredBooking } from "@/lib/booking-storage";
 import { formatPrice } from "@/lib/property-view";
 import { getPaymentDetails } from "@/lib/rentivo.functions";
 import { pageHead } from "@/lib/seo";
@@ -23,22 +24,6 @@ export const Route = createFileRoute("/rezervacija/patvirtinta")({
   }),
   component: ConfirmationPage,
 });
-
-/** Shape stored in sessionStorage right before navigating here. */
-export type StoredBooking = {
-  booking_number: string;
-  status: string;
-  date_from: string;
-  date_to: string;
-  nights: number;
-  total_amount: number;
-  currency: string;
-  expires_at?: string | null;
-  guests?: { adults: number; children: number; infants: number };
-  extras?: { name: string; amount?: number }[];
-};
-
-export const bookingStorageKey = (nr: string) => `dharma:booking:${nr}`;
 
 function formatDateTime(value: string): string {
   const date = new Date(value);
@@ -66,12 +51,7 @@ function ConfirmationPage() {
   useEffect(() => {
     setHydrated(true);
     if (!nr) return;
-    try {
-      const raw = window.sessionStorage.getItem(bookingStorageKey(nr));
-      if (raw) setBooking(JSON.parse(raw) as StoredBooking);
-    } catch {
-      /* ignore malformed storage */
-    }
+    setBooking(readStoredBooking(nr));
   }, [nr]);
 
   const payment = useQuery({
