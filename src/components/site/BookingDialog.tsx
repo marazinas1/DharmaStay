@@ -227,6 +227,16 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [infants, setInfants] = useState(0);
   const [property, setProperty] = useState<BookingProperty | null>(null);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
+  const [contact, setContact] = useState({
+    customer_name: "",
+    customer_email: "",
+    customer_phone: "",
+    bic: "",
+  });
+  const [contactErrors, setContactErrors] = useState<ContactErrors>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const open = useCallback((id?: string, dates?: BookingDates, prop?: BookingProperty) => {
     if (id) setStayId(id);
@@ -236,6 +246,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     }
     setProperty(prop ?? null);
     setSelectedExtras([]);
+    setSubmitError(null);
+    setContactErrors({});
     setIsOpen(true);
   }, []);
 
@@ -270,6 +282,71 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       }),
   });
 
+  const canSubmit = canQuote && quote.data?.available !== false && !isSubmitting;
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+    setSubmitError(null);
+
+    const parsed = contactSchema.safeParse({
+      ...contact,
+      bic: contact.bic.trim() === "" ? undefined : contact.bic,
+    });
+    if (!parsed.success) {
+      const errors: ContactErrors = {};
+      for (const issue of parsed.error.issues) {
+        const key = issue.path[0] as keyof ContactErrors;
+        if (key && !errors[key]) errors[key] = issue.message;
+      }
+      setContactErrors(errors);
+      return;
+    }
+    setContactErrors({});
+
+    if (!canQuote) {
+      setSubmitError(common.booking.needQuote);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const result = await createBookingFn({
+        data: {
+          property_id: stayId,
+          date_from: checkin,
+          date_to: checkout,
+          adults,
+          children: children_,
+          infants,
+          extras: selectedExtras.map((name) => ({ name })),
+          ...parsed.data,
+        },
+      });
+      storeBooking({
+        booking_number: result.booking_number,
+        status: result.status,
+        date_from: result.date_from,
+        date_to: result.date_to,
+        nights: result.nights,
+        total_amount: result.total_amount,
+        currency: result.currency,
+        expires_at: result.expires_at ?? null,
+        guests: { adults, children: children_, infants },
+        extras: selectedExtras.map((name) => ({ name })),
+      });
+      setIsOpen(false);
+      await navigate({
+        to: "/rezervacija/patvirtinta",
+        search: { nr: result.booking_number },
+      });
+    } catch (error) {
+      setSubmitError(bookingErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <BookingContext.Provider value={value}>
       {children}
@@ -287,7 +364,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
               </DialogDescription>
             </DialogHeader>
 
-            <form className="mt-7 space-y-5" onSubmit={(event) => event.preventDefault()}>
+            <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block space-y-2">
                   <span className="label-caps text-stone">Atvykimas</span>
@@ -401,12 +478,59 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 ) : null}
               </div>
 
+              <fieldset className="space-y-4">
+                <legend className="label-caps text-stone">{common.booking.contactTitle}</legend>
+                <TextField
+                  label={common.booking.name}
+                  value={contact.customer_name}
+                  autoComplete="name"
+                  error={contactErrors.customer_name}
+                  onChange={(value) => setContact((c) => ({ ...c, customer_name: value }))}
+                />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <TextField
+                    label={common.booking.email}
+                    type="email"
+                    value={contact.customer_email}
+                    autoComplete="email"
+                    error={contactErrors.customer_email}
+                    onChange={(value) => setContact((c) => ({ ...c, customer_email: value }))}
+                  />
+                  <TextField
+                    label={common.booking.phone}
+                    type="tel"
+                    value={contact.customer_phone}
+                    autoComplete="tel"
+                    error={contactErrors.customer_phone}
+                    onChange={(value) => setContact((c) => ({ ...c, customer_phone: value }))}
+                  />
+                </div>
+                <TextField
+                  label={common.booking.bic}
+                  value={contact.bic}
+                  error={contactErrors.bic}
+                  onChange={(value) => setContact((c) => ({ ...c, bic: value }))}
+                />
+              </fieldset>
+
+              {submitError ? (
+                <p role="alert" className="rounded-xl bg-linen p-4 text-sm text-ink">
+                  {submitError}
+                </p>
+              ) : null}
+
               <button
                 type="submit"
-                disabled
-                className="w-full rounded-full bg-sage px-6 py-3.5 text-sm font-medium text-warm-white opacity-60"
+                disabled={!canSubmit}
+                className="flex w-full items-center justify-center gap-3 rounded-full bg-sage px-6 py-3.5 text-sm font-medium text-warm-white disabled:opacity-60"
               >
-                {common.booking.submitSoon}
+                {isSubmitting ? (
+                  <span
+                    aria-hidden
+                    className="h-4 w-4 animate-spin rounded-full border-2 border-warm-white/40 border-t-warm-white"
+                  />
+                ) : null}
+                {isSubmitting ? common.booking.submitting : common.booking.submit}
               </button>
               <p className="text-center text-xs text-stone">
                 Be tarpininkų ir be Booking.com komisinių.
