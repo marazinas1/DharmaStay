@@ -1,4 +1,13 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 
 import { Enso } from "@/components/site/Enso";
 import {
@@ -8,13 +17,54 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { common } from "@/content/lt/common";
 import { stays } from "@/data/stays";
+import { formatPrice } from "@/lib/property-view";
+import type { ExtraService } from "@/lib/rentivo-schemas";
+import { getQuote } from "@/lib/rentivo.functions";
 
 export type BookingDates = { checkin?: string; checkout?: string };
 
-type BookingContextValue = {
-  open: (stayId?: string, dates?: BookingDates) => void;
+/** Extra context the property page can pass through (already fetched there). */
+export type BookingProperty = {
+  name?: string;
+  extras?: ExtraService[];
+  maxGuests?: number | null;
 };
+
+type BookingContextValue = {
+  open: (stayId?: string, dates?: BookingDates, property?: BookingProperty) => void;
+};
+
+const UUID_RE = /^[0-9a-f-]{36}$/i;
+
+function useDebounced<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
+function quoteErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  if (message.includes("too_many_guests")) return common.booking.tooManyGuests;
+  if (message.includes("not_found")) return common.booking.notFound;
+  if (message.includes("bad_request")) return common.booking.badRequest;
+  return common.booking.genericError;
+}
+
+function extraHint(extra: ExtraService): string | null {
+  if (typeof extra.pricePerDay !== "number") return null;
+  const unit =
+    extra.calc === "per_person"
+      ? common.booking.perPerson
+      : extra.calc === "per_child"
+        ? common.booking.perChild
+        : common.booking.flatPerDay;
+  return `${formatPrice(extra.pricePerDay)} € ${unit}`;
+}
 
 const BookingContext = createContext<BookingContextValue | null>(null);
 
@@ -33,23 +83,59 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [stayId, setStayId] = useState<string>(stays[0]?.id ?? "standard");
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
+  const [adults, setAdults] = useState(2);
+  const [children_, setChildren] = useState(0);
+  const [infants, setInfants] = useState(0);
+  const [property, setProperty] = useState<BookingProperty | null>(null);
+  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
-  const open = useCallback((id?: string, dates?: BookingDates) => {
+  const open = useCallback((id?: string, dates?: BookingDates, prop?: BookingProperty) => {
     if (id) setStayId(id);
     if (dates) {
       setCheckin(dates.checkin ?? "");
       setCheckout(dates.checkout ?? "");
     }
+    setProperty(prop ?? null);
+    setSelectedExtras([]);
     setIsOpen(true);
   }, []);
 
   const value = useMemo(() => ({ open }), [open]);
 
+  const extras = property?.extras ?? [];
+  const isProperty = UUID_RE.test(stayId);
+  const datesValid = Boolean(checkin && checkout && checkout > checkin);
+  const canQuote = isProperty && datesValid && adults >= 1;
+
+  const quoteKey = useDebounced(
+    JSON.stringify({ stayId, checkin, checkout, adults, children_, infants, selectedExtras }),
+    450,
+  );
+
+  const quote = useQuery({
+    queryKey: ["quote", quoteKey],
+    enabled: canQuote,
+    retry: false,
+    staleTime: 60_000,
+    queryFn: () =>
+      getQuote({
+        data: {
+          property_id: stayId,
+          date_from: checkin,
+          date_to: checkout,
+          adults,
+          children: children_,
+          infants,
+          extras: selectedExtras.map((name) => ({ name })),
+        },
+      }),
+  });
+
   return (
     <BookingContext.Provider value={value}>
       {children}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="rounded-2xl border-border bg-warm-white p-0 sm:max-w-lg">
+        <DialogContent className="max-h-[90vh] overflow-y-auto rounded-2xl border-border bg-warm-white p-0 sm:max-w-lg">
           <div className="p-6 sm:p-8">
             <DialogHeader className="space-y-3 text-left">
               <Enso className="h-8 w-8" />
@@ -102,24 +188,80 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 </select>
               </label>
 
-              <label className="block space-y-2">
-                <span className="label-caps text-stone">Svečiai</span>
-                <input
-                  type="number"
-                  name="guests"
+              <div className="grid gap-4 sm:grid-cols-3">
+                <GuestField
+                  label={common.booking.adults}
+                  value={adults}
                   min={1}
-                  max={6}
-                  defaultValue={2}
-                  className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
+                  onChange={setAdults}
                 />
-              </label>
+                <GuestField
+                  label={common.booking.children}
+                  value={children_}
+                  min={0}
+                  onChange={setChildren}
+                />
+                <GuestField
+                  label={common.booking.infants}
+                  value={infants}
+                  min={0}
+                  onChange={setInfants}
+                />
+              </div>
+
+              {extras.length ? (
+                <fieldset className="space-y-3">
+                  <legend className="label-caps text-stone">{common.booking.extras}</legend>
+                  {extras.slice(0, 20).map((extra) => {
+                    const hint = extraHint(extra);
+                    const checked = selectedExtras.includes(extra.name);
+                    return (
+                      <label
+                        key={extra.name}
+                        className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-border bg-linen px-4 py-3"
+                      >
+                        <span className="flex items-center gap-3 text-sm text-ink">
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={(event) =>
+                              setSelectedExtras((current) =>
+                                event.target.checked
+                                  ? [...current, extra.name]
+                                  : current.filter((name) => name !== extra.name),
+                              )
+                            }
+                            className="h-4 w-4 accent-[var(--color-sage,#5A6B5D)]"
+                          />
+                          {extra.name}
+                        </span>
+                        {hint ? <span className="text-xs text-stone">{hint}</span> : null}
+                      </label>
+                    );
+                  })}
+                </fieldset>
+              ) : null}
+
+              <div aria-live="polite" className="rounded-xl bg-linen p-5">
+                {!canQuote ? (
+                  <p className="text-sm text-stone">{common.booking.pickDatesPrompt}</p>
+                ) : quote.isPending || quote.isFetching ? (
+                  <p className="text-sm text-stone">{common.booking.calculating}</p>
+                ) : quote.isError ? (
+                  <p className="text-sm text-stone">{quoteErrorMessage(quote.error)}</p>
+                ) : quote.data && quote.data.available === false ? (
+                  <p className="text-sm text-stone">{common.booking.unavailable}</p>
+                ) : quote.data ? (
+                  <PriceBreakdown quote={quote.data} />
+                ) : null}
+              </div>
 
               <button
                 type="submit"
                 disabled
                 className="w-full rounded-full bg-sage px-6 py-3.5 text-sm font-medium text-warm-white opacity-60"
               >
-                Tęsti rezervaciją
+                {common.booking.submitSoon}
               </button>
               <p className="text-center text-xs text-stone">
                 Be tarpininkų ir be Booking.com komisinių.
