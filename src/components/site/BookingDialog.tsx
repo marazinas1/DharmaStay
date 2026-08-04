@@ -66,6 +66,85 @@ function extraHint(extra: ExtraService): string | null {
   return `${formatPrice(extra.pricePerDay)} € ${unit}`;
 }
 
+function GuestField({
+  label,
+  value,
+  min,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  onChange: (value: number) => void;
+}) {
+  return (
+    <label className="block space-y-2">
+      <span className="label-caps text-stone">{label}</span>
+      <input
+        type="number"
+        min={min}
+        max={50}
+        value={value}
+        onChange={(event) => {
+          const next = Number(event.target.value);
+          onChange(Number.isFinite(next) ? Math.min(50, Math.max(min, Math.trunc(next))) : min);
+        }}
+        className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
+      />
+    </label>
+  );
+}
+
+type QuoteData = {
+  nights: number;
+  nightly_rate: number;
+  stay_total: number;
+  extras: { name: string; amount: number }[];
+  extras_total: number;
+  total: number;
+  currency: string;
+};
+
+function PriceBreakdown({ quote }: { quote: QuoteData }) {
+  const currency = quote.currency === "EUR" ? "€" : quote.currency;
+  return (
+    <dl className="space-y-2 text-sm text-stone">
+      <Row
+        label={`${common.booking.nights}: ${quote.nights} × ${formatPrice(quote.nightly_rate)} ${currency}`}
+        value={`${formatPrice(quote.stay_total)} ${currency}`}
+      />
+      {quote.extras.map((extra) => (
+        <Row
+          key={extra.name}
+          label={extra.name}
+          value={`${formatPrice(extra.amount)} ${currency}`}
+        />
+      ))}
+      {quote.extras_total > 0 ? (
+        <Row
+          label={common.booking.extrasTotal}
+          value={`${formatPrice(quote.extras_total)} ${currency}`}
+        />
+      ) : null}
+      <div className="mt-4 flex items-baseline justify-between border-t border-border pt-4">
+        <dt className="label-caps text-sage">{common.booking.total}</dt>
+        <dd className="font-display text-2xl font-medium text-ink">
+          {formatPrice(quote.total)} {currency}
+        </dd>
+      </div>
+    </dl>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-baseline justify-between gap-4">
+      <dt>{label}</dt>
+      <dd className="text-ink">{value}</dd>
+    </div>
+  );
+}
+
 const BookingContext = createContext<BookingContextValue | null>(null);
 
 export function useBooking() {

@@ -64,10 +64,14 @@ function PropertyPage() {
   const [range, setRange] = useState<DateRange | undefined>(undefined);
 
   const openBooking = () =>
-    open(data.id, {
-      ...(range?.from ? { checkin: toApiDate(range.from) } : {}),
-      ...(range?.to ? { checkout: toApiDate(range.to) } : {}),
-    });
+    open(
+      data.id,
+      {
+        ...(range?.from ? { checkin: toApiDate(range.from) } : {}),
+        ...(range?.to ? { checkout: toApiDate(range.to) } : {}),
+      },
+      { name: data.name, extras: data.extra_services, maxGuests: data.max_guests ?? null },
+    );
 
   return (
     <>
