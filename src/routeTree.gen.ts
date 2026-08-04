@@ -19,6 +19,7 @@ import { Route as NamelisRouteImport } from './routes/namelis'
 import { Route as RestobarasRouteImport } from './routes/restobaras'
 import { Route as SaunaRouteImport } from './routes/sauna'
 import { Route as ApartamentaiIndexRouteImport } from './routes/apartamentai.index'
+import { Route as ApartamentaiPropertyIdRouteImport } from './routes/apartamentai.$propertyId'
 import { Route as ApartamentaiStandartiniaiRouteImport } from './routes/apartamentai.standartiniai'
 import { Route as ApartamentaiSuTerasaRouteImport } from './routes/apartamentai.su-terasa'
 import { Route as ApieIndexRouteImport } from './routes/apie.index'
@@ -74,6 +75,11 @@ const ApartamentaiIndexRoute = ApartamentaiIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ApartamentaiRoute,
 } as any)
+const ApartamentaiPropertyIdRoute = ApartamentaiPropertyIdRouteImport.update({
+  id: '/$propertyId',
+  path: '/$propertyId',
+  getParentRoute: () => ApartamentaiRoute,
+} as any)
 const ApartamentaiStandartiniaiRoute =
   ApartamentaiStandartiniaiRouteImport.update({
     id: '/standartiniai',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/namelis': typeof NamelisRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
   '/apie/taisykles': typeof ApieTaisyklesRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/namelis': typeof NamelisRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
   '/apie/taisykles': typeof ApieTaisyklesRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/namelis': typeof NamelisRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
   '/apie/taisykles': typeof ApieTaisyklesRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/namelis'
     | '/restobaras'
     | '/sauna'
+    | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
     | '/apie/taisykles'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/namelis'
     | '/restobaras'
     | '/sauna'
+    | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
     | '/apie/taisykles'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/namelis'
     | '/restobaras'
     | '/sauna'
+    | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
     | '/apie/taisykles'
@@ -276,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApartamentaiIndexRouteImport
       parentRoute: typeof ApartamentaiRoute
     }
+    '/apartamentai/$propertyId': {
+      id: '/apartamentai/$propertyId'
+      path: '/$propertyId'
+      fullPath: '/apartamentai/$propertyId'
+      preLoaderRoute: typeof ApartamentaiPropertyIdRouteImport
+      parentRoute: typeof ApartamentaiRoute
+    }
     '/apartamentai/standartiniai': {
       id: '/apartamentai/standartiniai'
       path: '/standartiniai'
@@ -308,12 +327,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface ApartamentaiRouteChildren {
+  ApartamentaiPropertyIdRoute: typeof ApartamentaiPropertyIdRoute
   ApartamentaiStandartiniaiRoute: typeof ApartamentaiStandartiniaiRoute
   ApartamentaiSuTerasaRoute: typeof ApartamentaiSuTerasaRoute
   ApartamentaiIndexRoute: typeof ApartamentaiIndexRoute
 }
 
 const ApartamentaiRouteChildren: ApartamentaiRouteChildren = {
+  ApartamentaiPropertyIdRoute: ApartamentaiPropertyIdRoute,
   ApartamentaiStandartiniaiRoute: ApartamentaiStandartiniaiRoute,
   ApartamentaiSuTerasaRoute: ApartamentaiSuTerasaRoute,
   ApartamentaiIndexRoute: ApartamentaiIndexRoute,
@@ -349,13 +370,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
