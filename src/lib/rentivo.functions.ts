@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { quoteInputSchema } from "@/lib/rentivo-schemas";
+import { bookingInputSchema, quoteInputSchema } from "@/lib/rentivo-schemas";
 
 /**
  * Thin server-function wrappers around the Core (Rentivo) API.
@@ -31,3 +31,15 @@ export const getQuote = createServerFn({ method: "POST" })
     const { fetchQuote } = await import("@/lib/rentivo-api.server");
     return fetchQuote(data);
   });
+
+export const createBookingFn = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => bookingInputSchema.parse(data))
+  .handler(async ({ data }) => {
+    const { createBooking } = await import("@/lib/rentivo-api.server");
+    return createBooking(data);
+  });
+
+export const getPaymentDetails = createServerFn({ method: "GET" }).handler(async () => {
+  const { fetchPaymentDetails } = await import("@/lib/rentivo-api.server");
+  return fetchPaymentDetails();
+});
