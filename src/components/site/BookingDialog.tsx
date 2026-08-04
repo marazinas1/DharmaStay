@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import {
   createContext,
   useCallback,
@@ -8,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { z } from "zod";
 
 import { Enso } from "@/components/site/Enso";
 import {
@@ -19,9 +21,10 @@ import {
 } from "@/components/ui/dialog";
 import { common } from "@/content/lt/common";
 import { stays } from "@/data/stays";
+import { storeBooking } from "@/lib/booking-storage";
 import { formatPrice } from "@/lib/property-view";
 import type { ExtraService } from "@/lib/rentivo-schemas";
-import { getQuote } from "@/lib/rentivo.functions";
+import { createBookingFn, getQuote } from "@/lib/rentivo.functions";
 
 export type BookingDates = { checkin?: string; checkout?: string };
 
@@ -53,6 +56,63 @@ function quoteErrorMessage(error: unknown): string {
   if (message.includes("not_found")) return common.booking.notFound;
   if (message.includes("bad_request")) return common.booking.badRequest;
   return common.booking.genericError;
+}
+
+function bookingErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  if (message.includes("dates_unavailable")) return common.booking.datesUnavailable;
+  if (message.includes("too_many_guests")) return common.booking.tooManyGuests;
+  if (message.includes("not_found")) return common.booking.notFound;
+  if (message.includes("bad_request")) return common.booking.badRequest;
+  return common.booking.submitError;
+}
+
+const contactSchema = z.object({
+  customer_name: z.string().trim().min(2, common.booking.nameError).max(200, common.booking.nameError),
+  customer_email: z
+    .string()
+    .trim()
+    .email(common.booking.emailError)
+    .max(255, common.booking.emailError),
+  customer_phone: z
+    .string()
+    .trim()
+    .min(5, common.booking.phoneError)
+    .max(50, common.booking.phoneError),
+  bic: z.string().trim().max(20, common.booking.bicError).optional(),
+});
+
+type ContactErrors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
+
+function TextField({
+  label,
+  type = "text",
+  value,
+  error,
+  autoComplete,
+  onChange,
+}: {
+  label: string;
+  type?: string;
+  value: string;
+  error?: string | undefined;
+  autoComplete?: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="block space-y-2">
+      <span className="label-caps text-stone">{label}</span>
+      <input
+        type={type}
+        value={value}
+        autoComplete={autoComplete}
+        onChange={(event) => onChange(event.target.value)}
+        aria-invalid={error ? true : undefined}
+        className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
+      />
+      {error ? <span className="block text-xs text-stone">{error}</span> : null}
+    </label>
+  );
 }
 
 function extraHint(extra: ExtraService): string | null {
