@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/dialog";
 import { stays } from "@/data/stays";
 
+export type BookingDates = { checkin?: string; checkout?: string };
+
 type BookingContextValue = {
-  open: (stayId?: string) => void;
+  open: (stayId?: string, dates?: BookingDates) => void;
 };
 
 const BookingContext = createContext<BookingContextValue | null>(null);
@@ -29,9 +31,15 @@ export function useBooking() {
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [stayId, setStayId] = useState<string>(stays[0]?.id ?? "standard");
+  const [checkin, setCheckin] = useState("");
+  const [checkout, setCheckout] = useState("");
 
-  const open = useCallback((id?: string) => {
+  const open = useCallback((id?: string, dates?: BookingDates) => {
     if (id) setStayId(id);
+    if (dates) {
+      setCheckin(dates.checkin ?? "");
+      setCheckout(dates.checkout ?? "");
+    }
     setIsOpen(true);
   }, []);
 
@@ -61,6 +69,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                   <input
                     type="date"
                     name="checkin"
+                    value={checkin}
+                    onChange={(event) => setCheckin(event.target.value)}
                     className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
                   />
                 </label>
@@ -69,6 +79,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                   <input
                     type="date"
                     name="checkout"
+                    value={checkout}
+                    onChange={(event) => setCheckout(event.target.value)}
                     className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
                   />
                 </label>

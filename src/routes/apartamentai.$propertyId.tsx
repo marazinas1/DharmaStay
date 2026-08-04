@@ -1,10 +1,13 @@
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import type { DateRange } from "react-day-picker";
 
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection, Prose } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
 import { useBooking } from "@/components/site/BookingDialog";
+import { AvailabilityCalendar, toApiDate } from "@/components/stay/AvailabilityCalendar";
 import { PropertyError } from "@/components/stay/PropertyGrid";
 import { apartamentai } from "@/content/lt/apartamentai";
 import { common } from "@/content/lt/common";
@@ -58,6 +61,13 @@ function PropertyPage() {
   const view = toPropertyView(data);
   const { open } = useBooking();
   const gallery = data.image_urls.filter((url) => url !== view.image).slice(0, 6);
+  const [range, setRange] = useState<DateRange | undefined>(undefined);
+
+  const openBooking = () =>
+    open(data.id, {
+      ...(range?.from ? { checkin: toApiDate(range.from) } : {}),
+      ...(range?.to ? { checkout: toApiDate(range.to) } : {}),
+    });
 
   return (
     <>
@@ -75,7 +85,7 @@ function PropertyPage() {
       >
         <button
           type="button"
-          onClick={() => open(data.id)}
+          onClick={openBooking}
           className="rounded-full bg-sage px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
         >
           {common.cta.book}
@@ -122,6 +132,31 @@ function PropertyPage() {
                 </ul>
               </div>
             ) : null}
+          </Reveal>
+        </div>
+
+        <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-start">
+          <Reveal direction="left">
+            <AvailabilityCalendar
+              occupied={data.occupied}
+              range={range}
+              onRangeChange={setRange}
+            />
+          </Reveal>
+          <Reveal direction="right" delay={100}>
+            <div className="rounded-2xl bg-linen p-8">
+              <p className="label-caps text-sage">{common.stays.availabilityTitle}</p>
+              <p className="mt-4 text-sm leading-relaxed text-stone">
+                {data.occupied.length ? common.stays.availabilityLead : common.stays.noOccupied}
+              </p>
+              <button
+                type="button"
+                onClick={openBooking}
+                className="mt-6 w-full rounded-full bg-sage px-6 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+              >
+                {range?.from && range?.to ? common.cta.book : common.stays.pickDates}
+              </button>
+            </div>
           </Reveal>
         </div>
       </PageSection>

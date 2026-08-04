@@ -43,6 +43,21 @@ export const common = {
     otherStays: "Kiti apgyvendinimo variantai",
   },
   stays: {
+    availabilityTitle: "Laisvos datos",
+    availabilityLead:
+      "Pasirinkite atvykimo ir išvykimo datas. Užimtos dienos pažymėtos ir nepasirenkamos.",
+    checkin: "Atvykimas",
+    checkout: "Išvykimas",
+    occupied: "Užimta",
+    occupiedDayLabel: "Užimta diena – rezervuoti negalima",
+    available: "Laisva",
+    selected: "Pasirinkta",
+    nights: "naktys",
+    night: "naktis",
+    nightsMany: "naktų",
+    pickDates: "Pasirinkite datas",
+    clearDates: "Išvalyti",
+    noOccupied: "Šiuo metu visos datos laisvos.",
     loading: "Kraunama…",
     errorTitle: "Nepavyko įkelti apartamentų",
     errorText:

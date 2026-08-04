@@ -253,6 +253,17 @@
   }
 }
 
+/* Availability calendar: occupied days read as struck-through and muted. */
+[data-slot="calendar"] .day-occupied button,
+[data-slot="calendar"] button.day-occupied {
+  color: var(--color-stone);
+  opacity: 0.45;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  background-color: color-mix(in oklab, var(--color-stone) 12%, transparent);
+  border-radius: 0.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
