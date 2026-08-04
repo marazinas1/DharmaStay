@@ -253,6 +253,28 @@
   }
 }
 
+/* Availability calendar: occupied days read as struck-through and muted. */
+[data-slot="calendar"] .day-occupied button,
+[data-slot="calendar"] button.day-occupied {
+  color: var(--color-stone);
+  opacity: 0.45;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  background-color: color-mix(in oklab, var(--color-stone) 12%, transparent);
+  border-radius: 0.5rem;
+}
+
+@utility arrow-nudge-legacy {
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (hover: hover) {
+    .group:hover &,
+    a:hover > & {
+      transform: translateX(4px);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
