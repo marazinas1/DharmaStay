@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+import { quoteInputSchema } from "@/lib/rentivo-schemas";
+
 /**
  * Thin server-function wrappers around the Core (Rentivo) API.
  *
@@ -21,4 +23,11 @@ export const getProperty = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const { fetchProperty } = await import("@/lib/rentivo-api.server");
     return fetchProperty(data.id);
+  });
+
+export const getQuote = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => quoteInputSchema.parse(data))
+  .handler(async ({ data }) => {
+    const { fetchQuote } = await import("@/lib/rentivo-api.server");
+    return fetchQuote(data);
   });
