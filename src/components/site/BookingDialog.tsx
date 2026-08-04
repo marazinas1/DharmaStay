@@ -251,21 +251,27 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 </label>
               </div>
 
-              <label className="block space-y-2">
+              <div className="block space-y-2">
                 <span className="label-caps text-stone">Apgyvendinimas</span>
-                <select
-                  name="stay"
-                  value={stayId}
-                  onChange={(event) => setStayId(event.target.value)}
-                  className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
-                >
-                  {stays.map((stay) => (
-                    <option key={stay.id} value={stay.id}>
-                      {stay.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                {isProperty ? (
+                  <p className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink">
+                    {property?.name ?? common.nav.stays}
+                  </p>
+                ) : (
+                  <select
+                    name="stay"
+                    value={stayId}
+                    onChange={(event) => setStayId(event.target.value)}
+                    className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
+                  >
+                    {stays.map((stay) => (
+                      <option key={stay.id} value={stay.id}>
+                        {stay.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
                 <GuestField
