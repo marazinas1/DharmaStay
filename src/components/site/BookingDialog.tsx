@@ -359,8 +359,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 Tikrinti laisvas datas
               </DialogTitle>
               <DialogDescription className="text-stone">
-                Rezervacija vyksta čia, Dharma Stay svetainėje. Rezervacijų sistema
-                netrukus bus įjungta – kol kas tai peržiūros forma.
+                Rezervacija vyksta čia, Dharma Stay svetainėje. Apmokėjimas – banko
+                pavedimu, rekvizitus parodysime iš karto po rezervacijos.
               </DialogDescription>
             </DialogHeader>
 
