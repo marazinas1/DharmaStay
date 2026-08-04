@@ -45,7 +45,7 @@ export function PropertyCard({ property, index }: { property: PropertyView; inde
           <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6">
             <button
               type="button"
-              onClick={() => open(property.id)}
+              onClick={() => open(property.id, undefined, { name: property.name })}
               className="rounded-full bg-sage px-5 py-2.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
             >
               {common.cta.book}
