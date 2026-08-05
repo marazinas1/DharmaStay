@@ -219,7 +219,7 @@ export function useBooking() {
  */
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [stayId, setStayId] = useState<string>(stays[0]?.id ?? "standard");
+  const [stayId, setStayId] = useState<string>("");
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
   const [adults, setAdults] = useState(2);
@@ -390,7 +390,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
 
               <div className="block space-y-2">
                 <span className="label-caps text-stone">Apgyvendinimas</span>
-                {isProperty ? (
+                {property ? (
                   <p className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink">
                     {property?.name ?? common.nav.stays}
                   </p>
@@ -401,9 +401,10 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     onChange={(event) => setStayId(event.target.value)}
                     className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
                   >
-                    {stays.map((stay) => (
-                      <option key={stay.id} value={stay.id}>
-                        {stay.name}
+                    <option value="">{common.stays.pickProperty}</option>
+                    {(propertyOptions.data ?? []).map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
                       </option>
                     ))}
                   </select>
