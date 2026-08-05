@@ -6,4 +6,10 @@ export const apartamentai = {
   title: "Apartamentai ir namelis",
   lead: "Trys skirtingi būdai pabūti Telšiuose – nuo ramaus buto senamiestyje iki namelio su pirtimi.",
   note: "Visos rezervacijos vyksta tiesiogiai, be tarpininkų ir be papildomų komisinių.",
+  clearFilter: "Visi apartamentai",
+  filteredLead: (label: string) =>
+    `Visi „${label}“ variantai Telšiuose – pasirinkite tinkamą ir rezervuokite tiesiogiai.`,
+  filteredSeoTitle: (label: string) => `${label} Telšiuose — Dharma Stay`,
+  filteredSeoDescription: (label: string) =>
+    `${label} Dharma Stay Telšiuose. Peržiūrėkite laisvas datas ir rezervuokite tiesiogiai, be tarpininkų.`,
 };
