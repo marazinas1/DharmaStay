@@ -1,4 +1,4 @@
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Suspense } from "react";
 
@@ -10,14 +10,8 @@ import {
   PropertyGridSkeleton,
 } from "@/components/stay/PropertyGrid";
 import { apartamentai } from "@/content/lt/apartamentai";
-import { listProperties } from "@/lib/rentivo.functions";
+import { propertiesQuery } from "@/lib/property-queries";
 import { breadcrumbLd, pageHead } from "@/lib/seo";
-
-const propertiesQuery = queryOptions({
-  queryKey: ["properties"],
-  queryFn: () => listProperties(),
-  staleTime: 60_000,
-});
 
 export const Route = createFileRoute("/apartamentai/")({
   head: () => ({
