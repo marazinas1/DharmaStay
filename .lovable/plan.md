@@ -67,9 +67,8 @@ won't hardcode a mapping to specific property ids — ids are engine-owned and c
 ## Nav / footer
 
 Hardcoded property links can't survive a dynamic catalogue, so:
-- Header "Apgyvendinimas" becomes a single link to `/apartamentai` (the three-stay dropdown goes
-  away). Alternative, if you prefer: keep the dropdown but fill it from the API at runtime — say
-  the word and I'll do that instead.
+- Header "Apgyvendinimas" becomes a single link to `/apartamentai`; the three-stay dropdown is
+  removed (confirmed choice).
 - Footer: `Namelis` entry removed; `Apgyvendinimas → /apartamentai` stays.
 - `/sauna`'s "namelis" link points to `/apartamentai`.
 
