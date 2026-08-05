@@ -20,8 +20,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { common } from "@/content/lt/common";
-import { stays } from "@/data/contact";
 import { storeBooking } from "@/lib/booking-storage";
+import { propertiesQuery } from "@/lib/property-queries";
 import { formatPrice } from "@/lib/property-view";
 import type { ExtraService } from "@/lib/rentivo-schemas";
 import { createBookingFn, getQuote } from "@/lib/rentivo.functions";
