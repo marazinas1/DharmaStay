@@ -67,6 +67,8 @@ export const common = {
     emptyText:
       "Sąrašas netrukus bus atnaujintas. Dėl datų ir galimybių susisiekite su mumis tiesiogiai.",
     priceOnRequest: "Kaina pagal užklausą",
+    pickProperty: "Pasirinkite apgyvendinimą",
+    galleryTitle: "Nuotraukos",
   },
   booking: {
     adults: "Suaugusieji",

@@ -1,5 +1,5 @@
 import { common } from "@/content/lt/common";
-import { contact } from "@/data/stays";
+import { contact } from "@/data/contact";
 import { PropertyCard } from "@/components/stay/PropertyCard";
 import { toPropertyView } from "@/lib/property-view";
 import type { Property } from "@/lib/rentivo-schemas";

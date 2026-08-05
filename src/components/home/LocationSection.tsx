@@ -6,7 +6,7 @@ import locationImage from "@/assets/location-telsiai.jpg";
 import locationImageWebp from "@/assets/location-telsiai.webp";
 import { EnsoDivider } from "@/components/site/Enso";
 import { Reveal } from "@/components/site/Reveal";
-import { contact } from "@/data/stays";
+import { contact } from "@/data/contact";
 
 const LocationMap = lazy(() => import("@/components/home/LocationMap"));
 

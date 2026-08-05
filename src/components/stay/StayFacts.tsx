@@ -1,15 +1,9 @@
 import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
-import type { Stay } from "@/data/stays";
 
-export function StayFacts({ stay }: { stay: Stay }) {
-  const facts = [
-    { label: common.labels.size, value: stay.facts.size },
-    { label: common.labels.guests, value: stay.facts.guests },
-    { label: common.labels.address, value: stay.facts.address },
-    { label: common.labels.priceFrom, value: `${stay.priceFrom} €` },
-  ];
+export type Fact = { label: string; value: string };
 
+export function StayFacts({ facts, amenities }: { facts: Fact[]; amenities: string[] }) {
   return (
     <Reveal>
       <dl className="grid gap-8 rounded-2xl bg-linen p-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -21,17 +15,19 @@ export function StayFacts({ stay }: { stay: Stay }) {
         ))}
       </dl>
 
-      <div className="mt-10">
-        <h2 className="label-caps text-sage">{common.labels.amenities}</h2>
-        <ul className="mt-5 grid gap-3 text-sm leading-relaxed text-stone sm:grid-cols-2">
-          {stay.amenities.map((amenity) => (
-            <li key={amenity} className="flex items-start gap-3">
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sage" aria-hidden />
-              {amenity}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {amenities.length ? (
+        <div className="mt-10">
+          <h2 className="label-caps text-sage">{common.labels.amenities}</h2>
+          <ul className="mt-5 grid gap-3 text-sm leading-relaxed text-stone sm:grid-cols-2">
+            {amenities.map((amenity) => (
+              <li key={amenity} className="flex items-start gap-3">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sage" aria-hidden />
+                {amenity}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </Reveal>
   );
 }

@@ -8,7 +8,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
 import { kontaktai } from "@/content/lt/kontaktai";
 import { SITE_URL } from "@/data/nav";
-import { contact } from "@/data/stays";
+import { contact } from "@/data/contact";
 import { pageHead } from "@/lib/seo";
 
 const LocationMap = lazy(() => import("@/components/home/LocationMap"));

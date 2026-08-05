@@ -32,10 +32,25 @@ const amenityLabels: Record<string, string> = {
   balcony: "Balkonas",
   bathroom: "Vonios kambarys",
   workspace: "Darbo vieta",
+  smoke_alarm: "Dūmų detektorius",
+  "smoke alarm": "Dūmų detektorius",
+  heating: "Šildymas",
+  hair_dryer: "Plaukų džiovintuvas",
+  shower: "Dušas",
+  fridge: "Šaldytuvas",
+  microwave: "Mikrobangų krosnelė",
+  iron: "Lygintuvas",
+  towels: "Rankšluosčiai",
+  linens: "Patalynė",
+  elevator: "Liftas",
+  garden: "Sodas",
+  bbq: "Kepsninė",
 };
 
 export function amenityLabel(code: string): string {
-  return amenityLabels[code] ?? code.replace(/[_-]+/g, " ");
+  const key = code.trim().toLowerCase();
+  const label = amenityLabels[key] ?? key.replace(/[_-]+/g, " ");
+  return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
 export function propertyMeta(property: Property): string {

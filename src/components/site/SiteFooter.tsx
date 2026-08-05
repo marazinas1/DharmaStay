@@ -4,7 +4,7 @@ import { Enso } from "@/components/site/Enso";
 import { Logo } from "@/components/site/Logo";
 import { common } from "@/content/lt/common";
 import { footerNav } from "@/data/nav";
-import { contact } from "@/data/stays";
+import { contact } from "@/data/contact";
 
 export function SiteFooter() {
   return (
