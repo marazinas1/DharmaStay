@@ -12,7 +12,7 @@ import {
 import { common } from "@/content/lt/common";
 import { HOME_STAYS_LIMIT, propertiesQuery } from "@/lib/property-queries";
 import { CategoryGrid } from "@/components/stay/CategoryCard";
-import { groupByCategory, isGrouped } from "@/lib/property-category";
+import { groupByCategory, isGrouped, uncategorized } from "@/lib/property-category";
 import type { Property } from "@/lib/rentivo-schemas";
 import { cn } from "@/lib/utils";
 
@@ -31,8 +31,11 @@ export function StaysSection({
   const properties = data ?? [];
   const grouped = isGrouped(properties);
   const groups = grouped ? groupByCategory(properties) : [];
-  const visible = properties.slice(0, HOME_STAYS_LIMIT);
-  const hasMore = !grouped && properties.length > HOME_STAYS_LIMIT;
+  // Rooms the backend hasn't categorised yet still get a card, below the types.
+  const rest = grouped ? uncategorized(properties) : properties.slice(0, HOME_STAYS_LIMIT);
+  const hasMore = grouped
+    ? rest.length > 0
+    : properties.length > HOME_STAYS_LIMIT;
 
   return (
     <section id="apartamentai" className="scroll-mt-24 bg-linen px-6 pb-24 lg:px-12 lg:pb-32">
@@ -57,9 +60,16 @@ export function StaysSection({
           ) : properties.length === 0 ? (
             <PropertyEmpty />
           ) : grouped ? (
-            <CategoryGrid groups={groups} />
+            <>
+              <CategoryGrid groups={groups} />
+              {rest.length > 0 ? (
+                <div className="mt-8">
+                  <PropertyGrid properties={rest} />
+                </div>
+              ) : null}
+            </>
           ) : (
-            <PropertyGrid properties={visible} />
+            <PropertyGrid properties={rest} />
           )}
         </div>
 
