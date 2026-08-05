@@ -66,12 +66,12 @@ export function PropertyIntro({
 export function propertyLd(
   property: {
     name: string;
-    description?: string | null;
-    area_m2?: number | null;
-    max_guests?: number | null;
-    address?: string | null;
-    city?: string | null;
-    price_per_night?: number | null;
+    description?: string | null | undefined;
+    area_m2?: number | null | undefined;
+    max_guests?: number | null | undefined;
+    address?: string | null | undefined;
+    city?: string | null | undefined;
+    price_per_night?: number | null | undefined;
   },
   amenities: string[],
   url: string,
