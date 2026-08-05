@@ -11,7 +11,7 @@ import {
 } from "@/components/stay/PropertyGrid";
 import { apartamentai } from "@/content/lt/apartamentai";
 import { Link } from "@tanstack/react-router";
-import { categoryLabel, filterByCategory, hasCategory, normalizeCategory } from "@/lib/property-category";
+import { categoryLabel, filterByCategory, normalizeCategory } from "@/lib/property-category";
 import { propertiesQuery } from "@/lib/property-queries";
 import { breadcrumbLd, pageHead } from "@/lib/seo";
 
@@ -19,7 +19,8 @@ type StaysSearch = { category?: string };
 
 export const Route = createFileRoute("/apartamentai/")({
   validateSearch: (search: Record<string, unknown>): StaysSearch => {
-    const raw = typeof search.category === "string" ? normalizeCategory(search.category) : "";
+    const value = search["category"];
+    const raw = typeof value === "string" ? normalizeCategory(value) : "";
     return raw ? { category: raw } : {};
   },
   head: ({ match }) => {
