@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { StayPage, stayLd } from "@/components/stay/StayPage";
-import { getStay } from "@/data/stays";
+import { getStay } from "@/data/contact";
 import { SITE_URL } from "@/data/nav";
 import { breadcrumbLd, pageHead } from "@/lib/seo";
 

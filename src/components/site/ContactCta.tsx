@@ -1,5 +1,5 @@
 import { common } from "@/content/lt/common";
-import { contact } from "@/data/stays";
+import { contact } from "@/data/contact";
 
 /** Small closing block used on the quieter service pages. */
 export function ContactCta({ title, text }: { title: string; text?: string }) {

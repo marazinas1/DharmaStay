@@ -6,7 +6,7 @@ import { PageSection, Prose } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
 import { restobaras } from "@/content/lt/restobaras";
 import { SITE_URL } from "@/data/nav";
-import { contact } from "@/data/stays";
+import { contact } from "@/data/contact";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/restobaras")({
