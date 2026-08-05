@@ -116,7 +116,7 @@ function StaysIndexPage() {
   );
 }
 
-function PropertyList({ category }: { category?: string }) {
+function PropertyList({ category }: { category: string | undefined }) {
   const { data } = useSuspenseQuery(propertiesQuery);
   return <PropertyGrid properties={filterByCategory(data, category)} />;
 }
