@@ -4,16 +4,20 @@ import { useState } from "react";
 import type { DateRange } from "react-day-picker";
 
 import { PageHero } from "@/components/site/PageHero";
-import { PageSection, Prose } from "@/components/site/Prose";
+import { PageSection } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
 import { useBooking } from "@/components/site/BookingDialog";
 import { AvailabilityCalendar, toApiDate } from "@/components/stay/AvailabilityCalendar";
 import { PropertyError } from "@/components/stay/PropertyGrid";
+import { PropertyIntro, propertyLd } from "@/components/stay/PropertySections";
+import { StayCrossLinks } from "@/components/stay/StayCrossLinks";
 import { apartamentai } from "@/content/lt/apartamentai";
 import { common } from "@/content/lt/common";
-import { formatPrice, propertyMeta, toPropertyView } from "@/lib/property-view";
+import { SITE_URL } from "@/data/nav";
+import { propertiesQuery } from "@/lib/property-queries";
+import { formatPrice, toPropertyView } from "@/lib/property-view";
 import { getProperty } from "@/lib/rentivo.functions";
-import { pageHead } from "@/lib/seo";
+import { breadcrumbLd, pageHead } from "@/lib/seo";
 
 const propertyQuery = (id: string) =>
   queryOptions({
@@ -26,11 +30,22 @@ export const Route = createFileRoute("/apartamentai/$propertyId")({
   loader: async ({ context, params }) => {
     if (!/^[0-9a-f-]{36}$/i.test(params.propertyId)) throw notFound();
     const property = await context.queryClient.ensureQueryData(propertyQuery(params.propertyId));
+    void context.queryClient.ensureQueryData(propertiesQuery);
     const view = toPropertyView(property);
     return {
       name: property.name,
       description: (property.description ?? "").slice(0, 155),
       image: view.image,
+      ld: JSON.stringify(
+        propertyLd(property, view.amenities, `${SITE_URL}/apartamentai/${params.propertyId}`, view.image),
+      ),
+      crumbLd: JSON.stringify(
+        breadcrumbLd([
+          { name: common.nav.home, path: "/" },
+          { name: apartamentai.title, path: "/apartamentai" },
+          { name: property.name, path: `/apartamentai/${params.propertyId}` },
+        ]),
+      ),
     };
   },
   head: ({ params, loaderData }) => {
@@ -41,14 +56,23 @@ export const Route = createFileRoute("/apartamentai/$propertyId")({
       title: `${name} — ${common.brand}`,
       description,
     });
-    if (!loaderData?.image) return head;
     return {
       ...head,
-      meta: [
-        ...head.meta,
-        { property: "og:image", content: loaderData.image },
-        { name: "twitter:image", content: loaderData.image },
-      ],
+      meta: loaderData?.image
+        ? [
+            ...head.meta,
+            { property: "og:image", content: loaderData.image },
+            { name: "twitter:image", content: loaderData.image },
+          ]
+        : head.meta,
+      ...(loaderData
+        ? {
+            scripts: [
+              { type: "application/ld+json", children: loaderData.ld },
+              { type: "application/ld+json", children: loaderData.crumbLd },
+            ],
+          }
+        : {}),
     };
   },
   component: PropertyPage,
@@ -60,8 +84,38 @@ function PropertyPage() {
   const { data } = useSuspenseQuery(propertyQuery(propertyId));
   const view = toPropertyView(data);
   const { open } = useBooking();
-  const gallery = data.image_urls.filter((url) => url !== view.image).slice(0, 6);
+  const gallery = data.image_urls.filter((url) => url !== view.image);
+  const sideImage = gallery[0] ?? view.image;
+  const grid = (gallery[0] ? gallery.slice(1) : gallery).slice(0, 6);
   const [range, setRange] = useState<DateRange | undefined>(undefined);
+
+  const paragraphs = (data.description ?? "")
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  const facts = [
+    ...(data.area_m2 ? [{ label: common.labels.size, value: `${data.area_m2} m²` }] : []),
+    ...(data.max_guests
+      ? [
+          {
+            label: common.labels.guests,
+            value: `${common.labels.upTo} ${data.max_guests} ${common.labels.guestsLower}`,
+          },
+        ]
+      : []),
+    ...(data.address || data.city
+      ? [{ label: common.labels.address, value: data.address ?? data.city ?? "" }]
+      : []),
+    ...(view.priceFrom !== null
+      ? [
+          {
+            label: common.labels.priceFrom,
+            value: `${formatPrice(view.priceFrom)} € / ${common.labels.perNight}`,
+          },
+        ]
+      : []),
+  ];
 
   const openBooking = () =>
     open(
@@ -99,46 +153,14 @@ function PropertyPage() {
         </button>
       </PageHero>
 
-      <PageSection>
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-          <Reveal direction="left">
-            <Prose>
-              {data.description ? <p>{data.description}</p> : null}
-            </Prose>
-          </Reveal>
-          <Reveal direction="right">
-            <dl className="grid gap-8 rounded-2xl bg-linen p-8 sm:grid-cols-2">
-              {data.area_m2 ? (
-                <Fact label={common.labels.size} value={`${data.area_m2} m²`} />
-              ) : null}
-              {data.max_guests ? (
-                <Fact label={common.labels.guests} value={String(data.max_guests)} />
-              ) : null}
-              {data.address ? <Fact label={common.labels.address} value={data.address} /> : null}
-              {view.priceFrom !== null ? (
-                <Fact
-                  label={common.labels.priceFrom}
-                  value={`${formatPrice(view.priceFrom)} € / ${common.labels.perNight}`}
-                />
-              ) : null}
-            </dl>
-
-            {view.amenities.length ? (
-              <div className="mt-10">
-                <h2 className="label-caps text-sage">{common.labels.amenities}</h2>
-                <ul className="mt-5 grid gap-3 text-sm leading-relaxed text-stone sm:grid-cols-2">
-                  {view.amenities.map((amenity) => (
-                    <li key={amenity} className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sage" aria-hidden />
-                      {amenity}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-          </Reveal>
-        </div>
-
+      <PropertyIntro
+        {...(view.meta ? { meta: view.meta } : {})}
+        paragraphs={paragraphs}
+        image={sideImage}
+        imageAlt={view.imageAlt}
+        facts={facts}
+        amenities={view.amenities}
+      >
         <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-start">
           <Reveal direction="left">
             <AvailabilityCalendar
@@ -163,12 +185,12 @@ function PropertyPage() {
             </div>
           </Reveal>
         </div>
-      </PageSection>
+      </PropertyIntro>
 
-      {gallery.length ? (
+      {grid.length ? (
         <PageSection tone="linen">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {gallery.map((url, index) => (
+            {grid.map((url, index) => (
               <Reveal key={url} delay={index * 90}>
                 <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-warm-white shadow-soft">
                   <img
@@ -184,16 +206,11 @@ function PropertyPage() {
           </div>
         </PageSection>
       ) : null}
-    </>
-  );
-}
 
-function Fact({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt className="label-caps text-stone/80">{label}</dt>
-      <dd className="mt-2 font-display text-xl font-medium text-ink">{value}</dd>
-    </div>
+      <PageSection tone="linen">
+        <StayCrossLinks currentId={data.id} />
+      </PageSection>
+    </>
   );
 }
 
