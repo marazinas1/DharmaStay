@@ -1,63 +1,24 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
-import { useBooking } from "@/components/site/BookingDialog";
 import { Reveal } from "@/components/site/Reveal";
-import { stays, type Stay } from "@/data/stays";
+import {
+  PropertyEmpty,
+  PropertyError,
+  PropertyGrid,
+  PropertyGridSkeleton,
+} from "@/components/stay/PropertyGrid";
+import { common } from "@/content/lt/common";
+import { HOME_STAYS_LIMIT, propertiesQuery } from "@/lib/property-queries";
 import { cn } from "@/lib/utils";
 
-function StayCard({ stay, index }: { stay: Stay; index: number }) {
-  const { open } = useBooking();
-
-  return (
-    <Reveal delay={index * 110}>
-      <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift">
-        <div className="aspect-[4/3] overflow-hidden">
-          <picture>
-            <source srcSet={stay.imageWebp} type="image/webp" />
-            <img
-              src={stay.image}
-              alt={stay.imageAlt}
-              loading="lazy"
-              decoding="async"
-              width={1200}
-              height={900}
-              className="photo-zoom h-full w-full object-cover"
-            />
-          </picture>
-        </div>
-
-        <div className="flex flex-1 flex-col p-7">
-          <p className="label-caps text-stone">Nuo {stay.priceFrom} €</p>
-          <h3 className="mt-3 font-display text-[1.375rem] leading-snug font-semibold text-ink">
-            {stay.name}
-          </h3>
-          <p className="mt-3 text-[0.95rem] leading-relaxed text-stone">{stay.description}</p>
-          <p className="mt-4 text-xs tracking-wide text-stone/80">{stay.meta}</p>
-
-          <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6">
-            <button
-              type="button"
-              onClick={() => open(stay.id)}
-              className="rounded-full bg-sage px-5 py-2.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
-            >
-              Rezervuoti
-            </button>
-            <Link
-              to={stay.href}
-              className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:text-sage-deep"
-            >
-              Plačiau
-              <ArrowRight className="arrow-nudge h-4 w-4" aria-hidden />
-            </Link>
-          </div>
-        </div>
-      </article>
-    </Reveal>
-  );
-}
-
 export function StaysSection({ headless = false }: { headless?: boolean }) {
+  const { data, isPending, isError, refetch } = useQuery(propertiesQuery);
+  const properties = data ?? [];
+  const visible = properties.slice(0, HOME_STAYS_LIMIT);
+  const hasMore = properties.length > HOME_STAYS_LIMIT;
+
   return (
     <section id="apartamentai" className="scroll-mt-24 bg-linen px-6 pb-24 lg:px-12 lg:pb-32">
       <div className="mx-auto max-w-7xl">
@@ -73,11 +34,29 @@ export function StaysSection({ headless = false }: { headless?: boolean }) {
           </div>
         )}
 
-        <div className={cn("grid gap-8 md:grid-cols-2 lg:grid-cols-3", headless ? "" : "mt-14")}>
-          {stays.map((stay, index) => (
-            <StayCard key={stay.id} stay={stay} index={index} />
-          ))}
+        <div className={cn(headless ? "" : "mt-14")}>
+          {isPending ? (
+            <PropertyGridSkeleton />
+          ) : isError ? (
+            <PropertyError onRetry={() => void refetch()} />
+          ) : properties.length === 0 ? (
+            <PropertyEmpty />
+          ) : (
+            <PropertyGrid properties={visible} />
+          )}
         </div>
+
+        {hasMore ? (
+          <Reveal className="mt-12">
+            <Link
+              to="/apartamentai"
+              className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:text-sage-deep"
+            >
+              {common.cta.allStays}
+              <ArrowRight className="arrow-nudge h-4 w-4" aria-hidden />
+            </Link>
+          </Reveal>
+        ) : null}
       </div>
     </section>
   );

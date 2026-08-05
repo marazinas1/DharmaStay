@@ -9,6 +9,7 @@ import { Ratings } from "@/components/home/Ratings";
 import { StaysSection } from "@/components/home/StaysSection";
 import { pageHead } from "@/lib/seo";
 import { SITE_URL } from "@/data/nav";
+import { propertiesQuery } from "@/lib/property-queries";
 
 const title = "Dharma Stay — apartamentai ir namelis Telšiuose";
 const description =
@@ -40,6 +41,11 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
+  loader: async ({ context }) => {
+    // Prefetch so the stays grid is server-rendered; an API hiccup must not
+    // take the landing page down — the section renders its own error state.
+    await context.queryClient.prefetchQuery(propertiesQuery);
+  },
   component: Index,
 });
 
