@@ -10,4 +10,4 @@ export const propertiesQuery = queryOptions({
 });
 
 /** Max cards shown on the landing page before we link out to /apartamentai. */
-export const HOME_STAYS_LIMIT = 6;
+export const HOME_STAYS_LIMIT = 3;

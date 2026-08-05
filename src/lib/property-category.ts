@@ -58,9 +58,14 @@ export function distinctCategories(properties: Property[]): string[] {
   return [...codes];
 }
 
-/** Grouping only makes sense once the data actually distinguishes types. */
+/** Grouping activates as soon as the backend categorises at least one property. */
 export function isGrouped(properties: Property[]): boolean {
-  return distinctCategories(properties).length >= 2;
+  return distinctCategories(properties).length >= 1;
+}
+
+/** Properties the backend hasn't categorised yet — shown after the category cards. */
+export function uncategorized(properties: Property[]): Property[] {
+  return properties.filter((property) => !normalizeCategory(property.category));
 }
 
 export function groupByCategory(properties: Property[]): CategoryGroup[] {

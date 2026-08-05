@@ -19,7 +19,7 @@ export const common = {
     rules: "Apgyvendinimo taisyklės",
     stays: "Apartamentai",
     standard: "Standartiniai apartamentai",
-    terrace: "Apartamentai su terasa",
+    terrace: "Apartamentai su terasa ir vaizdu į miesto centrą",
     cottage: "Namelis su pirtimi ir kubilu",
     restobar: "Restobaras",
     banquet: "Banketinė salė",
