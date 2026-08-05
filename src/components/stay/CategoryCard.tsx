@@ -1,0 +1,64 @@
+import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+
+import { Reveal } from "@/components/site/Reveal";
+import { common } from "@/content/lt/common";
+import { optionsLabel, type CategoryGroup } from "@/lib/property-category";
+import { formatPrice } from "@/lib/property-view";
+
+/**
+ * Home-page card representing a whole accommodation type. Same look as
+ * PropertyCard, but it leads to the filtered listing instead of booking.
+ */
+export function CategoryCard({ group, index }: { group: CategoryGroup; index: number }) {
+  return (
+    <Reveal delay={index * 110}>
+      <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift">
+        <div className="aspect-[4/3] overflow-hidden bg-linen">
+          {group.image ? (
+            <img
+              src={group.image}
+              alt={group.imageAlt}
+              loading="lazy"
+              decoding="async"
+              className="photo-zoom h-full w-full object-cover"
+            />
+          ) : null}
+        </div>
+
+        <div className="flex flex-1 flex-col p-7">
+          <p className="label-caps text-stone">
+            {group.priceFrom === null
+              ? common.stays.priceOnRequest
+              : `${common.labels.priceFrom} ${formatPrice(group.priceFrom)} €`}
+          </p>
+          <h3 className="mt-3 font-display text-[1.375rem] leading-snug font-semibold text-ink">
+            {group.label}
+          </h3>
+          <p className="mt-4 text-xs tracking-wide text-stone/80">{optionsLabel(group.count)}</p>
+
+          <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6">
+            <Link
+              to="/apartamentai"
+              search={{ category: group.code }}
+              className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:text-sage-deep"
+            >
+              {common.categoryCard.viewOptions}
+              <ArrowRight className="arrow-nudge h-4 w-4" aria-hidden />
+            </Link>
+          </div>
+        </div>
+      </article>
+    </Reveal>
+  );
+}
+
+export function CategoryGrid({ groups }: { groups: CategoryGroup[] }) {
+  return (
+    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {groups.map((group, index) => (
+        <CategoryCard key={group.code} group={group} index={index} />
+      ))}
+    </div>
+  );
+}

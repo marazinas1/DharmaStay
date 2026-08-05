@@ -110,4 +110,15 @@ export const common = {
     intro: "Apgyvendinimas Telšių senamiestyje. Iš namų į namus.",
     rights: "Rezervacijos tiesiogiai, be tarpininkų.",
   },
+  categories: {
+    standard: "Standartiniai apartamentai",
+    terrace: "Apartamentai su terasa",
+    cottage: "Namelis su pirtimi ir kubilu",
+  },
+  categoryCard: {
+    viewOptions: "Žiūrėti variantus",
+    optionsOne: "variantas",
+    optionsFew: "variantai",
+    optionsMany: "variantų",
+  },
 } as const;
