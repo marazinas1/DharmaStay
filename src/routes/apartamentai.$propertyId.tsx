@@ -130,7 +130,7 @@ function PropertyPage() {
   return (
     <>
       <PageHero
-        eyebrow={data.property_type ?? apartamentai.eyebrow}
+        eyebrow={apartamentai.eyebrow}
         title={data.name}
         {...(view.meta ? { lead: view.meta } : {})}
         {...(view.image ? { image: view.image } : {})}
