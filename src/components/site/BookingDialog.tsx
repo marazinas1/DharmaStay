@@ -238,6 +238,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
+  /** Only needed when the dialog is opened without a property context. */
+  const propertyOptions = useQuery({ ...propertiesQuery, enabled: isOpen && !property });
+
   const open = useCallback((id?: string, dates?: BookingDates, prop?: BookingProperty) => {
     if (id) setStayId(id);
     if (dates) {
