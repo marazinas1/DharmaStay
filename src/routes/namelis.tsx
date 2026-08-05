@@ -1,33 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { StayPage, stayLd } from "@/components/stay/StayPage";
-import { getStay } from "@/data/contact";
-import { SITE_URL } from "@/data/nav";
-import { breadcrumbLd, pageHead } from "@/lib/seo";
-
-const stay = getStay("cottage");
-const path = "/namelis";
-
+/** Legacy static stay URL — properties are dynamic now. 301 to the listing. */
 export const Route = createFileRoute("/namelis")({
-  head: () => ({
-    ...pageHead({ path, title: stay.seoTitle, description: stay.seoDescription }),
-    scripts: [
-      { type: "application/ld+json", children: JSON.stringify(stayLd(stay, `${SITE_URL}${path}`)) },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify(
-          breadcrumbLd([
-            { name: "Pagrindinis", path: "/" },
-            { name: stay.name, path },
-          ]),
-        ),
-      },
-    ],
-  }),
-  component: () => (
-    <StayPage
-      stay={stay}
-      crumbs={[{ label: "Pagrindinis", to: "/" }, { label: stay.name }]}
-    />
-  ),
+  beforeLoad: () => {
+    throw redirect({ to: "/apartamentai", statusCode: 301 });
+  },
 });
