@@ -42,19 +42,26 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: async ({ context }) => {
-    // Prefetch so the stays grid is server-rendered; an API hiccup must not
-    // take the landing page down — the section renders its own error state.
-    await context.queryClient.prefetchQuery(propertiesQuery);
+    // Fetch on the server and hand the rows to the component, so SSR and the
+    // first client render agree. An API hiccup must not take the landing page
+    // down — the section renders its own error state.
+    try {
+      return { properties: await context.queryClient.ensureQueryData(propertiesQuery) };
+    } catch {
+      return { properties: null };
+    }
   },
   component: Index,
 });
 
 function Index() {
+  const { properties } = Route.useLoaderData();
+
   return (
     <>
       <Hero />
       <IntroStrip />
-      <StaysSection />
+      <StaysSection {...(properties ? { initialProperties: properties } : {})} />
       <LocationSection />
       <ExtrasSection />
       <Ratings />

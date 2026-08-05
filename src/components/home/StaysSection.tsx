@@ -11,10 +11,21 @@ import {
 } from "@/components/stay/PropertyGrid";
 import { common } from "@/content/lt/common";
 import { HOME_STAYS_LIMIT, propertiesQuery } from "@/lib/property-queries";
+import type { Property } from "@/lib/rentivo-schemas";
 import { cn } from "@/lib/utils";
 
-export function StaysSection({ headless = false }: { headless?: boolean }) {
-  const { data, isPending, isError, refetch } = useQuery(propertiesQuery);
+export function StaysSection({
+  headless = false,
+  initialProperties,
+}: {
+  headless?: boolean;
+  /** Loader-provided snapshot so SSR and hydration render the same markup. */
+  initialProperties?: Property[];
+}) {
+  const { data, isPending, isError, refetch } = useQuery({
+    ...propertiesQuery,
+    ...(initialProperties ? { initialData: initialProperties } : {}),
+  });
   const properties = data ?? [];
   const visible = properties.slice(0, HOME_STAYS_LIMIT);
   const hasMore = properties.length > HOME_STAYS_LIMIT;
