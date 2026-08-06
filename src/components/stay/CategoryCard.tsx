@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
-import { optionsLabel, type CategoryGroup } from "@/lib/property-category";
+import { categorySlug, optionsLabel, type CategoryGroup } from "@/lib/property-category";
 import { formatPrice } from "@/lib/property-view";
 
 /**
@@ -14,8 +14,8 @@ export function CategoryCard({ group, index }: { group: CategoryGroup; index: nu
   return (
     <Reveal delay={index * 110}>
       <Link
-        to="/apartamentai"
-        search={{ category: group.code }}
+        to="/apartamentai/tipas/$categorySlug"
+        params={{ categorySlug: categorySlug(group.code) }}
         aria-label={group.label}
         className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage focus-visible:ring-offset-2"
       >
