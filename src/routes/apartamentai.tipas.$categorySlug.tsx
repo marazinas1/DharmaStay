@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
 import { Suspense } from "react";
 
@@ -11,9 +11,14 @@ import {
   filterByCategory,
 } from "@/lib/property-category";
 import { propertiesQuery } from "@/lib/property-queries";
+import { availabilityQuery } from "@/lib/availability-queries";
 import { breadcrumbLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/apartamentai/tipas/$categorySlug")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    ...(typeof search['nuo'] === "string" ? { nuo: search['nuo'] } : {}),
+    ...(typeof search['iki'] === "string" ? { iki: search['iki'] } : {}),
+  }),
   loader: async ({ context, params }) => {
     const properties = await context.queryClient.ensureQueryData(propertiesQuery);
     const code = codeForSlug(properties, params.categorySlug);
@@ -50,18 +55,25 @@ export const Route = createFileRoute("/apartamentai/tipas/$categorySlug")({
 
 function CategoryPage() {
   const { code, label } = Route.useLoaderData();
+  const { nuo, iki } = Route.useSearch();
   return (
     <StaysShell categoryLabelText={label}>
       <Suspense fallback={<PropertyGridSkeleton />}>
-        <CategoryList code={code} />
+        <CategoryList code={code} {...(nuo ? { nuo } : {})} {...(iki ? { iki } : {})} />
       </Suspense>
     </StaysShell>
   );
 }
 
-function CategoryList({ code }: { code: string }) {
+function CategoryList({ code, nuo, iki }: { code: string; nuo?: string; iki?: string }) {
   const { data } = useSuspenseQuery(propertiesQuery);
-  return <PropertyGrid properties={filterByCategory(data, code)} />;
+  const { data: availability } = useQuery(availabilityQuery(nuo, iki, 2));
+  const inCategory = filterByCategory(data, code);
+  const properties =
+    nuo && iki && availability
+      ? inCategory.filter((property) => availability.free_ids.includes(property.id))
+      : inCategory;
+  return <PropertyGrid properties={properties} />;
 }
 
 function CategoryPageError() {
