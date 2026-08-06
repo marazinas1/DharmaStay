@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import restobarasImage from "@/assets/restobaras-space.jpg";
+import restobarasImageWebp from "@/assets/restobaras-space.webp";
 import { ContactCta } from "@/components/site/ContactCta";
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection, Prose } from "@/components/site/Prose";
@@ -49,6 +51,9 @@ function RestobarPage() {
         eyebrow={restobaras.eyebrow}
         title={restobaras.title}
         lead={restobaras.lead}
+        image={restobarasImage}
+        imageWebp={restobarasImageWebp}
+        imageAlt="Dharma Stay restobaro salė Telšių senamiestyje"
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: restobaras.title }]}
       />
       <PageSection>
