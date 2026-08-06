@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 
-import heroImage from "@/assets/hero-oldtown.jpg";
-import heroImageWebp from "@/assets/hero-oldtown.webp";
+import heroImage from "@/assets/hero-telsiai-lake.jpg";
+import heroImageWebp from "@/assets/hero-telsiai-lake.webp";
 import { Enso } from "@/components/site/Enso";
 import { useBooking } from "@/components/site/BookingDialog";
 
@@ -40,7 +40,7 @@ export function Hero() {
         <source srcSet={heroImageWebp} type="image/webp" />
         <img
           src={heroImage}
-          alt="Senamiesčio stogai ir bažnyčios bokštas auksinėje vakaro šviesoje"
+          alt="Telšių senamiestis ir bažnyčios bokštas, atsispindintys Masčio ežere"
           width={1920}
           height={1080}
           fetchPriority="high"

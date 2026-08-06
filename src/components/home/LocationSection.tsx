@@ -2,8 +2,8 @@ import { lazy, Suspense } from "react";
 import { ClientOnly } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 
-import locationImage from "@/assets/location-telsiai.jpg";
-import locationImageWebp from "@/assets/location-telsiai.webp";
+import locationImage from "@/assets/location-telsiai-aerial.jpg";
+import locationImageWebp from "@/assets/location-telsiai-aerial.webp";
 import { EnsoDivider } from "@/components/site/Enso";
 import { Reveal } from "@/components/site/Reveal";
 import { contact } from "@/data/contact";
@@ -58,11 +58,11 @@ export function LocationSection() {
                 <source srcSet={locationImageWebp} type="image/webp" />
                 <img
                   src={locationImage}
-                  alt="Telšių senamiestis prie Masčio ežero"
+                  alt="Telšių senamiestis iš paukščio skrydžio: bažnyčia, pagrindinė aikštė ir raudoni stogai"
                   loading="lazy"
                   decoding="async"
-                  width={1200}
-                  height={900}
+                  width={1400}
+                  height={1050}
                   className="photo-zoom h-full w-full object-cover"
                 />
               </picture>
