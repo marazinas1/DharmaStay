@@ -1,5 +1,5 @@
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import type { DateRange } from "react-day-picker";
 
@@ -17,6 +17,7 @@ import { SITE_URL } from "@/data/nav";
 import { propertiesQuery } from "@/lib/property-queries";
 import { formatPrice, toPropertyView } from "@/lib/property-view";
 import { getProperty } from "@/lib/rentivo.functions";
+import { idForSlug, isUuid, slugForId } from "@/lib/property-slug";
 import { breadcrumbLd, pageHead } from "@/lib/seo";
 
 const propertyQuery = (id: string) =>
@@ -28,11 +29,24 @@ const propertyQuery = (id: string) =>
 
 export const Route = createFileRoute("/apartamentai/$propertyId")({
   loader: async ({ context, params }) => {
-    if (!/^[0-9a-f-]{36}$/i.test(params.propertyId)) throw notFound();
-    const property = await context.queryClient.ensureQueryData(propertyQuery(params.propertyId));
-    void context.queryClient.ensureQueryData(propertiesQuery);
+    const properties = await context.queryClient.ensureQueryData(propertiesQuery);
+    // Legacy UUID URLs permanently redirect to their slug.
+    if (isUuid(params.propertyId)) {
+      const slug = slugForId(properties, params.propertyId);
+      if (slug !== params.propertyId) {
+        throw redirect({
+          to: "/apartamentai/$propertyId",
+          params: { propertyId: slug },
+          statusCode: 301,
+        });
+      }
+    }
+    const id = idForSlug(properties, params.propertyId);
+    if (!id) throw notFound();
+    const property = await context.queryClient.ensureQueryData(propertyQuery(id));
     const view = toPropertyView(property);
     return {
+      id,
       name: property.name,
       description: (property.description ?? "").slice(0, 155),
       image: view.image,
