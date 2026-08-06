@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { AvailabilityBand } from "@/components/home/AvailabilityBand";
 import { BookingBand } from "@/components/home/BookingBand";
 import { ExtrasSection } from "@/components/home/ExtrasSection";
 import { Hero } from "@/components/home/Hero";
@@ -61,6 +62,7 @@ function Index() {
     <>
       <Hero />
       <IntroStrip />
+      <AvailabilityBand />
       <StaysSection {...(properties ? { initialProperties: properties } : {})} />
       <LocationSection />
       <ExtrasSection />
