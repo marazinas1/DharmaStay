@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+import { availabilityInputSchema } from "@/lib/availability-schemas";
 import { bookingInputSchema, quoteInputSchema } from "@/lib/rentivo-schemas";
 
 /**
@@ -43,3 +44,10 @@ export const getPaymentDetails = createServerFn({ method: "GET" }).handler(async
   const { fetchPaymentDetails } = await import("@/lib/rentivo-api.server");
   return fetchPaymentDetails();
 });
+
+export const getAvailability = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => availabilityInputSchema.parse(data))
+  .handler(async ({ data }) => {
+    const { computeAvailability } = await import("@/lib/availability.server");
+    return computeAvailability(data);
+  });
