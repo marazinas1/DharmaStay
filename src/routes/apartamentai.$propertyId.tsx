@@ -94,8 +94,8 @@ export const Route = createFileRoute("/apartamentai/$propertyId")({
 });
 
 function PropertyPage() {
-  const { propertyId } = Route.useParams();
-  const { data } = useSuspenseQuery(propertyQuery(propertyId));
+  const { id } = Route.useLoaderData();
+  const { data } = useSuspenseQuery(propertyQuery(id));
   const view = toPropertyView(data);
   const { open } = useBooking();
   const gallery = data.image_urls.filter((url) => url !== view.image);
