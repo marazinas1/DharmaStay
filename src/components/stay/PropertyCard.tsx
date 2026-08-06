@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
-import { useBooking } from "@/components/site/BookingDialog";
+import { useBooking } from "@/components/site/booking-context";
 import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
 import { formatPrice, type PropertyView } from "@/lib/property-view";

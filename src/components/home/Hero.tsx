@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import heroImage from "@/assets/hero-telsiai-lake.jpg";
 import heroImageWebp from "@/assets/hero-telsiai-lake.webp";
 import { Enso } from "@/components/site/Enso";
-import { useBooking } from "@/components/site/BookingDialog";
+import { useBooking } from "@/components/site/booking-context";
 
 export function Hero() {
   const { open } = useBooking();

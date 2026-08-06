@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { useBooking } from "@/components/site/BookingDialog";
+import { useBooking } from "@/components/site/booking-context";
 import { Logo } from "@/components/site/Logo";
 import { common } from "@/content/lt/common";
 import { mainNav, type NavEntry, type NavLink } from "@/data/nav";
