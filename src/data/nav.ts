@@ -9,13 +9,6 @@ export type NavEntry = NavLink | { label: string; items: NavLink[] };
 export const SITE_URL = "https://dharma-stay-boutique.lovable.app";
 
 export const mainNav: NavEntry[] = [
-  {
-    label: common.nav.about,
-    items: [
-      { label: common.nav.about, to: "/apie" },
-      { label: common.nav.rules, to: "/apie/taisykles" },
-    ],
-  },
   { label: common.nav.stays, to: "/apartamentai" },
   { label: common.nav.restobar, to: "/restobaras" },
   { label: common.nav.banquet, to: "/banketine-sale" },
@@ -24,6 +17,13 @@ export const mainNav: NavEntry[] = [
     items: [
       { label: common.nav.sauna, to: "/sauna" },
       { label: common.nav.vouchers, to: "/dovanu-kuponai" },
+    ],
+  },
+  {
+    label: common.nav.about,
+    items: [
+      { label: common.nav.about, to: "/apie" },
+      { label: common.nav.rules, to: "/apie/taisykles" },
     ],
   },
   { label: common.nav.contacts, to: "/kontaktai" },

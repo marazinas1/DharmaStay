@@ -11,7 +11,15 @@ import {
 } from "@/components/stay/PropertyGrid";
 import { apartamentai } from "@/content/lt/apartamentai";
 import { Link } from "@tanstack/react-router";
-import { categoryLabel, filterByCategory, normalizeCategory } from "@/lib/property-category";
+import { CategoryGrid } from "@/components/stay/CategoryCard";
+import {
+  categoryLabel,
+  filterByCategory,
+  groupByCategory,
+  isGrouped,
+  normalizeCategory,
+  uncategorized,
+} from "@/lib/property-category";
 import { propertiesQuery } from "@/lib/property-queries";
 import { breadcrumbLd, pageHead } from "@/lib/seo";
 
@@ -118,7 +126,26 @@ function StaysIndexPage() {
 
 function PropertyList({ category }: { category: string | undefined }) {
   const { data } = useSuspenseQuery(propertiesQuery);
-  return <PropertyGrid properties={filterByCategory(data, category)} />;
+
+  // Filtered view: individual rooms of that type.
+  if (category) return <PropertyGrid properties={filterByCategory(data, category)} />;
+
+  // Unfiltered view mirrors the home page: one card per accommodation type.
+  if (isGrouped(data)) {
+    const rest = uncategorized(data);
+    return (
+      <>
+        <CategoryGrid groups={groupByCategory(data)} />
+        {rest.length > 0 ? (
+          <div className="mt-8">
+            <PropertyGrid properties={rest} />
+          </div>
+        ) : null}
+      </>
+    );
+  }
+
+  return <PropertyGrid properties={data} />;
 }
 
 function StaysIndexError() {

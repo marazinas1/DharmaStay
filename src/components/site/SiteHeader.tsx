@@ -64,6 +64,11 @@ export function SiteHeader() {
         <Link
           to="/"
           aria-label="Dharma Stay — į pradžią"
+          onClick={() => {
+            if (pathname !== "/") return;
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+          }}
           className={cn(
             "inline-flex items-center transition-colors",
             solid ? "text-ink" : "text-warm-white",
