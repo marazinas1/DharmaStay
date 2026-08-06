@@ -5,13 +5,21 @@ import { useBooking } from "@/components/site/BookingDialog";
 import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
 import { formatPrice, type PropertyView } from "@/lib/property-view";
+import { usePropertySlug } from "@/lib/property-slug";
 
 export function PropertyCard({ property, index }: { property: PropertyView; index: number }) {
   const { open } = useBooking();
+  const slugFor = usePropertySlug();
 
   return (
     <Reveal delay={index * 110}>
-      <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift">
+      <Link
+        to="/apartamentai/$propertyId"
+        params={{ propertyId: slugFor(property.id) }}
+        aria-label={property.name}
+        className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage focus-visible:ring-offset-2"
+      >
+      <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift">
         <div className="aspect-[4/3] overflow-hidden bg-linen">
           {property.image ? (
             <img
@@ -45,22 +53,23 @@ export function PropertyCard({ property, index }: { property: PropertyView; inde
           <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6">
             <button
               type="button"
-              onClick={() => open(property.id, undefined, { name: property.name })}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                open(property.id, undefined, { name: property.name });
+              }}
               className="rounded-full bg-sage px-5 py-2.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
             >
               {common.cta.book}
             </button>
-            <Link
-              to="/apartamentai/$propertyId"
-              params={{ propertyId: property.id }}
-              className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:text-sage-deep"
-            >
+            <span className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage group-hover:text-sage-deep">
               {common.cta.more}
               <ArrowRight className="arrow-nudge h-4 w-4" aria-hidden />
-            </Link>
+            </span>
           </div>
         </div>
       </article>
+      </Link>
     </Reveal>
   );
 }

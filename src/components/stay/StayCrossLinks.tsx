@@ -6,10 +6,12 @@ import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
 import { propertiesQuery } from "@/lib/property-queries";
 import { toPropertyView } from "@/lib/property-view";
+import { usePropertySlug } from "@/lib/property-slug";
 
 /** Other real properties from the shared ["properties"] cache — no extra fetch. */
 export function StayCrossLinks({ currentId }: { currentId: string }) {
   const { data } = useQuery(propertiesQuery);
+  const slugFor = usePropertySlug();
   const others = (data ?? [])
     .filter((property) => property.id !== currentId)
     .slice(0, 2)
@@ -25,7 +27,7 @@ export function StayCrossLinks({ currentId }: { currentId: string }) {
           <Reveal key={stay.id} delay={index * 90}>
             <Link
               to="/apartamentai/$propertyId"
-              params={{ propertyId: stay.id }}
+              params={{ propertyId: slugFor(stay.id) }}
               className="group block overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift"
             >
               <div className="aspect-[4/3] overflow-hidden bg-linen">

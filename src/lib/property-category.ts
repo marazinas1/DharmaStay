@@ -1,5 +1,6 @@
 import { common } from "@/content/lt/common";
 import type { Property } from "@/lib/rentivo-schemas";
+import { slugify } from "@/lib/property-slug";
 
 /**
  * Category grouping for the home page and the /apartamentai filter.
@@ -123,4 +124,22 @@ export function hasCategory(properties: Property[], code: string | undefined): b
   const key = normalizeCategory(code);
   if (!key) return false;
   return properties.some((property) => normalizeCategory(property.property_type) === key);
+}
+
+/** Pretty URL segment for a category, derived from its Lithuanian label. */
+export function categorySlug(code: string): string {
+  const key = normalizeCategory(code);
+  return slugify(categoryLabel(key)) || slugify(key) || "apartamentai";
+}
+
+/** Resolves a URL slug back to the raw property_type code found in the data. */
+export function codeForSlug(properties: Property[], slug: string): string | undefined {
+  const target = slug.toLowerCase();
+  const known = Object.keys(common.categories).find((code) => categorySlug(code) === target);
+  const codes = distinctCategories(properties);
+  return (
+    codes.find((code) => categorySlug(code) === target) ??
+    (known && codes.includes(known) ? known : undefined) ??
+    known
+  );
 }

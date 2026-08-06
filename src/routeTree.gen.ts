@@ -25,6 +25,7 @@ import { Route as ApartamentaiSuTerasaRouteImport } from './routes/apartamentai.
 import { Route as ApieIndexRouteImport } from './routes/apie.index'
 import { Route as ApieTaisyklesRouteImport } from './routes/apie.taisykles'
 import { Route as RezervacijaPatvirtintaRouteImport } from './routes/rezervacija.patvirtinta'
+import { Route as ApartamentaiTipasCategorySlugRouteImport } from './routes/apartamentai.tipas.$categorySlug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -107,6 +108,12 @@ const RezervacijaPatvirtintaRoute = RezervacijaPatvirtintaRouteImport.update({
   path: '/rezervacija/patvirtinta',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApartamentaiTipasCategorySlugRoute =
+  ApartamentaiTipasCategorySlugRouteImport.update({
+    id: '/tipas/$categorySlug',
+    path: '/tipas/$categorySlug',
+    getParentRoute: () => ApartamentaiRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/rezervacija/patvirtinta': typeof RezervacijaPatvirtintaRoute
   '/apartamentai/': typeof ApartamentaiIndexRoute
   '/apie/': typeof ApieIndexRoute
+  '/apartamentai/tipas/$categorySlug': typeof ApartamentaiTipasCategorySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -141,6 +149,7 @@ export interface FileRoutesByTo {
   '/rezervacija/patvirtinta': typeof RezervacijaPatvirtintaRoute
   '/apartamentai': typeof ApartamentaiIndexRoute
   '/apie': typeof ApieIndexRoute
+  '/apartamentai/tipas/$categorySlug': typeof ApartamentaiTipasCategorySlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -160,6 +169,7 @@ export interface FileRoutesById {
   '/rezervacija/patvirtinta': typeof RezervacijaPatvirtintaRoute
   '/apartamentai/': typeof ApartamentaiIndexRoute
   '/apie/': typeof ApieIndexRoute
+  '/apartamentai/tipas/$categorySlug': typeof ApartamentaiTipasCategorySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/rezervacija/patvirtinta'
     | '/apartamentai/'
     | '/apie/'
+    | '/apartamentai/tipas/$categorySlug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/rezervacija/patvirtinta'
     | '/apartamentai'
     | '/apie'
+    | '/apartamentai/tipas/$categorySlug'
   id:
     | '__root__'
     | '/'
@@ -214,6 +226,7 @@ export interface FileRouteTypes {
     | '/rezervacija/patvirtinta'
     | '/apartamentai/'
     | '/apie/'
+    | '/apartamentai/tipas/$categorySlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -343,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RezervacijaPatvirtintaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apartamentai/tipas/$categorySlug': {
+      id: '/apartamentai/tipas/$categorySlug'
+      path: '/tipas/$categorySlug'
+      fullPath: '/apartamentai/tipas/$categorySlug'
+      preLoaderRoute: typeof ApartamentaiTipasCategorySlugRouteImport
+      parentRoute: typeof ApartamentaiRoute
+    }
   }
 }
 
@@ -351,6 +371,7 @@ interface ApartamentaiRouteChildren {
   ApartamentaiStandartiniaiRoute: typeof ApartamentaiStandartiniaiRoute
   ApartamentaiSuTerasaRoute: typeof ApartamentaiSuTerasaRoute
   ApartamentaiIndexRoute: typeof ApartamentaiIndexRoute
+  ApartamentaiTipasCategorySlugRoute: typeof ApartamentaiTipasCategorySlugRoute
 }
 
 const ApartamentaiRouteChildren: ApartamentaiRouteChildren = {
@@ -358,6 +379,7 @@ const ApartamentaiRouteChildren: ApartamentaiRouteChildren = {
   ApartamentaiStandartiniaiRoute: ApartamentaiStandartiniaiRoute,
   ApartamentaiSuTerasaRoute: ApartamentaiSuTerasaRoute,
   ApartamentaiIndexRoute: ApartamentaiIndexRoute,
+  ApartamentaiTipasCategorySlugRoute: ApartamentaiTipasCategorySlugRoute,
 }
 
 const ApartamentaiRouteWithChildren = ApartamentaiRoute._addFileChildren(
@@ -391,13 +413,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
