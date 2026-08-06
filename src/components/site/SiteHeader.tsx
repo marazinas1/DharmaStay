@@ -60,7 +60,7 @@ export function SiteHeader() {
         solid ? "border-b border-border/70 bg-linen/95 backdrop-blur-sm" : "bg-transparent",
       )}
     >
-      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-3 lg:px-12 lg:py-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-2 lg:px-12 lg:py-3">
         <Link
           to="/"
           aria-label="Dharma Stay — į pradžią"
@@ -74,7 +74,7 @@ export function SiteHeader() {
             solid ? "text-ink" : "text-warm-white",
           )}
         >
-          <Logo className="h-14 w-14 lg:h-[3.25rem] lg:w-[3.25rem] xl:h-14 xl:w-14" />
+          <Logo className="h-24 w-24" />
         </Link>
 
         <div ref={navRef} className="flex items-center gap-6">
