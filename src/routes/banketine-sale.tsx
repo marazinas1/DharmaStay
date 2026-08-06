@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import banquetImage from "@/assets/banketine-sale.jpg";
+import banquetImageWebp from "@/assets/banketine-sale.webp";
 import { ContactCta } from "@/components/site/ContactCta";
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection, Prose } from "@/components/site/Prose";
@@ -24,6 +26,9 @@ function BanquetPage() {
         eyebrow={banketineSale.eyebrow}
         title={banketineSale.title}
         lead={banketineSale.lead}
+        image={banquetImage}
+        imageWebp={banquetImageWebp}
+        imageAlt="Banketinė salė Dharma Stay kieme Telšiuose"
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: banketineSale.title }]}
       />
       <PageSection>
