@@ -1,4 +1,4 @@
-import { useBooking } from "@/components/site/BookingDialog";
+import { useBooking } from "@/components/site/booking-context";
 import { Enso } from "@/components/site/Enso";
 
 export function BookingBand() {

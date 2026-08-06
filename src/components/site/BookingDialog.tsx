@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
-  createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -11,6 +9,11 @@ import {
 } from "react";
 import { z } from "zod";
 
+import {
+  BookingContext,
+  type BookingDates,
+  type BookingProperty,
+} from "@/components/site/booking-context";
 import { Enso } from "@/components/site/Enso";
 import {
   Dialog,
@@ -26,18 +29,8 @@ import { formatPrice } from "@/lib/property-view";
 import type { ExtraService } from "@/lib/rentivo-schemas";
 import { createBookingFn, getQuote } from "@/lib/rentivo.functions";
 
-export type BookingDates = { checkin?: string; checkout?: string };
-
-/** Extra context the property page can pass through (already fetched there). */
-export type BookingProperty = {
-  name?: string;
-  extras?: ExtraService[];
-  maxGuests?: number | null;
-};
-
-type BookingContextValue = {
-  open: (stayId?: string, dates?: BookingDates, property?: BookingProperty) => void;
-};
+export type { BookingDates, BookingProperty } from "@/components/site/booking-context";
+export { useBooking } from "@/components/site/booking-context";
 
 const UUID_RE = /^[0-9a-f-]{36}$/i;
 
@@ -203,14 +196,6 @@ function Row({ label, value }: { label: string; value: string }) {
       <dd className="text-ink">{value}</dd>
     </div>
   );
-}
-
-const BookingContext = createContext<BookingContextValue | null>(null);
-
-export function useBooking() {
-  const ctx = useContext(BookingContext);
-  if (!ctx) throw new Error("useBooking must be used inside <BookingProvider>");
-  return ctx;
 }
 
 /**

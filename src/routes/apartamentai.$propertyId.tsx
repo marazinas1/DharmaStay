@@ -6,7 +6,7 @@ import type { DateRange } from "react-day-picker";
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
-import { useBooking } from "@/components/site/BookingDialog";
+import { useBooking } from "@/components/site/booking-context";
 import { AvailabilityCalendar, toApiDate } from "@/components/stay/AvailabilityCalendar";
 import { PropertyError } from "@/components/stay/PropertyGrid";
 import { PropertyIntro, propertyLd } from "@/components/stay/PropertySections";
