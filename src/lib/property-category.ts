@@ -3,7 +3,7 @@ import type { Property } from "@/lib/rentivo-schemas";
 
 /**
  * Category grouping for the home page and the /apartamentai filter.
- * The API exposes `category` per property; until the backend fills it in we
+ * The API exposes `property_type` per property; until the backend fills it in we
  * degrade to the flat, one-card-per-property listing.
  */
 export type CategoryGroup = {
@@ -52,26 +52,26 @@ function imageOf(property: Property): string | null {
 export function distinctCategories(properties: Property[]): string[] {
   const codes = new Set<string>();
   for (const property of properties) {
-    const code = normalizeCategory(property.category);
+    const code = normalizeCategory(property.property_type);
     if (code) codes.add(code);
   }
   return [...codes];
 }
 
-/** Grouping activates as soon as the backend categorises at least one property. */
+/** Grouping activates once at least two distinct property_type values exist. */
 export function isGrouped(properties: Property[]): boolean {
-  return distinctCategories(properties).length >= 1;
+  return distinctCategories(properties).length >= 2;
 }
 
 /** Properties the backend hasn't categorised yet — shown after the category cards. */
 export function uncategorized(properties: Property[]): Property[] {
-  return properties.filter((property) => !normalizeCategory(property.category));
+  return properties.filter((property) => !normalizeCategory(property.property_type));
 }
 
 export function groupByCategory(properties: Property[]): CategoryGroup[] {
   const buckets = new Map<string, Property[]>();
   for (const property of properties) {
-    const code = normalizeCategory(property.category);
+    const code = normalizeCategory(property.property_type);
     if (!code) continue;
     const bucket = buckets.get(code);
     if (bucket) bucket.push(property);
@@ -115,12 +115,12 @@ export function groupByCategory(properties: Property[]): CategoryGroup[] {
 export function filterByCategory(properties: Property[], code: string | undefined): Property[] {
   const key = normalizeCategory(code);
   if (!key) return properties;
-  const matched = properties.filter((property) => normalizeCategory(property.category) === key);
+  const matched = properties.filter((property) => normalizeCategory(property.property_type) === key);
   return matched.length > 0 ? matched : properties;
 }
 
 export function hasCategory(properties: Property[], code: string | undefined): boolean {
   const key = normalizeCategory(code);
   if (!key) return false;
-  return properties.some((property) => normalizeCategory(property.category) === key);
+  return properties.some((property) => normalizeCategory(property.property_type) === key);
 }
