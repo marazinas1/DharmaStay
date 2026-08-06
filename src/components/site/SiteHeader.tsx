@@ -74,7 +74,7 @@ export function SiteHeader() {
             solid ? "text-ink" : "text-warm-white",
           )}
         >
-          <Logo className="h-14 w-14 lg:h-[3.25rem] lg:w-[3.25rem] xl:h-14 xl:w-14" />
+          <Logo className="h-24 w-24" />
         </Link>
 
         <div ref={navRef} className="flex items-center gap-6">
