@@ -40,7 +40,7 @@ export function Hero() {
         <source srcSet={heroImageWebp} type="image/webp" />
         <img
           src={heroImage}
-          alt="Telšių senamiestis ir bažnyčios bokštas, atsispindintys Masčio ežere"
+          alt="Telšių senamiesčio gatvė su istoriniais pastatais vasaros popietę"
           width={2560}
           height={1440}
           fetchPriority="high"
