@@ -230,6 +230,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (dates) {
       setCheckin(dates.checkin ?? "");
       setCheckout(dates.checkout ?? "");
+      setAdults(dates.adults && dates.adults >= 1 ? dates.adults : 2);
+    } else {
+      setAdults(2);
     }
     setProperty(prop ?? null);
     setSelectedExtras([]);
