@@ -216,7 +216,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     customer_name: "",
     customer_email: "",
     customer_phone: "",
-    bic: "",
   });
   const [contactErrors, setContactErrors] = useState<ContactErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -277,10 +276,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (isSubmitting) return;
     setSubmitError(null);
 
-    const parsed = contactSchema.safeParse({
-      ...contact,
-      bic: contact.bic.trim() === "" ? undefined : contact.bic,
-    });
+    const parsed = contactSchema.safeParse(contact);
     if (!parsed.success) {
       const errors: ContactErrors = {};
       for (const issue of parsed.error.issues) {
@@ -494,12 +490,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     onChange={(value) => setContact((c) => ({ ...c, customer_phone: value }))}
                   />
                 </div>
-                <TextField
-                  label={common.booking.bic}
-                  value={contact.bic}
-                  error={contactErrors.bic}
-                  onChange={(value) => setContact((c) => ({ ...c, bic: value }))}
-                />
               </fieldset>
 
               {submitError ? (
