@@ -24,8 +24,8 @@ export function ExtrasSection() {
           {extras.map((extra, index) => (
             <Reveal key={extra.title} delay={index * 90}>
               <div>
-                <EnsoFrame>
-                  <extra.icon className="h-5 w-5 text-sage" aria-hidden />
+                <EnsoFrame className="h-[4.5rem] w-[4.5rem]">
+                  <extra.icon className="h-7 w-7 text-sage-deep" strokeWidth={1.5} aria-hidden />
                 </EnsoFrame>
                 <h3 className="mt-4 font-display text-lg font-semibold text-ink">{extra.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-stone">{extra.text}</p>
