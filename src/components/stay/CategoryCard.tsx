@@ -3,7 +3,12 @@ import { ArrowRight } from "lucide-react";
 
 import { Reveal } from "@/components/site/Reveal";
 import { common } from "@/content/lt/common";
-import { categorySlug, optionsLabel, type CategoryGroup } from "@/lib/property-category";
+import {
+  categoryFacts,
+  categorySlug,
+  optionsLabel,
+  type CategoryGroup,
+} from "@/lib/property-category";
 import { formatPrice } from "@/lib/property-view";
 
 /**
@@ -11,6 +16,7 @@ import { formatPrice } from "@/lib/property-view";
  * PropertyCard, but it leads to the filtered listing instead of booking.
  */
 export function CategoryCard({ group, index }: { group: CategoryGroup; index: number }) {
+  const facts = categoryFacts(group);
   return (
     <Reveal delay={index * 110}>
       <Link
@@ -41,7 +47,9 @@ export function CategoryCard({ group, index }: { group: CategoryGroup; index: nu
           <h3 className="mt-3 font-display text-[1.375rem] leading-snug font-semibold text-ink">
             {group.label}
           </h3>
-          <p className="mt-4 text-xs tracking-wide text-stone/80">{optionsLabel(group.count)}</p>
+          <p className="mt-4 text-xs tracking-wide text-stone/80">
+            {[optionsLabel(group.count), facts].filter(Boolean).join(" · ")}
+          </p>
 
           <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6">
             <span className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-sage group-hover:text-sage-deep">
