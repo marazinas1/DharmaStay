@@ -4,6 +4,7 @@ import { MapPin } from "lucide-react";
 import { Enso } from "@/components/site/Enso";
 import { Logo } from "@/components/site/Logo";
 import { common } from "@/content/lt/common";
+import { legal } from "@/content/lt/legal";
 import { footerNav } from "@/data/nav";
 import { contact } from "@/data/contact";
 
