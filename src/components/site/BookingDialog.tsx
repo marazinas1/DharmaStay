@@ -72,8 +72,8 @@ const contactSchema = z.object({
     .trim()
     .min(5, common.booking.phoneError)
     .max(50, common.booking.phoneError),
-  bic: z.string().trim().max(20, common.booking.bicError).optional(),
 });
+
 
 type ContactErrors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
 
