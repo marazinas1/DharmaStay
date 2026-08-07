@@ -30,7 +30,7 @@ function RentalTermsPage() {
   return (
     <LegalDocumentPage
       eyebrow={legal.rental.eyebrow}
-      title={doc?.name?.trim() ? doc.name : legal.rental.title}
+      title={doc?.html.trim() && doc.name.trim() ? doc.name : legal.rental.title}
       lead={legal.rental.lead}
       doc={doc}
     />

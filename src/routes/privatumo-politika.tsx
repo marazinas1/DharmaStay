@@ -30,7 +30,7 @@ function PrivacyPolicyPage() {
   return (
     <LegalDocumentPage
       eyebrow={legal.privacy.eyebrow}
-      title={doc?.name?.trim() ? doc.name : legal.privacy.title}
+      title={doc?.html.trim() && doc.name.trim() ? doc.name : legal.privacy.title}
       lead={legal.privacy.lead}
       doc={doc}
     />
