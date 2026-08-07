@@ -103,13 +103,21 @@ export const Route = createFileRoute("/apartamentai/$propertyId")({
 
 function PropertyPage() {
   const { id } = Route.useLoaderData();
+  const { nuo, iki } = Route.useSearch();
   const { data } = useSuspenseQuery(propertyQuery(id));
   const view = toPropertyView(data);
   const { open } = useBooking();
   const gallery = data.image_urls.filter((url) => url !== view.image);
   const sideImage = gallery[0] ?? view.image;
   const grid = (gallery[0] ? gallery.slice(1) : gallery).slice(0, 6);
-  const [range, setRange] = useState<DateRange | undefined>(undefined);
+  // Dates picked earlier (availability band → category list) pre-select here.
+  const initialRange = useMemo<DateRange | undefined>(() => {
+    const from = nuo ? parseApiDate(nuo) : null;
+    const to = iki ? parseApiDate(iki) : null;
+    if (!from) return undefined;
+    return to ? { from, to } : { from };
+  }, [nuo, iki]);
+  const [range, setRange] = useState<DateRange | undefined>(initialRange);
 
   const paragraphs = (data.description ?? "")
     .split(/\n\s*\n/)
