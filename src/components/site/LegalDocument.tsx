@@ -33,7 +33,7 @@ export function LegalDocumentPage({
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: title }]}
       />
       <PageSection>
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-3xl">
           {hasContent ? (
             <>
               <div
