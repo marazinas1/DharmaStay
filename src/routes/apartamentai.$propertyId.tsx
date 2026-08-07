@@ -35,6 +35,9 @@ export const Route = createFileRoute("/apartamentai/$propertyId")({
   validateSearch: (search: Record<string, unknown>) => ({
     ...(typeof search['nuo'] === "string" ? { nuo: search['nuo'] } : {}),
     ...(typeof search['iki'] === "string" ? { iki: search['iki'] } : {}),
+    ...(Number.isFinite(Number(search['sveciai'])) && Number(search['sveciai']) >= 1
+      ? { sveciai: Number(search['sveciai']) }
+      : {}),
   }),
   loader: async ({ context, params }) => {
     const properties = await context.queryClient.ensureQueryData(propertiesQuery);
@@ -103,7 +106,7 @@ export const Route = createFileRoute("/apartamentai/$propertyId")({
 
 function PropertyPage() {
   const { id } = Route.useLoaderData();
-  const { nuo, iki } = Route.useSearch();
+  const { nuo, iki, sveciai } = Route.useSearch();
   const { data } = useSuspenseQuery(propertyQuery(id));
   const view = toPropertyView(data);
   const { open } = useBooking();
@@ -153,6 +156,7 @@ function PropertyPage() {
       {
         ...(range?.from ? { checkin: toApiDate(range.from) } : {}),
         ...(range?.to ? { checkout: toApiDate(range.to) } : {}),
+        adults: sveciai && sveciai >= 1 ? sveciai : 2,
       },
       { name: data.name, extras: data.extra_services, maxGuests: data.max_guests ?? null },
     );

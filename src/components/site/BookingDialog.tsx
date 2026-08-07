@@ -72,8 +72,8 @@ const contactSchema = z.object({
     .trim()
     .min(5, common.booking.phoneError)
     .max(50, common.booking.phoneError),
-  bic: z.string().trim().max(20, common.booking.bicError).optional(),
 });
+
 
 type ContactErrors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
 
@@ -216,7 +216,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     customer_name: "",
     customer_email: "",
     customer_phone: "",
-    bic: "",
   });
   const [contactErrors, setContactErrors] = useState<ContactErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -231,6 +230,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (dates) {
       setCheckin(dates.checkin ?? "");
       setCheckout(dates.checkout ?? "");
+      setAdults(dates.adults && dates.adults >= 1 ? dates.adults : 2);
+    } else {
+      setAdults(2);
     }
     setProperty(prop ?? null);
     setSelectedExtras([]);
@@ -277,10 +279,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (isSubmitting) return;
     setSubmitError(null);
 
-    const parsed = contactSchema.safeParse({
-      ...contact,
-      bic: contact.bic.trim() === "" ? undefined : contact.bic,
-    });
+    const parsed = contactSchema.safeParse(contact);
     if (!parsed.success) {
       const errors: ContactErrors = {};
       for (const issue of parsed.error.issues) {
@@ -494,12 +493,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     onChange={(value) => setContact((c) => ({ ...c, customer_phone: value }))}
                   />
                 </div>
-                <TextField
-                  label={common.booking.bic}
-                  value={contact.bic}
-                  error={contactErrors.bic}
-                  onChange={(value) => setContact((c) => ({ ...c, bic: value }))}
-                />
               </fieldset>
 
               {submitError ? (

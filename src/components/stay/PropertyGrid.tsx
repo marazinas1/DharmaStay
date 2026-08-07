@@ -8,10 +8,12 @@ export function PropertyGrid({
   properties,
   nuo,
   iki,
+  sveciai,
 }: {
   properties: Property[];
   nuo?: string;
   iki?: string;
+  sveciai?: number;
 }) {
   if (properties.length === 0) return <PropertyEmpty />;
 
@@ -24,6 +26,7 @@ export function PropertyGrid({
           index={index}
           {...(nuo ? { nuo } : {})}
           {...(iki ? { iki } : {})}
+          {...(sveciai ? { sveciai } : {})}
         />
       ))}
     </div>

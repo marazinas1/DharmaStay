@@ -18,6 +18,9 @@ export const Route = createFileRoute("/apartamentai/tipas/$categorySlug")({
   validateSearch: (search: Record<string, unknown>) => ({
     ...(typeof search['nuo'] === "string" ? { nuo: search['nuo'] } : {}),
     ...(typeof search['iki'] === "string" ? { iki: search['iki'] } : {}),
+    ...(Number.isFinite(Number(search['sveciai'])) && Number(search['sveciai']) >= 1
+      ? { sveciai: Number(search['sveciai']) }
+      : {}),
   }),
   loader: async ({ context, params }) => {
     const properties = await context.queryClient.ensureQueryData(propertiesQuery);
@@ -55,19 +58,34 @@ export const Route = createFileRoute("/apartamentai/tipas/$categorySlug")({
 
 function CategoryPage() {
   const { code, label } = Route.useLoaderData();
-  const { nuo, iki } = Route.useSearch();
+  const { nuo, iki, sveciai } = Route.useSearch();
   return (
     <StaysShell categoryLabelText={label}>
       <Suspense fallback={<PropertyGridSkeleton />}>
-        <CategoryList code={code} {...(nuo ? { nuo } : {})} {...(iki ? { iki } : {})} />
+        <CategoryList
+          code={code}
+          {...(nuo ? { nuo } : {})}
+          {...(iki ? { iki } : {})}
+          {...(sveciai ? { sveciai } : {})}
+        />
       </Suspense>
     </StaysShell>
   );
 }
 
-function CategoryList({ code, nuo, iki }: { code: string; nuo?: string; iki?: string }) {
+function CategoryList({
+  code,
+  nuo,
+  iki,
+  sveciai = 2,
+}: {
+  code: string;
+  nuo?: string;
+  iki?: string;
+  sveciai?: number;
+}) {
   const { data } = useSuspenseQuery(propertiesQuery);
-  const { data: availability } = useQuery(availabilityQuery(nuo, iki, 2));
+  const { data: availability } = useQuery(availabilityQuery(nuo, iki, sveciai));
   const inCategory = filterByCategory(data, code);
   const properties =
     nuo && iki && availability
@@ -78,6 +96,7 @@ function CategoryList({ code, nuo, iki }: { code: string; nuo?: string; iki?: st
       properties={properties}
       {...(nuo ? { nuo } : {})}
       {...(iki ? { iki } : {})}
+      sveciai={sveciai}
     />
   );
 }
