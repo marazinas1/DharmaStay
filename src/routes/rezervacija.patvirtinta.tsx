@@ -72,7 +72,7 @@ function ConfirmationPage() {
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: rezervacija.eyebrow }]}
       />
       <PageSection>
-        <Reveal className="mx-auto max-w-2xl space-y-8">
+        <Reveal className="mx-auto max-w-3xl space-y-8">
           {nr ? (
             <div className="rounded-2xl border border-border bg-warm-white p-6 text-center sm:p-8">
               <p className="label-caps text-sage">{rezervacija.numberLabel}</p>
