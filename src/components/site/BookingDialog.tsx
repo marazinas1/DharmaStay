@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   useCallback,
   useEffect,
@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { common } from "@/content/lt/common";
+import { legal } from "@/content/lt/legal";
 import { storeBooking } from "@/lib/booking-storage";
 import { propertiesQuery } from "@/lib/property-queries";
 import { formatPrice } from "@/lib/property-view";
@@ -60,7 +61,7 @@ function bookingErrorMessage(error: unknown): string {
   return common.booking.submitError;
 }
 
-const contactSchema = z.object({
+const baseContactSchema = z.object({
   customer_name: z.string().trim().min(2, common.booking.nameError).max(200, common.booking.nameError),
   customer_email: z
     .string()
@@ -74,8 +75,16 @@ const contactSchema = z.object({
     .max(50, common.booking.phoneError),
 });
 
+const companySchema = z.object({
+  company_name: z.string().trim().min(2, common.booking.companyNameError).max(200),
+  company_code: z.string().trim().min(2, common.booking.companyCodeError).max(50),
+  company_vat_code: z.string().trim().max(50).optional(),
+  company_address: z.string().trim().min(4, common.booking.companyAddressError).max(300),
+});
 
-type ContactErrors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
+type ContactErrors = Partial<
+  Record<keyof z.infer<typeof baseContactSchema> | keyof z.infer<typeof companySchema>, string>
+>;
 
 function TextField({
   label,
