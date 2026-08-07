@@ -4,9 +4,13 @@ import { EnsoFrame } from "@/components/site/Enso";
 import { Reveal } from "@/components/site/Reveal";
 
 const extras = [
-  { icon: UtensilsCrossed, title: "Restobaras", text: "Pusryčiai ir vakarienė tame pačiame kieme." },
+  {
+    icon: UtensilsCrossed,
+    title: "Restobaras",
+    text: "Pusryčiai ir vakarienė čia pat, viešnagės vietoje.",
+  },
   { icon: Flame, title: "Pirtis", text: "Šiluma po ilgos dienos. 40 €." },
-  { icon: Waves, title: "Kubilas", text: "Vakaras po atviru dangumi. 50 €." },
+  { icon: Waves, title: "Kubilas", text: "Sūkurinė vonia po atviru dangumi. 50 €." },
   { icon: Gift, title: "Dovanų kuponai", text: "Nakvynė kaip dovana artimam žmogui." },
 ];
 

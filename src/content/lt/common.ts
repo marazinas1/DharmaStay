@@ -113,7 +113,7 @@ export const common = {
   availabilityBand: {
     eyebrow: "Laisvos datos",
     title: "Pasitikrinkite laisvas datas",
-    lead: "Pasirinkite atvykimo ir išvykimo datas – iš karto matysite, kiek kurio tipo variantų laisva ir kiek kainuos.",
+    lead: "Pasirinkite atvykimo ir išvykimo datas — iš karto matysite, kiek kurio tipo apartamentų laisva ir kiek kainuos.",
     guests: "Svečiai",
     pickDates: "Pasirinkite atvykimo ir išvykimo datas.",
     checking: "Tikriname laisvas datas…",
