@@ -12,15 +12,21 @@ export function PropertyCard({
   index,
   nuo,
   iki,
+  sveciai,
 }: {
   property: PropertyView;
   index: number;
   nuo?: string;
   iki?: string;
+  sveciai?: number;
 }) {
   const { open } = useBooking();
   const slugFor = usePropertySlug();
-  const dateSearch = { ...(nuo ? { nuo } : {}), ...(iki ? { iki } : {}) };
+  const dateSearch = {
+    ...(nuo ? { nuo } : {}),
+    ...(iki ? { iki } : {}),
+    ...(sveciai ? { sveciai } : {}),
+  };
 
   return (
     <Reveal delay={index * 110}>
@@ -73,6 +79,7 @@ export function PropertyCard({
                   {
                     ...(nuo ? { checkin: nuo } : {}),
                     ...(iki ? { checkout: iki } : {}),
+                    ...(sveciai ? { adults: sveciai } : {}),
                   },
                   { name: property.name },
                 );
