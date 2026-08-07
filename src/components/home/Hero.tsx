@@ -41,8 +41,8 @@ export function Hero() {
         <img
           src={heroImage}
           alt="Telšių senamiestis ir bažnyčios bokštas, atsispindintys Masčio ežere"
-          width={1920}
-          height={1080}
+          width={2560}
+          height={1440}
           fetchPriority="high"
           decoding="async"
           className="hero-kenburns absolute inset-0 h-full w-full object-cover"
