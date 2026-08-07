@@ -130,6 +130,29 @@ export async function fetchBookingStatus(bookingNumber: string, email: string) {
 
 /* ---- Legal documents (rental terms, privacy policy) ---- */
 
+export type ContactMessage = {
+  name: string;
+  email: string;
+  phone?: string | undefined;
+  message: string;
+};
+
+/**
+ * Core does not expose a contact endpoint yet. The single place to point at it
+ * once it exists — until then the caller falls back to the e-mail link.
+ */
+export async function sendContactMessage(input: ContactMessage): Promise<{ delivered: boolean }> {
+  try {
+    await rentivoFetch("/contact", { method: "POST", body: JSON.stringify(input) });
+    return { delivered: true };
+  } catch (error) {
+    if (error instanceof RentivoError && (error.status === 404 || error.status === 405)) {
+      return { delivered: false };
+    }
+    throw error;
+  }
+}
+
 const LEGAL_TTL_MS = 5 * 60 * 1000;
 const legalCache = new Map<string, { at: number; doc: LegalDocument }>();
 
