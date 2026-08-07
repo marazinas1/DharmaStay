@@ -24,18 +24,15 @@ export function LocationSection() {
           <Reveal direction="left">
             <p className="label-caps text-sage">Vieta</p>
             <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
-              Telšiai, senamiesčio ritmu
+              Telšiuose, prie pat aikštės
             </h2>
             <div className="mt-6 space-y-4 text-base leading-[1.75] text-stone sm:text-lg">
               <p>
-                Esame prie pagrindinės aikštės – kavinės, turgus ir vakarinis varpų garsas
-                pasiekiami pėsčiomis.
+                Apartamentai — Birutės gatvėje, vos keli žingsniai nuo pagrindinės Turgaus
+                aikštės, Švč. Mergelės Marijos bažnyčios ir turizmo informacijos centro.
               </p>
-              <p>
-                Iki Masčio ežero – keli šimtai metrų. Ryte tai vieta bėgimui, vakare – tyliam
-                pasivaikščiojimui, kai vanduo atspindi visą miestą.
-              </p>
-              <p>Aplinkui – Žemaitija: miškai, keliukai ir lėtesnis laikas.</p>
+              <p>Iki Masčio ežero — keli šimtai metrų. Šalia netrūksta kavinių ir restoranų.</p>
+              <p>Aplinkui — Žemaitija: ramesnis miestas, artima gamta ir neskubantis laikas.</p>
             </div>
 
             <div className="mt-8 flex items-start gap-3 text-sm text-stone">
