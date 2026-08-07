@@ -104,23 +104,26 @@ function ContactsPage() {
             </a>
           </Reveal>
         </div>
-
-        <Reveal delay={80} className="mt-16">
-          <div className="mx-auto max-w-2xl">
-            <ContactForm />
-          </div>
-        </Reveal>
-
-        <Reveal delay={80} className="mt-16">
-          <div className="h-[360px] overflow-hidden rounded-2xl shadow-soft [filter:grayscale(1)_contrast(0.95)] lg:h-[500px]">
-            <ClientOnly fallback={<MapSkeleton />}>
-              <Suspense fallback={<MapSkeleton />}>
-                <LocationMap />
-              </Suspense>
-            </ClientOnly>
-          </div>
-        </Reveal>
       </PageSection>
+
+      <section className="bg-linen px-6 py-20 lg:px-12 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <Reveal delay={80}>
+            <ContactForm />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-warm-white">
+        <div className="h-[360px] overflow-hidden [filter:grayscale(1)_contrast(0.95)] lg:h-[500px]">
+          <ClientOnly fallback={<MapSkeleton />}>
+            <Suspense fallback={<MapSkeleton />}>
+              <LocationMap />
+            </Suspense>
+          </ClientOnly>
+        </div>
+      </section>
+
     </>
   );
 }
