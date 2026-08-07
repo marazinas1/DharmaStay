@@ -23,7 +23,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { common } from "@/content/lt/common";
-import { legal } from "@/content/lt/legal";
 import { storeBooking } from "@/lib/booking-storage";
 import { propertiesQuery } from "@/lib/property-queries";
 import { formatPrice } from "@/lib/property-view";
