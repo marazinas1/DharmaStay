@@ -12,8 +12,8 @@ export function IntroStrip() {
           </p>
           <p className="mt-6 text-base leading-[1.75] text-stone sm:text-lg">
             Dharma Stay apartamentai įsikūrę pačioje Telšių širdyje, Birutės gatvėje, šalia
-            pagrindinės aikštės. Juos kūrėme taip, kad atvykę svečiai pasijustų lyg iš namų į
-            namus — ramiai, jaukiai ir be rūpesčių.
+            pagrindinės aikštės. Juos kūrėme taip, kad atvykę svečiai pasijustų lyg namuose —
+            ramiai, jaukiai ir be rūpesčių.
           </p>
         </Reveal>
       </div>
