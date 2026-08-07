@@ -290,7 +290,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       }),
   });
 
-  const canSubmit = canQuote && quote.data?.available !== false && !isSubmitting;
+  const canSubmit =
+    canQuote && quote.data?.available !== false && !isSubmitting && acceptedTerms;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -525,6 +526,80 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                   />
                 </div>
               </fieldset>
+
+              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink">
+                <input
+                  type="checkbox"
+                  checked={isCompany}
+                  onChange={(event) => setIsCompany(event.target.checked)}
+                  className="h-4 w-4 accent-[var(--color-sage,#5A6B5D)]"
+                />
+                {common.booking.companyToggle}
+              </label>
+
+              {isCompany ? (
+                <fieldset className="space-y-4">
+                  <legend className="label-caps text-stone">{common.booking.companyTitle}</legend>
+                  <TextField
+                    label={common.booking.companyName}
+                    value={company.company_name}
+                    autoComplete="organization"
+                    error={contactErrors.company_name}
+                    onChange={(value) => setCompany((c) => ({ ...c, company_name: value }))}
+                  />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <TextField
+                      label={common.booking.companyCode}
+                      value={company.company_code}
+                      error={contactErrors.company_code}
+                      onChange={(value) => setCompany((c) => ({ ...c, company_code: value }))}
+                    />
+                    <TextField
+                      label={common.booking.companyVat}
+                      value={company.company_vat_code}
+                      error={contactErrors.company_vat_code}
+                      onChange={(value) => setCompany((c) => ({ ...c, company_vat_code: value }))}
+                    />
+                  </div>
+                  <TextField
+                    label={common.booking.companyAddress}
+                    value={company.company_address}
+                    autoComplete="street-address"
+                    error={contactErrors.company_address}
+                    onChange={(value) => setCompany((c) => ({ ...c, company_address: value }))}
+                  />
+                </fieldset>
+              ) : null}
+
+              <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-stone">
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(event) => setAcceptedTerms(event.target.checked)}
+                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--color-sage,#5A6B5D)]"
+                />
+                <span>
+                  {common.booking.consentPrefix}{" "}
+                  <Link
+                    to="/taisykles"
+                    target="_blank"
+                    className="text-sage underline underline-offset-2"
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    {common.booking.consentTerms}
+                  </Link>{" "}
+                  {common.booking.consentAnd}{" "}
+                  <Link
+                    to="/privatumo-politika"
+                    target="_blank"
+                    className="text-sage underline underline-offset-2"
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    {common.booking.consentPrivacy}
+                  </Link>
+                  .
+                </span>
+              </label>
 
               {submitError ? (
                 <p role="alert" className="rounded-xl bg-linen p-4 text-sm text-ink">
