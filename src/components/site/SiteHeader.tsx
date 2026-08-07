@@ -1,11 +1,11 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { useBooking } from "@/components/site/booking-context";
 import { Logo } from "@/components/site/Logo";
 import { common } from "@/content/lt/common";
 import { mainNav, type NavEntry, type NavLink } from "@/data/nav";
+import { AVAILABILITY_SECTION_ID, scrollToId } from "@/lib/scroll-to";
 import { cn } from "@/lib/utils";
 
 function isGroup(entry: NavEntry): entry is { label: string; items: NavLink[] } {
@@ -13,13 +13,24 @@ function isGroup(entry: NavEntry): entry is { label: string; items: NavLink[] } 
 }
 
 export function SiteHeader() {
-  const { open } = useBooking();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement | null>(null);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const navigate = useNavigate();
+
+  // The header CTA leads to the shared availability calendar on the home page.
+  const goToAvailability = () => {
+    if (pathname === "/") {
+      scrollToId(AVAILABILITY_SECTION_ID);
+      return;
+    }
+    void navigate({ to: "/", hash: AVAILABILITY_SECTION_ID }).then(() => {
+      window.setTimeout(() => scrollToId(AVAILABILITY_SECTION_ID), 80);
+    });
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -135,7 +146,7 @@ export function SiteHeader() {
 
           <button
             type="button"
-            onClick={() => open()}
+            onClick={goToAvailability}
             className={cn(
               "hidden rounded-full px-5 py-2.5 text-sm font-medium transition-colors lg:inline-flex",
               solid
@@ -213,7 +224,7 @@ export function SiteHeader() {
             type="button"
             onClick={() => {
               setMenuOpen(false);
-              open();
+              goToAvailability();
             }}
             className="mt-6 w-full rounded-full bg-sage px-5 py-3.5 text-sm font-medium text-warm-white"
           >
