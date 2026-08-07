@@ -57,7 +57,7 @@ function RulesPage() {
       />
 
       <PageSection>
-        <div className="mx-auto grid max-w-5xl gap-12 sm:grid-cols-2">
+        <div className="grid gap-12 sm:grid-cols-2">
           {taisykles.groups.map((group, index) => (
             <Reveal key={group.title} delay={index * 80}>
               <h2 className="font-display text-xl font-semibold text-ink">{group.title}</h2>

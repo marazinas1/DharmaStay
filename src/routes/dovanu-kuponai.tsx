@@ -34,7 +34,7 @@ function VouchersPage() {
             ))}
           </Prose>
         </Reveal>
-        <Reveal className="mx-auto mt-16 max-w-3xl" delay={80}>
+        <Reveal className="mt-16" delay={80}>
           <ContactCta title={dovanuKuponai.ctaTitle} text={dovanuKuponai.ctaText} />
         </Reveal>
       </PageSection>

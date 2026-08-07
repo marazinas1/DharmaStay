@@ -49,7 +49,7 @@ function AboutPage() {
 
         <EnsoDivider className="my-16" />
 
-        <Reveal className="mx-auto max-w-3xl">
+        <Reveal>
           <Link
             to="/apie/taisykles"
             className="group flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-linen p-8 transition-shadow hover:shadow-soft"
