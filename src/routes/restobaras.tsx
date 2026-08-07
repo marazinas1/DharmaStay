@@ -57,7 +57,7 @@ function RestobarPage() {
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: restobaras.title }]}
       />
       <PageSection>
-        <Reveal className="mx-auto max-w-3xl">
+        <Reveal className="max-w-3xl">
           <Prose>
             {restobaras.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>

@@ -62,7 +62,7 @@ function ContactsPage() {
       />
 
       <PageSection>
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="max-w-7xl">
           <div className="grid gap-12 sm:grid-cols-3">
             <Reveal>
               <MapPin className="mx-auto h-5 w-5 text-sage" aria-hidden />
