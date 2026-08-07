@@ -16,8 +16,10 @@ import { Route as BanketineSaleRouteImport } from './routes/banketine-sale'
 import { Route as DovanuKuponaiRouteImport } from './routes/dovanu-kuponai'
 import { Route as KontaktaiRouteImport } from './routes/kontaktai'
 import { Route as NamelisRouteImport } from './routes/namelis'
+import { Route as PrivatumoPolitikaRouteImport } from './routes/privatumo-politika'
 import { Route as RestobarasRouteImport } from './routes/restobaras'
 import { Route as SaunaRouteImport } from './routes/sauna'
+import { Route as TaisyklesRouteImport } from './routes/taisykles'
 import { Route as ApartamentaiIndexRouteImport } from './routes/apartamentai.index'
 import { Route as ApartamentaiPropertyIdRouteImport } from './routes/apartamentai.$propertyId'
 import { Route as ApartamentaiStandartiniaiRouteImport } from './routes/apartamentai.standartiniai'
@@ -62,6 +64,11 @@ const NamelisRoute = NamelisRouteImport.update({
   path: '/namelis',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivatumoPolitikaRoute = PrivatumoPolitikaRouteImport.update({
+  id: '/privatumo-politika',
+  path: '/privatumo-politika',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RestobarasRoute = RestobarasRouteImport.update({
   id: '/restobaras',
   path: '/restobaras',
@@ -70,6 +77,11 @@ const RestobarasRoute = RestobarasRouteImport.update({
 const SaunaRoute = SaunaRouteImport.update({
   id: '/sauna',
   path: '/sauna',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TaisyklesRoute = TaisyklesRouteImport.update({
+  id: '/taisykles',
+  path: '/taisykles',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApartamentaiIndexRoute = ApartamentaiIndexRouteImport.update({
@@ -123,8 +135,10 @@ export interface FileRoutesByFullPath {
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
   '/kontaktai': typeof KontaktaiRoute
   '/namelis': typeof NamelisRoute
+  '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/taisykles': typeof TaisyklesRoute
   '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
@@ -140,8 +154,10 @@ export interface FileRoutesByTo {
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
   '/kontaktai': typeof KontaktaiRoute
   '/namelis': typeof NamelisRoute
+  '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/taisykles': typeof TaisyklesRoute
   '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
@@ -160,8 +176,10 @@ export interface FileRoutesById {
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
   '/kontaktai': typeof KontaktaiRoute
   '/namelis': typeof NamelisRoute
+  '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/taisykles': typeof TaisyklesRoute
   '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
   '/apartamentai/su-terasa': typeof ApartamentaiSuTerasaRoute
@@ -181,8 +199,10 @@ export interface FileRouteTypes {
     | '/dovanu-kuponai'
     | '/kontaktai'
     | '/namelis'
+    | '/privatumo-politika'
     | '/restobaras'
     | '/sauna'
+    | '/taisykles'
     | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
@@ -198,8 +218,10 @@ export interface FileRouteTypes {
     | '/dovanu-kuponai'
     | '/kontaktai'
     | '/namelis'
+    | '/privatumo-politika'
     | '/restobaras'
     | '/sauna'
+    | '/taisykles'
     | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
@@ -217,8 +239,10 @@ export interface FileRouteTypes {
     | '/dovanu-kuponai'
     | '/kontaktai'
     | '/namelis'
+    | '/privatumo-politika'
     | '/restobaras'
     | '/sauna'
+    | '/taisykles'
     | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
     | '/apartamentai/su-terasa'
@@ -237,8 +261,10 @@ export interface RootRouteChildren {
   DovanuKuponaiRoute: typeof DovanuKuponaiRoute
   KontaktaiRoute: typeof KontaktaiRoute
   NamelisRoute: typeof NamelisRoute
+  PrivatumoPolitikaRoute: typeof PrivatumoPolitikaRoute
   RestobarasRoute: typeof RestobarasRoute
   SaunaRoute: typeof SaunaRoute
+  TaisyklesRoute: typeof TaisyklesRoute
   RezervacijaPatvirtintaRoute: typeof RezervacijaPatvirtintaRoute
 }
 
@@ -293,6 +319,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NamelisRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privatumo-politika': {
+      id: '/privatumo-politika'
+      path: '/privatumo-politika'
+      fullPath: '/privatumo-politika'
+      preLoaderRoute: typeof PrivatumoPolitikaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/restobaras': {
       id: '/restobaras'
       path: '/restobaras'
@@ -305,6 +338,13 @@ declare module '@tanstack/react-router' {
       path: '/sauna'
       fullPath: '/sauna'
       preLoaderRoute: typeof SaunaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/taisykles': {
+      id: '/taisykles'
+      path: '/taisykles'
+      fullPath: '/taisykles'
+      preLoaderRoute: typeof TaisyklesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/apartamentai/': {
@@ -406,20 +446,12 @@ const rootRouteChildren: RootRouteChildren = {
   DovanuKuponaiRoute: DovanuKuponaiRoute,
   KontaktaiRoute: KontaktaiRoute,
   NamelisRoute: NamelisRoute,
+  PrivatumoPolitikaRoute: PrivatumoPolitikaRoute,
   RestobarasRoute: RestobarasRoute,
   SaunaRoute: SaunaRoute,
+  TaisyklesRoute: TaisyklesRoute,
   RezervacijaPatvirtintaRoute: RezervacijaPatvirtintaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

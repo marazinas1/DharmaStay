@@ -2,6 +2,7 @@ import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { Suspense, lazy } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 
+import { ContactForm } from "@/components/site/ContactForm";
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
@@ -103,6 +104,12 @@ function ContactsPage() {
             </a>
           </Reveal>
         </div>
+
+        <Reveal delay={80} className="mt-16">
+          <div className="mx-auto max-w-2xl">
+            <ContactForm />
+          </div>
+        </Reveal>
 
         <Reveal delay={80} className="mt-16">
           <div className="h-[360px] overflow-hidden rounded-2xl shadow-soft [filter:grayscale(1)_contrast(0.95)] lg:h-[500px]">

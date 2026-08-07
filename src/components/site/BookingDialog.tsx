@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   useCallback,
   useEffect,
@@ -60,7 +60,7 @@ function bookingErrorMessage(error: unknown): string {
   return common.booking.submitError;
 }
 
-const contactSchema = z.object({
+const baseContactSchema = z.object({
   customer_name: z.string().trim().min(2, common.booking.nameError).max(200, common.booking.nameError),
   customer_email: z
     .string()
@@ -74,8 +74,16 @@ const contactSchema = z.object({
     .max(50, common.booking.phoneError),
 });
 
+const companySchema = z.object({
+  company_name: z.string().trim().min(2, common.booking.companyNameError).max(200),
+  company_code: z.string().trim().min(2, common.booking.companyCodeError).max(50),
+  company_vat_code: z.string().trim().max(50).optional(),
+  company_address: z.string().trim().min(4, common.booking.companyAddressError).max(300),
+});
 
-type ContactErrors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
+type ContactErrors = Partial<
+  Record<keyof z.infer<typeof baseContactSchema> | keyof z.infer<typeof companySchema>, string>
+>;
 
 function TextField({
   label,
@@ -212,6 +220,14 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [infants, setInfants] = useState(0);
   const [property, setProperty] = useState<BookingProperty | null>(null);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
+  const [isCompany, setIsCompany] = useState(false);
+  const [company, setCompany] = useState({
+    company_name: "",
+    company_code: "",
+    company_vat_code: "",
+    company_address: "",
+  });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [contact, setContact] = useState({
     customer_name: "",
     customer_email: "",
@@ -238,6 +254,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     setSelectedExtras([]);
     setSubmitError(null);
     setContactErrors({});
+    setAcceptedTerms(false);
     setIsOpen(true);
   }, []);
 
@@ -272,17 +289,23 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       }),
   });
 
-  const canSubmit = canQuote && quote.data?.available !== false && !isSubmitting;
+  const canSubmit =
+    canQuote && quote.data?.available !== false && !isSubmitting && acceptedTerms;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isSubmitting) return;
     setSubmitError(null);
 
-    const parsed = contactSchema.safeParse(contact);
-    if (!parsed.success) {
+    const parsed = baseContactSchema.safeParse(contact);
+    const parsedCompany = isCompany ? companySchema.safeParse(company) : null;
+    if (!parsed.success || (parsedCompany && !parsedCompany.success)) {
       const errors: ContactErrors = {};
-      for (const issue of parsed.error.issues) {
+      const issues = [
+        ...(parsed.success ? [] : parsed.error.issues),
+        ...(parsedCompany && !parsedCompany.success ? parsedCompany.error.issues : []),
+      ];
+      for (const issue of issues) {
         const key = issue.path[0] as keyof ContactErrors;
         if (key && !errors[key]) errors[key] = issue.message;
       }
@@ -290,6 +313,11 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       return;
     }
     setContactErrors({});
+
+    if (!acceptedTerms) {
+      setSubmitError(common.booking.consentError);
+      return;
+    }
 
     if (!canQuote) {
       setSubmitError(common.booking.needQuote);
@@ -308,6 +336,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
           infants,
           extras: selectedExtras.map((name) => ({ name })),
           ...parsed.data,
+          accepted_terms: true,
+          is_company: isCompany,
+          ...(isCompany && parsedCompany?.success ? parsedCompany.data : {}),
         },
       });
       storeBooking({
@@ -494,6 +525,80 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                   />
                 </div>
               </fieldset>
+
+              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink">
+                <input
+                  type="checkbox"
+                  checked={isCompany}
+                  onChange={(event) => setIsCompany(event.target.checked)}
+                  className="h-4 w-4 accent-[var(--color-sage,#5A6B5D)]"
+                />
+                {common.booking.companyToggle}
+              </label>
+
+              {isCompany ? (
+                <fieldset className="space-y-4">
+                  <legend className="label-caps text-stone">{common.booking.companyTitle}</legend>
+                  <TextField
+                    label={common.booking.companyName}
+                    value={company.company_name}
+                    autoComplete="organization"
+                    error={contactErrors.company_name}
+                    onChange={(value) => setCompany((c) => ({ ...c, company_name: value }))}
+                  />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <TextField
+                      label={common.booking.companyCode}
+                      value={company.company_code}
+                      error={contactErrors.company_code}
+                      onChange={(value) => setCompany((c) => ({ ...c, company_code: value }))}
+                    />
+                    <TextField
+                      label={common.booking.companyVat}
+                      value={company.company_vat_code}
+                      error={contactErrors.company_vat_code}
+                      onChange={(value) => setCompany((c) => ({ ...c, company_vat_code: value }))}
+                    />
+                  </div>
+                  <TextField
+                    label={common.booking.companyAddress}
+                    value={company.company_address}
+                    autoComplete="street-address"
+                    error={contactErrors.company_address}
+                    onChange={(value) => setCompany((c) => ({ ...c, company_address: value }))}
+                  />
+                </fieldset>
+              ) : null}
+
+              <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-stone">
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(event) => setAcceptedTerms(event.target.checked)}
+                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--color-sage,#5A6B5D)]"
+                />
+                <span>
+                  {common.booking.consentPrefix}{" "}
+                  <Link
+                    to="/taisykles"
+                    target="_blank"
+                    className="text-sage underline underline-offset-2"
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    {common.booking.consentTerms}
+                  </Link>{" "}
+                  {common.booking.consentAnd}{" "}
+                  <Link
+                    to="/privatumo-politika"
+                    target="_blank"
+                    className="text-sage underline underline-offset-2"
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    {common.booking.consentPrivacy}
+                  </Link>
+                  .
+                </span>
+              </label>
 
               {submitError ? (
                 <p role="alert" className="rounded-xl bg-linen p-4 text-sm text-ink">

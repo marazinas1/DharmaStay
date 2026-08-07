@@ -4,6 +4,7 @@ import { MapPin } from "lucide-react";
 import { Enso } from "@/components/site/Enso";
 import { Logo } from "@/components/site/Logo";
 import { common } from "@/content/lt/common";
+import { legal } from "@/content/lt/legal";
 import { footerNav } from "@/data/nav";
 import { contact } from "@/data/contact";
 
@@ -66,9 +67,17 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <p className="mt-16 border-t border-warm-white/15 pt-6 text-xs text-warm-white/55">
-          © {new Date().getFullYear()} Dharma Stay. Rezervacijos tiesiogiai, be tarpininkų.
-        </p>
+        <div className="mt-16 flex flex-col gap-3 border-t border-warm-white/15 pt-6 text-xs text-warm-white/55 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Dharma Stay. Rezervacijos tiesiogiai, be tarpininkų.</p>
+          <nav aria-label="Teisinė informacija" className="flex gap-5">
+            <Link to="/taisykles" className="hover:text-warm-white">
+              {legal.rental.title}
+            </Link>
+            <Link to="/privatumo-politika" className="hover:text-warm-white">
+              {legal.privacy.title}
+            </Link>
+          </nav>
+        </div>
       </div>
     </footer>
   );

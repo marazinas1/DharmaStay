@@ -107,7 +107,46 @@ export const bookingInputSchema = quoteInputSchema.extend({
   customer_email: z.string().email().max(255),
   customer_phone: z.string().min(5).max(50),
   bic: z.string().max(20).optional(),
+  accepted_terms: z.literal(true),
+  is_company: z.boolean().default(false),
+  company_name: z.string().max(200).optional(),
+  company_code: z.string().max(50).optional(),
+  company_vat_code: z.string().max(50).optional(),
+  company_address: z.string().max(300).optional(),
 });
+
+export const legalKindSchema = z.enum(["rental", "privacy"]);
+
+export const legalInputSchema = z.object({
+  kind: legalKindSchema,
+  language: z.string().min(2).max(5).default("lt"),
+});
+
+export const legalResponseSchema = z.object({
+  data: z.object({
+    kind: z.string(),
+    language: z.string().nullish(),
+    name: z.string().nullish(),
+    content: z.string().nullish(),
+    updated_at: z.string().nullish(),
+  }),
+});
+
+export type LegalKind = z.infer<typeof legalKindSchema>;
+
+export const contactMessageSchema = z.object({
+  name: z.string().trim().min(2).max(120),
+  email: z.string().trim().email().max(255),
+  phone: z.string().trim().max(50).optional(),
+  message: z.string().trim().min(10).max(2000),
+});
+
+export type LegalDocument = {
+  kind: string;
+  name: string;
+  html: string;
+  updated_at: string | null;
+};
 
 export const bookingResponseSchema = z.object({
   data: z.object({

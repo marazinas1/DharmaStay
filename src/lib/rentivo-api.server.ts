@@ -4,14 +4,18 @@ import {
   bookingInputSchema,
   bookingResponseSchema,
   bookingStatusResponseSchema,
+  legalResponseSchema,
   paymentDetailsResponseSchema,
   propertiesResponseSchema,
   propertyDetailResponseSchema,
   quoteInputSchema,
   quoteResponseSchema,
   type BookingInput,
+  type LegalDocument,
+  type LegalKind,
   type QuoteInput,
 } from "@/lib/rentivo-schemas";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 import { resolveRentivoConfig } from "@/lib/runtime-env.server";
 
 /** Server-only Core (Rentivo) API client. The API key never leaves this module. */
@@ -122,4 +126,51 @@ export async function fetchBookingStatus(bookingNumber: string, email: string) {
     `/bookings/${encodeURIComponent(bookingNumber)}?email=${encodeURIComponent(email)}`,
   );
   return parseOrThrow(bookingStatusResponseSchema, payload, "/bookings/:number").data;
+}
+
+/* ---- Legal documents (rental terms, privacy policy) ---- */
+
+export type ContactMessage = {
+  name: string;
+  email: string;
+  phone?: string | undefined;
+  message: string;
+};
+
+/**
+ * Core does not expose a contact endpoint yet. The single place to point at it
+ * once it exists — until then the caller falls back to the e-mail link.
+ */
+export async function sendContactMessage(input: ContactMessage): Promise<{ delivered: boolean }> {
+  try {
+    await rentivoFetch("/contact", { method: "POST", body: JSON.stringify(input) });
+    return { delivered: true };
+  } catch (error) {
+    if (error instanceof RentivoError && (error.status === 404 || error.status === 405)) {
+      return { delivered: false };
+    }
+    throw error;
+  }
+}
+
+const LEGAL_TTL_MS = 5 * 60 * 1000;
+const legalCache = new Map<string, { at: number; doc: LegalDocument }>();
+
+export async function fetchLegal(kind: LegalKind, language = "lt"): Promise<LegalDocument> {
+  const key = `${kind}:${language}`;
+  const cached = legalCache.get(key);
+  if (cached && Date.now() - cached.at < LEGAL_TTL_MS) return cached.doc;
+
+  const payload = await rentivoFetch(
+    `/legal?kind=${encodeURIComponent(kind)}&language=${encodeURIComponent(language)}`,
+  );
+  const raw = parseOrThrow(legalResponseSchema, payload, "/legal").data;
+  const doc: LegalDocument = {
+    kind: raw.kind,
+    name: raw.name ?? "",
+    html: sanitizeHtml(raw.content ?? ""),
+    updated_at: raw.updated_at ?? null,
+  };
+  legalCache.set(key, { at: Date.now(), doc });
+  return doc;
 }
