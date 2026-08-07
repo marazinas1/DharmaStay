@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { MapPin } from "lucide-react";
 
 import { Enso } from "@/components/site/Enso";
 import { Logo } from "@/components/site/Logo";
@@ -57,8 +58,9 @@ export function SiteFooter() {
               href={contact.mapUrl}
               target="_blank"
               rel="noreferrer"
-              className="mt-6 flex h-28 items-center justify-center rounded-2xl border border-warm-white/25 text-sm text-warm-white/75 hover:border-warm-white/50"
+              className="mt-4 inline-flex items-center gap-2 text-sm text-warm-white/85 hover:text-warm-white"
             >
+              <MapPin className="h-4 w-4" aria-hidden />
               {common.cta.openMap}
             </a>
           </div>

@@ -15,6 +15,9 @@ export type CategoryGroup = {
   image: string | null;
   imageAlt: string;
   count: number;
+  areaMin: number | null;
+  areaMax: number | null;
+  maxGuests: number | null;
 };
 
 const KNOWN_ORDER = ["standard", "terrace", "cottage"] as const;
@@ -69,6 +72,22 @@ export function uncategorized(properties: Property[]): Property[] {
   return properties.filter((property) => !normalizeCategory(property.property_type));
 }
 
+/** Compact facts line for a category card: "18–35 m² · iki 4 svečių". */
+export function categoryFacts(group: CategoryGroup): string {
+  const parts: string[] = [];
+  if (group.areaMin !== null && group.areaMax !== null) {
+    parts.push(
+      group.areaMin === group.areaMax
+        ? `${group.areaMin} m²`
+        : `${group.areaMin}–${group.areaMax} m²`,
+    );
+  }
+  if (group.maxGuests !== null) {
+    parts.push(`${common.labels.upTo} ${group.maxGuests} ${common.labels.guestsLower}`);
+  }
+  return parts.join(" · ");
+}
+
 export function groupByCategory(properties: Property[]): CategoryGroup[] {
   const buckets = new Map<string, Property[]>();
   for (const property of properties) {
@@ -99,6 +118,12 @@ export function groupByCategory(properties: Property[]): CategoryGroup[] {
       (cheapest ? imageOf(cheapest) : null) ??
       items.map(imageOf).find((url): url is string => Boolean(url)) ??
       null;
+    const areas = items
+      .map((item) => item.area_m2)
+      .filter((value): value is number => typeof value === "number" && value > 0);
+    const guests = items
+      .map((item) => item.max_guests)
+      .filter((value): value is number => typeof value === "number" && value > 0);
 
     return {
       code,
@@ -108,6 +133,9 @@ export function groupByCategory(properties: Property[]): CategoryGroup[] {
       image,
       imageAlt: `${label} — ${common.brand}`,
       count: items.length,
+      areaMin: areas.length > 0 ? Math.min(...areas) : null,
+      areaMax: areas.length > 0 ? Math.max(...areas) : null,
+      maxGuests: guests.length > 0 ? Math.max(...guests) : null,
     };
   });
 }

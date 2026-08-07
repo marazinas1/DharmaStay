@@ -49,7 +49,7 @@ export function EnsoFrame({
 }) {
   return (
     <span className={cn("relative inline-grid h-16 w-16 place-items-center", className)}>
-      <Enso className="absolute inset-0 h-full w-full text-sage/45" />
+      <Enso className="absolute inset-0 h-full w-full text-sage/60" />
       <span className="relative">{children}</span>
     </span>
   );

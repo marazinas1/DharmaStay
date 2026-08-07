@@ -2,8 +2,16 @@ import { EnsoFrame } from "@/components/site/Enso";
 import { Reveal } from "@/components/site/Reveal";
 
 const ratings = [
-  { score: "9,0", label: "Standartiniai apartamentai", note: "Švara ir ramybė – dažniausiai minimi žodžiai." },
-  { score: "9,3", label: "Apartamentai su terasa", note: "Vaizdas į senamiestį, kurio svečiai neužmiršta." },
+  {
+    score: "9,0",
+    label: "Standartiniai apartamentai",
+    note: "Booking.com svečių įvertinimas. Dažniausiai giriama švara ir vieta.",
+  },
+  {
+    score: "9,3",
+    label: "Apartamentai su terasa",
+    note: "Booking.com svečių įvertinimas. Dažniausiai giriama terasa ir ramybė.",
+  },
 ];
 
 export function Ratings() {
