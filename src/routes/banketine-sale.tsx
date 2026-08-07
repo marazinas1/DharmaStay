@@ -32,7 +32,7 @@ function BanquetPage() {
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: banketineSale.title }]}
       />
       <PageSection>
-        <Reveal className="max-w-3xl">
+        <Reveal className="mx-auto max-w-3xl text-center">
           <Prose>
             {banketineSale.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>

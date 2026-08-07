@@ -27,7 +27,7 @@ function VouchersPage() {
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: dovanuKuponai.eyebrow }]}
       />
       <PageSection>
-        <Reveal className="max-w-3xl">
+        <Reveal className="mx-auto max-w-3xl text-center">
           <Prose>
             {dovanuKuponai.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>

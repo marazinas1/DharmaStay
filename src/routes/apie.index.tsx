@@ -32,7 +32,7 @@ function AboutPage() {
       <PageHero eyebrow={apie.eyebrow} title={apie.title} lead={apie.lead} />
 
       <PageSection>
-        <div className="max-w-3xl space-y-14">
+        <div className="mx-auto max-w-3xl space-y-14 text-center">
           {apie.sections.map((section, index) => (
             <Reveal key={section.title} delay={index * 80}>
               <h2 className="font-display text-[clamp(1.6rem,3.2vw,2rem)] font-medium text-ink">
