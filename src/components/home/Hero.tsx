@@ -8,6 +8,7 @@ import { useBooking } from "@/components/site/booking-context";
 
 export function Hero() {
   const { open } = useBooking();
+  const sectionRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   // Cheap scroll-driven fade/lift: one CSS variable, rAF-throttled.
@@ -20,6 +21,7 @@ export function Hero() {
       frame = 0;
       const progress = Math.min(1, window.scrollY / (window.innerHeight * 0.75));
       node.style.setProperty("--hero-progress", progress.toFixed(3));
+      sectionRef.current?.style.setProperty("--hero-scroll", String(window.scrollY));
     };
 
     const onScroll = () => {
@@ -35,7 +37,11 @@ export function Hero() {
   }, []);
 
   return (
-    <section id="top" className="relative isolate min-h-[92vh] overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="top"
+      className="relative isolate min-h-[92vh] overflow-hidden"
+    >
       <picture>
         <source srcSet={heroImageWebp} type="image/webp" />
         <img
@@ -45,7 +51,7 @@ export function Hero() {
           height={1440}
           fetchPriority="high"
           decoding="async"
-          className="hero-kenburns absolute inset-0 h-full w-full object-cover"
+          className="hero-parallax absolute inset-0 h-[118%] w-full object-cover"
         />
       </picture>
       <div className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/25 to-ink/55" />

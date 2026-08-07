@@ -223,6 +223,13 @@
   will-change: transform;
 }
 
+/* Hero image: subtle parallax drift driven by --hero-scroll (px scrolled). */
+@utility hero-parallax {
+  top: -9%;
+  transform: translate3d(0, calc(var(--hero-scroll, 0) * 0.18px), 0) scale(1.02);
+  will-change: transform;
+}
+
 /* Hero content fade/lift driven by --hero-progress (0 → 1). */
 @utility hero-fade {
   opacity: calc(1 - var(--hero-progress, 0));
@@ -280,7 +287,8 @@
 
   .hero-kenburns,
   .photo-zoom,
-  .arrow-nudge {
+  .arrow-nudge,
+  .hero-parallax {
     animation: none !important;
     transform: none !important;
   }
