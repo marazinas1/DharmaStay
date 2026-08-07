@@ -1,6 +1,6 @@
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound, redirect, useRouter } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { DateRange } from "react-day-picker";
 
 import { PageHero } from "@/components/site/PageHero";
