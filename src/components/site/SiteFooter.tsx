@@ -40,6 +40,15 @@ export function SiteFooter() {
                 </a>
               </p>
             </address>
+            <a
+              href={contact.mapUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-sm text-warm-white/85 hover:text-warm-white"
+            >
+              <MapPin className="h-4 w-4" aria-hidden />
+              {common.cta.openMap}
+            </a>
           </div>
 
           <div>
@@ -55,16 +64,8 @@ export function SiteFooter() {
                 </Link>
               ))}
             </nav>
-            <a
-              href={contact.mapUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-4 inline-flex items-center gap-2 text-sm text-warm-white/85 hover:text-warm-white"
-            >
-              <MapPin className="h-4 w-4" aria-hidden />
-              {common.cta.openMap}
-            </a>
           </div>
+
         </div>
 
         <div className="mt-16 flex flex-col gap-3 border-t border-warm-white/15 pt-6 text-xs text-warm-white/55 sm:flex-row sm:items-center sm:justify-between">
