@@ -145,6 +145,7 @@ export function AvailabilityBand() {
                     nights={data.nights}
                     dateFrom={dateFrom as string}
                     dateTo={dateTo as string}
+                    adults={adults}
                   />
                 ))}
               </div>
@@ -161,11 +162,13 @@ function AvailabilityTypeCard({
   nights,
   dateFrom,
   dateTo,
+  adults,
 }: {
   group: AvailabilityGroup;
   nights: number;
   dateFrom: string;
   dateTo: string;
+  adults: number;
 }) {
   const label = categoryLabel(group.code);
   const free = group.free_count > 0;
@@ -204,7 +207,7 @@ function AvailabilityTypeCard({
     <Link
       to="/apartamentai/tipas/$categorySlug"
       params={{ categorySlug: categorySlug(group.code) }}
-      search={{ nuo: dateFrom, iki: dateTo }}
+      search={{ nuo: dateFrom, iki: dateTo, sveciai: adults }}
       className="group rounded-2xl border border-border bg-linen/60 p-5 transition-shadow hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage"
     >
       {body}
