@@ -62,67 +62,62 @@ function ContactsPage() {
       />
 
       <PageSection>
-        <div className="grid gap-12 sm:grid-cols-3">
-          <Reveal>
-            <MapPin className="h-5 w-5 text-sage" aria-hidden />
-            <h2 className="label-caps mt-4 text-stone/80">{kontaktai.addressLabel}</h2>
-            <address className="mt-3 text-base not-italic leading-relaxed text-ink">
-              {contact.address}
-            </address>
-            <p className="mt-2 text-sm text-stone">{kontaktai.cottageNote}</p>
-          </Reveal>
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="grid gap-12 sm:grid-cols-3">
+            <Reveal>
+              <MapPin className="mx-auto h-5 w-5 text-sage" aria-hidden />
+              <h2 className="label-caps mt-4 text-stone/80">{kontaktai.addressLabel}</h2>
+              <address className="mt-3 text-base not-italic leading-relaxed text-ink">
+                {contact.address}
+              </address>
+              <p className="mt-2 text-sm text-stone">{kontaktai.cottageNote}</p>
+            </Reveal>
 
-          <Reveal delay={80}>
-            <Phone className="h-5 w-5 text-sage" aria-hidden />
-            <h2 className="label-caps mt-4 text-stone/80">{kontaktai.phonesLabel}</h2>
-            <div className="mt-3 space-y-2 text-base text-ink">
-              {contact.phones.map((phone) => (
-                <p key={phone}>
-                  <a className="hover:text-sage" href={`tel:${phone.replace(/\s/g, "")}`}>
-                    {phone}
-                  </a>
-                </p>
-              ))}
-            </div>
-          </Reveal>
+            <Reveal delay={80}>
+              <Phone className="mx-auto h-5 w-5 text-sage" aria-hidden />
+              <h2 className="label-caps mt-4 text-stone/80">{kontaktai.phonesLabel}</h2>
+              <div className="mt-3 space-y-2 text-base text-ink">
+                {contact.phones.map((phone) => (
+                  <p key={phone}>
+                    <a className="hover:text-sage" href={`tel:${phone.replace(/\s/g, "")}`}>
+                      {phone}
+                    </a>
+                  </p>
+                ))}
+              </div>
+            </Reveal>
 
-          <Reveal delay={160}>
-            <Mail className="h-5 w-5 text-sage" aria-hidden />
-            <h2 className="label-caps mt-4 text-stone/80">{kontaktai.emailLabel}</h2>
-            <p className="mt-3 text-base text-ink">
-              <a className="hover:text-sage" href={`mailto:${contact.email}`}>
-                {contact.email}
-              </a>
-            </p>
-            <a
-              href={contact.mapUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-6 inline-flex rounded-full border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
-            >
-              {common.cta.openMap}
-            </a>
-          </Reveal>
+            <Reveal delay={160}>
+              <Mail className="mx-auto h-5 w-5 text-sage" aria-hidden />
+              <h2 className="label-caps mt-4 text-stone/80">{kontaktai.emailLabel}</h2>
+              <p className="mt-3 text-base text-ink">
+                <a className="hover:text-sage" href={`mailto:${contact.email}`}>
+                  {contact.email}
+                </a>
+              </p>
+            </Reveal>
+          </div>
         </div>
+
+        <Reveal delay={80} className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <ContactForm />
+          </div>
+        </Reveal>
+
+        <Reveal delay={80} className="mt-16">
+          <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl shadow-soft [filter:grayscale(1)_contrast(0.95)]">
+            <div className="h-[360px] lg:h-[500px]">
+              <ClientOnly fallback={<MapSkeleton />}>
+                <Suspense fallback={<MapSkeleton />}>
+                  <LocationMap />
+                </Suspense>
+              </ClientOnly>
+            </div>
+          </div>
+        </Reveal>
       </PageSection>
 
-      <section className="bg-linen px-6 py-20 lg:px-12 lg:py-24">
-        <div className="mx-auto max-w-7xl">
-          <Reveal delay={80}>
-            <ContactForm />
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="bg-warm-white">
-        <div className="h-[360px] overflow-hidden [filter:grayscale(1)_contrast(0.95)] lg:h-[500px]">
-          <ClientOnly fallback={<MapSkeleton />}>
-            <Suspense fallback={<MapSkeleton />}>
-              <LocationMap />
-            </Suspense>
-          </ClientOnly>
-        </div>
-      </section>
 
     </>
   );
