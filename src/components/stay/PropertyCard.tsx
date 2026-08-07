@@ -7,15 +7,27 @@ import { common } from "@/content/lt/common";
 import { formatPrice, type PropertyView } from "@/lib/property-view";
 import { usePropertySlug } from "@/lib/property-slug";
 
-export function PropertyCard({ property, index }: { property: PropertyView; index: number }) {
+export function PropertyCard({
+  property,
+  index,
+  nuo,
+  iki,
+}: {
+  property: PropertyView;
+  index: number;
+  nuo?: string;
+  iki?: string;
+}) {
   const { open } = useBooking();
   const slugFor = usePropertySlug();
+  const dateSearch = { ...(nuo ? { nuo } : {}), ...(iki ? { iki } : {}) };
 
   return (
     <Reveal delay={index * 110}>
       <Link
         to="/apartamentai/$propertyId"
         params={{ propertyId: slugFor(property.id) }}
+        search={dateSearch}
         aria-label={property.name}
         className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage focus-visible:ring-offset-2"
       >
@@ -56,7 +68,14 @@ export function PropertyCard({ property, index }: { property: PropertyView; inde
               onClick={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                open(property.id, undefined, { name: property.name });
+                open(
+                  property.id,
+                  {
+                    ...(nuo ? { checkin: nuo } : {}),
+                    ...(iki ? { checkout: iki } : {}),
+                  },
+                  { name: property.name },
+                );
               }}
               className="rounded-full bg-sage px-5 py-2.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
             >

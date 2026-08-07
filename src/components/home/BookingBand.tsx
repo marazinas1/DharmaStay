@@ -1,9 +1,7 @@
-import { useBooking } from "@/components/site/booking-context";
 import { Enso } from "@/components/site/Enso";
+import { AVAILABILITY_SECTION_ID, scrollToId } from "@/lib/scroll-to";
 
 export function BookingBand() {
-  const { open } = useBooking();
-
   return (
     <section className="bg-sage px-6 py-24 text-warm-white lg:px-12">
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
@@ -16,7 +14,7 @@ export function BookingBand() {
         </p>
         <button
           type="button"
-          onClick={() => open()}
+          onClick={() => scrollToId(AVAILABILITY_SECTION_ID)}
           className="mt-9 rounded-full bg-warm-white px-8 py-3.5 text-sm font-medium text-sage-deep transition-colors hover:bg-linen"
         >
           Tikrinti laisvas datas

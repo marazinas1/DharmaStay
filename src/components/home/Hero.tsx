@@ -4,10 +4,9 @@ import { useEffect, useRef } from "react";
 import heroImage from "@/assets/hero-telsiai-lake.jpg";
 import heroImageWebp from "@/assets/hero-telsiai-lake.webp";
 import { Enso } from "@/components/site/Enso";
-import { useBooking } from "@/components/site/booking-context";
+import { AVAILABILITY_SECTION_ID, scrollToId } from "@/lib/scroll-to";
 
 export function Hero() {
-  const { open } = useBooking();
   const sectionRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -72,7 +71,7 @@ export function Hero() {
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <button
               type="button"
-              onClick={() => open()}
+              onClick={() => scrollToId(AVAILABILITY_SECTION_ID)}
               className="rounded-full bg-sage px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
             >
               Tikrinti laisvas datas

@@ -73,7 +73,13 @@ function CategoryList({ code, nuo, iki }: { code: string; nuo?: string; iki?: st
     nuo && iki && availability
       ? inCategory.filter((property) => availability.free_ids.includes(property.id))
       : inCategory;
-  return <PropertyGrid properties={properties} />;
+  return (
+    <PropertyGrid
+      properties={properties}
+      {...(nuo ? { nuo } : {})}
+      {...(iki ? { iki } : {})}
+    />
+  );
 }
 
 function CategoryPageError() {
