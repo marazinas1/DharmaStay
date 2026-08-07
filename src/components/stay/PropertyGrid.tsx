@@ -4,13 +4,27 @@ import { PropertyCard } from "@/components/stay/PropertyCard";
 import { toPropertyView } from "@/lib/property-view";
 import type { Property } from "@/lib/rentivo-schemas";
 
-export function PropertyGrid({ properties }: { properties: Property[] }) {
+export function PropertyGrid({
+  properties,
+  nuo,
+  iki,
+}: {
+  properties: Property[];
+  nuo?: string;
+  iki?: string;
+}) {
   if (properties.length === 0) return <PropertyEmpty />;
 
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {properties.map((property, index) => (
-        <PropertyCard key={property.id} property={toPropertyView(property)} index={index} />
+        <PropertyCard
+          key={property.id}
+          property={toPropertyView(property)}
+          index={index}
+          {...(nuo ? { nuo } : {})}
+          {...(iki ? { iki } : {})}
+        />
       ))}
     </div>
   );

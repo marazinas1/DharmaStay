@@ -1,13 +1,17 @@
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound, redirect, useRouter } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { DateRange } from "react-day-picker";
 
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
 import { useBooking } from "@/components/site/booking-context";
-import { AvailabilityCalendar, toApiDate } from "@/components/stay/AvailabilityCalendar";
+import {
+  AvailabilityCalendar,
+  parseApiDate,
+  toApiDate,
+} from "@/components/stay/AvailabilityCalendar";
 import { PropertyError } from "@/components/stay/PropertyGrid";
 import { PropertyIntro, propertyLd } from "@/components/stay/PropertySections";
 import { StayCrossLinks } from "@/components/stay/StayCrossLinks";
@@ -28,6 +32,10 @@ const propertyQuery = (id: string) =>
   });
 
 export const Route = createFileRoute("/apartamentai/$propertyId")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    ...(typeof search['nuo'] === "string" ? { nuo: search['nuo'] } : {}),
+    ...(typeof search['iki'] === "string" ? { iki: search['iki'] } : {}),
+  }),
   loader: async ({ context, params }) => {
     const properties = await context.queryClient.ensureQueryData(propertiesQuery);
     // Legacy UUID URLs permanently redirect to their slug.
@@ -95,13 +103,21 @@ export const Route = createFileRoute("/apartamentai/$propertyId")({
 
 function PropertyPage() {
   const { id } = Route.useLoaderData();
+  const { nuo, iki } = Route.useSearch();
   const { data } = useSuspenseQuery(propertyQuery(id));
   const view = toPropertyView(data);
   const { open } = useBooking();
   const gallery = data.image_urls.filter((url) => url !== view.image);
   const sideImage = gallery[0] ?? view.image;
   const grid = (gallery[0] ? gallery.slice(1) : gallery).slice(0, 6);
-  const [range, setRange] = useState<DateRange | undefined>(undefined);
+  // Dates picked earlier (availability band → category list) pre-select here.
+  const initialRange = useMemo<DateRange | undefined>(() => {
+    const from = nuo ? parseApiDate(nuo) : null;
+    const to = iki ? parseApiDate(iki) : null;
+    if (!from) return undefined;
+    return to ? { from, to } : { from };
+  }, [nuo, iki]);
+  const [range, setRange] = useState<DateRange | undefined>(initialRange);
 
   const paragraphs = (data.description ?? "")
     .split(/\n\s*\n/)
