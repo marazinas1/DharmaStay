@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 import type { ExtraService } from "@/lib/rentivo-schemas";
 
-export type BookingDates = { checkin?: string; checkout?: string };
+export type BookingDates = { checkin?: string; checkout?: string; adults?: number };
 
 /** Extra context the property page can pass through (already fetched there). */
 export type BookingProperty = {
