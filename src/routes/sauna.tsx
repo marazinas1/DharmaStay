@@ -23,7 +23,7 @@ function SaunaPage() {
         crumbs={[{ label: "Pagrindinis", to: "/" }, { label: sauna.eyebrow }]}
       />
       <PageSection>
-        <Reveal className="mx-auto max-w-3xl text-center">
+        <Reveal className="max-w-3xl">
           <Prose>
             {sauna.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>

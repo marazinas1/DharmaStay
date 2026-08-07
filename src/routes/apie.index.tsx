@@ -32,7 +32,7 @@ function AboutPage() {
       <PageHero eyebrow={apie.eyebrow} title={apie.title} lead={apie.lead} />
 
       <PageSection>
-        <div className="mx-auto max-w-3xl space-y-14">
+        <div className="max-w-3xl space-y-14">
           {apie.sections.map((section, index) => (
             <Reveal key={section.title} delay={index * 80}>
               <h2 className="font-display text-[clamp(1.6rem,3.2vw,2rem)] font-medium text-ink">
@@ -49,7 +49,7 @@ function AboutPage() {
 
         <EnsoDivider className="my-16" />
 
-        <Reveal className="mx-auto max-w-3xl">
+        <Reveal>
           <Link
             to="/apie/taisykles"
             className="group flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-linen p-8 transition-shadow hover:shadow-soft"
