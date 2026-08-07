@@ -2,7 +2,12 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { availabilityInputSchema } from "@/lib/availability-schemas";
-import { bookingInputSchema, legalInputSchema, quoteInputSchema } from "@/lib/rentivo-schemas";
+import {
+  bookingInputSchema,
+  contactMessageSchema,
+  legalInputSchema,
+  quoteInputSchema,
+} from "@/lib/rentivo-schemas";
 
 /**
  * Thin server-function wrappers around the Core (Rentivo) API.
@@ -58,13 +63,6 @@ export const getLegal = createServerFn({ method: "GET" })
     const { fetchLegal } = await import("@/lib/rentivo-api.server");
     return fetchLegal(data.kind, data.language);
   });
-
-const contactMessageSchema = z.object({
-  name: z.string().trim().min(2).max(120),
-  email: z.string().trim().email().max(255),
-  phone: z.string().trim().max(50).optional(),
-  message: z.string().trim().min(10).max(2000),
-});
 
 export const sendContactMessageFn = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => contactMessageSchema.parse(data))
