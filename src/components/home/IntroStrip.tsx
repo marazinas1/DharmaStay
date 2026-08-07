@@ -11,9 +11,9 @@ export function IntroStrip() {
             Iš namų į namus.
           </p>
           <p className="mt-6 text-base leading-[1.75] text-stone sm:text-lg">
-            Dharma Stay – tai kelios ramios erdvės sename Telšių kvartale. Švarios linijos,
-            šilta šviesa ir tyla, kurios miestas dar nepamiršo. Atvykstate kaip svečias,
-            gyvenate kaip namuose.
+            Dharma Stay apartamentai įsikūrę pačioje Telšių širdyje, Birutės gatvėje, šalia
+            pagrindinės aikštės. Juos kūrėme taip, kad atvykę svečiai pasijustų lyg iš namų į
+            namus — ramiai, jaukiai ir be rūpesčių.
           </p>
         </Reveal>
       </div>

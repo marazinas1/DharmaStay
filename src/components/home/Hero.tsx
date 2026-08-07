@@ -62,10 +62,11 @@ export function Hero() {
         <div className="max-w-2xl">
           <p className="label-caps text-warm-white/75">Telšiai · Žemaitija</p>
           <h1 className="mt-6 font-display text-[clamp(2.75rem,6.5vw,4.25rem)] leading-[1.08] font-medium text-warm-white">
-            Vieta, kurioje lėtėja kvėpavimas
+            Apartamentai Telšių senamiestyje
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-warm-white/85 sm:text-lg">
-            Apartamentai ir namelis senamiesčio širdyje, keli žingsniai nuo Masčio ežero.
+            Šalia pagrindinės aikštės, keli žingsniai nuo Masčio ežero. Vieta trumpam sustoti
+            Žemaitijos širdyje.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">

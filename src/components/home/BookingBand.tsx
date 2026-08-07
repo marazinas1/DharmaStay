@@ -7,10 +7,10 @@ export function BookingBand() {
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
         <Enso className="h-9 w-9 text-warm-white/60" />
         <h2 className="mt-8 font-display text-[clamp(1.875rem,4.2vw,2.5rem)] leading-tight font-medium">
-          Pasitikrinkite datas
+          Rezervuokite tiesiogiai
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-warm-white/85">
-          Rezervuokite tiesiogiai pas mus – ta pati kaina, jokių tarpininkų.
+          Užsisakykite tiesiai iš mūsų — ta pati kaina, be tarpininkų ir be papildomų mokesčių.
         </p>
         <button
           type="button"
