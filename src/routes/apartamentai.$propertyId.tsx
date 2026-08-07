@@ -7,7 +7,11 @@ import { PageHero } from "@/components/site/PageHero";
 import { PageSection } from "@/components/site/Prose";
 import { Reveal } from "@/components/site/Reveal";
 import { useBooking } from "@/components/site/booking-context";
-import { AvailabilityCalendar, toApiDate } from "@/components/stay/AvailabilityCalendar";
+import {
+  AvailabilityCalendar,
+  parseApiDate,
+  toApiDate,
+} from "@/components/stay/AvailabilityCalendar";
 import { PropertyError } from "@/components/stay/PropertyGrid";
 import { PropertyIntro, propertyLd } from "@/components/stay/PropertySections";
 import { StayCrossLinks } from "@/components/stay/StayCrossLinks";
@@ -28,6 +32,10 @@ const propertyQuery = (id: string) =>
   });
 
 export const Route = createFileRoute("/apartamentai/$propertyId")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    ...(typeof search['nuo'] === "string" ? { nuo: search['nuo'] } : {}),
+    ...(typeof search['iki'] === "string" ? { iki: search['iki'] } : {}),
+  }),
   loader: async ({ context, params }) => {
     const properties = await context.queryClient.ensureQueryData(propertiesQuery);
     // Legacy UUID URLs permanently redirect to their slug.
