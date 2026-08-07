@@ -44,10 +44,11 @@ export function StaysSection({
           <div className="max-w-2xl">
             <p className="label-caps text-sage">Apgyvendinimas</p>
             <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
-              Trys būdai pabūti Telšiuose
+              Kur apsistoti
             </h2>
             <p className="mt-5 text-base leading-relaxed text-stone sm:text-lg">
-              Kiekviena erdvė paruošta tam pačiam – kad atvykę nieko nereikėtų spręsti.
+              Standartiniai apartamentai, apartamentai su terasa ir atskiras namelis su pirtimi.
+              Kiekviename rasite viską, ko reikia geram poilsiui.
             </p>
           </div>
         )}
