@@ -221,6 +221,14 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [infants, setInfants] = useState(0);
   const [property, setProperty] = useState<BookingProperty | null>(null);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
+  const [isCompany, setIsCompany] = useState(false);
+  const [company, setCompany] = useState({
+    company_name: "",
+    company_code: "",
+    company_vat_code: "",
+    company_address: "",
+  });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [contact, setContact] = useState({
     customer_name: "",
     customer_email: "",
@@ -247,6 +255,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     setSelectedExtras([]);
     setSubmitError(null);
     setContactErrors({});
+    setAcceptedTerms(false);
     setIsOpen(true);
   }, []);
 
@@ -288,10 +297,15 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (isSubmitting) return;
     setSubmitError(null);
 
-    const parsed = contactSchema.safeParse(contact);
-    if (!parsed.success) {
+    const parsed = baseContactSchema.safeParse(contact);
+    const parsedCompany = isCompany ? companySchema.safeParse(company) : null;
+    if (!parsed.success || (parsedCompany && !parsedCompany.success)) {
       const errors: ContactErrors = {};
-      for (const issue of parsed.error.issues) {
+      const issues = [
+        ...(parsed.success ? [] : parsed.error.issues),
+        ...(parsedCompany && !parsedCompany.success ? parsedCompany.error.issues : []),
+      ];
+      for (const issue of issues) {
         const key = issue.path[0] as keyof ContactErrors;
         if (key && !errors[key]) errors[key] = issue.message;
       }
@@ -299,6 +313,11 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       return;
     }
     setContactErrors({});
+
+    if (!acceptedTerms) {
+      setSubmitError(common.booking.consentError);
+      return;
+    }
 
     if (!canQuote) {
       setSubmitError(common.booking.needQuote);
@@ -317,6 +336,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
           infants,
           extras: selectedExtras.map((name) => ({ name })),
           ...parsed.data,
+          accepted_terms: true,
+          is_company: isCompany,
+          ...(isCompany && parsedCompany?.success ? parsedCompany.data : {}),
         },
       });
       storeBooking({
