@@ -18,17 +18,22 @@ export type PropertyView = {
 
 const amenityLabels: Record<string, string> = {
   wifi: "Belaidis internetas",
-  parking: "Nemokama automobilių stovėjimo vieta",
-  kitchen: "Virtuvė",
+  parking: "Automobilių stovėjimo vieta",
+  kitchen: "Virtuvėlė",
   tv: "Televizorius",
-  sauna: "Pirtis",
+  sauna: "Sauna",
   hot_tub: "Kubilas",
   terrace: "Terasa",
   air_conditioning: "Oro kondicionierius",
   washing_machine: "Skalbimo mašina",
   coffee: "Kavos aparatas",
+  coffee_machine: "Kavos aparatas",
   breakfast: "Pusryčiai",
   pets: "Su augintiniais",
+  pet_friendly: "Su augintiniais",
+  pool: "Baseinas",
+  first_aid: "Pirmosios pagalbos rinkinys",
+  extra_baby_bed: "Papildoma vaikiška lovytė",
   balcony: "Balkonas",
   bathroom: "Vonios kambarys",
   workspace: "Darbo vieta",
@@ -47,10 +52,15 @@ const amenityLabels: Record<string, string> = {
   bbq: "Kepsninė",
 };
 
-export function amenityLabel(code: string): string {
+/** Known amenity label, or null when the engine sends a code we can't translate. */
+export function amenityLabel(code: string): string | null {
   const key = code.trim().toLowerCase();
-  const label = amenityLabels[key] ?? key.replace(/[_-]+/g, " ");
-  return label.charAt(0).toUpperCase() + label.slice(1);
+  return amenityLabels[key] ?? null;
+}
+
+/** Labels for display: unknown codes are dropped, never rendered raw. */
+export function knownAmenities(codes: string[]): string[] {
+  return codes.map(amenityLabel).filter((label): label is string => label !== null);
 }
 
 export function propertyMeta(property: Property): string {
@@ -71,7 +81,7 @@ export function toPropertyView(property: Property): PropertyView {
     priceFrom: typeof property.price_per_night === "number" ? property.price_per_night : null,
     image: property.cover_image_url ?? property.image_urls[0] ?? null,
     imageAlt: `${property.name} — ${common.brand}`,
-    amenities: property.amenities.map(amenityLabel),
+    amenities: knownAmenities(property.amenities),
   };
 }
 
