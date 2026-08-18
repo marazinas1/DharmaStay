@@ -1,23 +1,26 @@
-import { Link } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 
 import { Enso } from "@/components/site/Enso";
+import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { Logo } from "@/components/site/Logo";
-import { common } from "@/content/lt/common";
-import { legal } from "@/content/lt/legal";
+import { useContent, useLocale } from "@/content";
 import { footerNav } from "@/data/nav";
 import { contact } from "@/data/contact";
 
 export function SiteFooter() {
+  const locale = useLocale();
+  const { common, legal } = useContent();
+  const links = footerNav(locale);
   return (
     <footer id="kontaktai" className="bg-sage-deep text-warm-white">
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-12">
         <div className="grid gap-12 md:grid-cols-3">
           <div>
             <Enso className="h-9 w-9 text-warm-white/60" />
-            <Link to="/" aria-label="Dharma Stay — į pradžią" className="mt-5 inline-flex">
+            <LocaleLink to="/" aria-label={common.brand} className="mt-5 inline-flex">
               <Logo className="h-24 w-24 text-warm-white" />
-            </Link>
+            </LocaleLink>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-warm-white/70">
               {common.footer.intro}
             </p>
@@ -53,15 +56,15 @@ export function SiteFooter() {
 
           <div>
             <h2 className="label-caps font-sans text-warm-white/60">{common.nav.site}</h2>
-            <nav aria-label="Poraštės navigacija" className="mt-5 flex flex-col gap-2 text-sm">
-              {footerNav.map((item) => (
-                <Link
+            <nav aria-label="Footer" className="mt-5 flex flex-col gap-2 text-sm">
+              {links.map((item) => (
+                <LocaleLink
                   key={item.to}
                   to={item.to}
                   className="text-warm-white/85 hover:text-warm-white"
                 >
                   {item.label}
-                </Link>
+                </LocaleLink>
               ))}
             </nav>
           </div>
@@ -69,14 +72,17 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-16 flex flex-col gap-3 border-t border-warm-white/15 pt-6 text-xs text-warm-white/55 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Dharma Stay. Rezervacijos tiesiogiai, be tarpininkų.</p>
-          <nav aria-label="Teisinė informacija" className="flex gap-5">
-            <Link to="/taisykles" className="hover:text-warm-white">
+          <p>
+            © {new Date().getFullYear()} {common.brand}. {common.footer.rights}
+          </p>
+          <nav aria-label="Legal" className="flex gap-5">
+            <LocaleLink to="/taisykles" className="hover:text-warm-white">
               {legal.rental.title}
-            </Link>
-            <Link to="/privatumo-politika" className="hover:text-warm-white">
+            </LocaleLink>
+            <LocaleLink to="/privatumo-politika" className="hover:text-warm-white">
               {legal.privacy.title}
-            </Link>
+            </LocaleLink>
+            <LanguageSwitcher tone="light" className="text-warm-white/70" />
           </nav>
         </div>
       </div>

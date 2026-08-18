@@ -2,9 +2,12 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { Logo } from "@/components/site/Logo";
-import { common } from "@/content/lt/common";
+import { useContent, useLocale } from "@/content";
 import { mainNav, type NavEntry, type NavLink } from "@/data/nav";
+import { localizePath } from "@/lib/locale";
 import { AVAILABILITY_SECTION_ID, scrollToId } from "@/lib/scroll-to";
 import { cn } from "@/lib/utils";
 
@@ -20,14 +23,19 @@ export function SiteHeader() {
   const navRef = useRef<HTMLDivElement | null>(null);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const navigate = useNavigate();
+  const locale = useLocale();
+  const content = useContent();
+  const common = content.common;
+  const nav = mainNav(locale);
+  const homePath = localizePath("/", locale);
 
   // The header CTA leads to the shared availability calendar on the home page.
   const goToAvailability = () => {
-    if (pathname === "/") {
+    if (pathname === homePath) {
       scrollToId(AVAILABILITY_SECTION_ID);
       return;
     }
-    void navigate({ to: "/", hash: AVAILABILITY_SECTION_ID }).then(() => {
+    void navigate({ to: homePath, hash: AVAILABILITY_SECTION_ID }).then(() => {
       window.setTimeout(() => scrollToId(AVAILABILITY_SECTION_ID), 80);
     });
   };
@@ -61,7 +69,7 @@ export function SiteHeader() {
     };
   }, []);
 
-  const solid = scrolled || menuOpen || pathname !== "/";
+  const solid = scrolled || menuOpen || pathname !== homePath;
   const linkTone = solid ? "text-stone hover:text-sage" : "text-warm-white/85 hover:text-warm-white";
 
   return (
@@ -72,11 +80,11 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-2 lg:px-12 lg:py-3">
-        <Link
+        <LocaleLink
           to="/"
-          aria-label="Dharma Stay — į pradžią"
+          aria-label={`${common.brand} — ${common.nav.home}`}
           onClick={() => {
-            if (pathname !== "/") return;
+            if (pathname !== homePath) return;
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
           }}
@@ -86,11 +94,11 @@ export function SiteHeader() {
           )}
         >
           <Logo className="h-24 w-24" />
-        </Link>
+        </LocaleLink>
 
         <div ref={navRef} className="flex items-center gap-6">
-          <nav aria-label="Pagrindinė navigacija" className="hidden items-center gap-6 lg:flex">
-            {mainNav.map((entry) =>
+          <nav aria-label="Main" className="hidden items-center gap-6 lg:flex">
+            {nav.map((entry) =>
               isGroup(entry) ? (
                 <div
                   key={entry.label}
@@ -118,13 +126,13 @@ export function SiteHeader() {
                       <ul className="overflow-hidden rounded-2xl border border-border bg-warm-white py-2 shadow-lift">
                         {entry.items.map((item) => (
                           <li key={item.to}>
-                            <Link
+                            <LocaleLink
                               to={item.to}
                               activeProps={{ className: "text-sage" }}
                               className="block px-5 py-2.5 text-sm text-stone transition-colors hover:bg-linen hover:text-sage"
                             >
                               {item.label}
-                            </Link>
+                            </LocaleLink>
                           </li>
                         ))}
                       </ul>
@@ -132,14 +140,14 @@ export function SiteHeader() {
                   ) : null}
                 </div>
               ) : (
-                <Link
+                <LocaleLink
                   key={entry.to}
                   to={entry.to}
                   activeProps={{ className: solid ? "text-sage" : "text-warm-white" }}
                   className={cn("text-sm font-medium transition-colors", linkTone)}
                 >
                   {entry.label}
-                </Link>
+                </LocaleLink>
               ),
             )}
           </nav>
@@ -157,11 +165,16 @@ export function SiteHeader() {
             {common.cta.checkDates}
           </button>
 
+          <LanguageSwitcher
+            className={cn("hidden lg:flex", solid ? "text-stone" : "text-warm-white/85")}
+            tone={solid ? "dark" : "light"}
+          />
+
           <button
             type="button"
             onClick={() => setMenuOpen((value) => !value)}
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Uždaryti meniu" : "Atidaryti meniu"}
+            aria-label="Menu"
             className={cn("lg:hidden", solid ? "text-ink" : "text-warm-white")}
           >
             {menuOpen ? <X className="h-6 w-6" aria-hidden /> : <Menu className="h-6 w-6" aria-hidden />}
@@ -171,8 +184,8 @@ export function SiteHeader() {
 
       {menuOpen ? (
         <div className="max-h-[80vh] overflow-y-auto border-t border-border/70 bg-linen px-6 pb-8 pt-2 lg:hidden">
-          <nav aria-label="Mobili navigacija" className="flex flex-col">
-            {mainNav.map((entry) =>
+          <nav aria-label="Main" className="flex flex-col">
+            {nav.map((entry) =>
               isGroup(entry) ? (
                 <div key={entry.label} className="border-b border-border/60">
                   <button
@@ -196,27 +209,27 @@ export function SiteHeader() {
                     <ul className="pb-3 pl-4">
                       {entry.items.map((item) => (
                         <li key={item.to}>
-                          <Link
+                          <LocaleLink
                             to={item.to}
                             onClick={() => setMenuOpen(false)}
                             className="block py-2.5 text-sm text-stone"
                           >
                             {item.label}
-                          </Link>
+                          </LocaleLink>
                         </li>
                       ))}
                     </ul>
                   ) : null}
                 </div>
               ) : (
-                <Link
+                <LocaleLink
                   key={entry.to}
                   to={entry.to}
                   onClick={() => setMenuOpen(false)}
                   className="border-b border-border/60 py-4 text-base font-medium text-ink"
                 >
                   {entry.label}
-                </Link>
+                </LocaleLink>
               ),
             )}
           </nav>
@@ -230,6 +243,7 @@ export function SiteHeader() {
           >
             {common.cta.checkDates}
           </button>
+          <LanguageSwitcher className="mt-6 justify-center text-stone" />
         </div>
       ) : null}
     </header>
