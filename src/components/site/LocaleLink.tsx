@@ -7,10 +7,13 @@ import { localizePath, type Locale } from "@/lib/locale";
 type AnchorProps = Omit<ComponentPropsWithoutRef<"a">, "href">;
 
 export type LocaleLinkProps = AnchorProps &
-  Omit<LinkProps, "to"> & {
+  Omit<LinkProps, "to" | "search" | "params"> & {
     /** Canonical Lithuanian path, e.g. "/apartamentai/tipas/$categorySlug". */
     to: string;
     locale?: Locale;
+    /** Loose by design: routes are registered generically, so search/params stay untyped. */
+    search?: Record<string, unknown> | true;
+    params?: Record<string, unknown> | true;
   };
 
 /** <Link> that keeps the visitor inside the current locale segment. */
