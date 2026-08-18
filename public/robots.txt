@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://dharma-stay-boutique.lovable.app/sitemap.xml
+Sitemap: https://dharma.revoo.lt/sitemap.xml
