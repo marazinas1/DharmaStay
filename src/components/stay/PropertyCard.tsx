@@ -1,9 +1,9 @@
-import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 import { useBooking } from "@/components/site/booking-context";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { Reveal } from "@/components/site/Reveal";
-import { common } from "@/content/lt/common";
+import { useContent } from "@/content";
 import { formatPrice, type PropertyView } from "@/lib/property-view";
 import { usePropertySlug } from "@/lib/property-slug";
 
@@ -20,6 +20,7 @@ export function PropertyCard({
   iki?: string;
   sveciai?: number;
 }) {
+  const { common } = useContent();
   const { open } = useBooking();
   const slugFor = usePropertySlug();
   const dateSearch = {
@@ -30,7 +31,7 @@ export function PropertyCard({
 
   return (
     <Reveal delay={index * 110}>
-      <Link
+      <LocaleLink
         to="/apartamentai/$propertyId"
         params={{ propertyId: slugFor(property.id) }}
         search={dateSearch}
@@ -95,7 +96,7 @@ export function PropertyCard({
           </div>
         </div>
       </article>
-      </Link>
+      </LocaleLink>
     </Reveal>
   );
 }

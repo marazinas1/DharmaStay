@@ -15,7 +15,7 @@ export function StayCrossLinks({ currentId }: { currentId: string }) {
   const others = (data ?? [])
     .filter((property) => property.id !== currentId)
     .slice(0, 2)
-    .map((property) => toPropertyView(property, locale));
+    .map((property) => toPropertyView(property));
 
   if (others.length === 0) return null;
 

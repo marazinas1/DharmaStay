@@ -40,6 +40,7 @@ export const common = {
     address: "Address",
     amenities: "Amenities",
     contacts: "Contacts",
+    breadcrumb: "Breadcrumb",
     otherStays: "Other accommodation options",
   },
   stays: {

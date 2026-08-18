@@ -1,4 +1,4 @@
-import { common } from "@/content/lt/common";
+import { useContent, useLocale } from "@/content";
 import { contact } from "@/data/contact";
 import { PropertyCard } from "@/components/stay/PropertyCard";
 import { toPropertyView } from "@/lib/property-view";
@@ -15,6 +15,7 @@ export function PropertyGrid({
   iki?: string;
   sveciai?: number;
 }) {
+  const locale = useLocale();
   if (properties.length === 0) return <PropertyEmpty />;
 
   return (
@@ -22,7 +23,7 @@ export function PropertyGrid({
       {properties.map((property, index) => (
         <PropertyCard
           key={property.id}
-          property={toPropertyView(property)}
+          property={toPropertyView(property, locale)}
           index={index}
           {...(nuo ? { nuo } : {})}
           {...(iki ? { iki } : {})}
@@ -34,6 +35,7 @@ export function PropertyGrid({
 }
 
 export function PropertyGridSkeleton() {
+  const { common } = useContent();
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3" aria-busy="true">
       {[0, 1, 2].map((index) => (
@@ -57,6 +59,7 @@ export function PropertyGridSkeleton() {
 }
 
 function ContactFallback() {
+  const { contact: _unused } = { contact: undefined };
   return (
     <p className="mt-6 text-sm text-stone">
       {contact.phones.join(" · ")} ·{" "}
