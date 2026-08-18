@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
 import { lt } from "date-fns/locale";
 import type { DateRange } from "react-day-picker";
 import { ArrowRight } from "lucide-react";
 
 import { Enso } from "@/components/site/Enso";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { Calendar } from "@/components/ui/calendar";
-import { common } from "@/content/lt/common";
+import { useContent, useLocale } from "@/content";
 import { availabilityQuery } from "@/lib/availability-queries";
 import type { AvailabilityGroup } from "@/lib/availability-schemas";
 import { toApiDate } from "@/components/stay/AvailabilityCalendar";
@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 
 const KNOWN_ORDER = ["standard", "terrace", "cottage"];
 
-function freeLabel(count: number): string {
+function freeLabel(count: number, common: ReturnType<typeof useContent>["common"]): string {
   const last = count % 10;
   const lastTwo = count % 100;
   if (last === 1 && lastTwo !== 11) return common.availabilityBand.freeOne;
@@ -31,6 +31,8 @@ function startOfToday(): Date {
 }
 
 export function AvailabilityBand() {
+  const { common } = useContent();
+  const locale = useLocale();
   const today = useMemo(startOfToday, []);
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [adults, setAdults] = useState(2);
@@ -146,6 +148,8 @@ export function AvailabilityBand() {
                     dateFrom={dateFrom as string}
                     dateTo={dateTo as string}
                     adults={adults}
+                    common={common}
+                    locale={locale}
                   />
                 ))}
               </div>
@@ -163,14 +167,18 @@ function AvailabilityTypeCard({
   dateFrom,
   dateTo,
   adults,
+  common,
+  locale,
 }: {
   group: AvailabilityGroup;
   nights: number;
   dateFrom: string;
   dateTo: string;
   adults: number;
+  common: ReturnType<typeof useContent>["common"];
+  locale: ReturnType<typeof useLocale>;
 }) {
-  const label = categoryLabel(group.code);
+  const label = categoryLabel(group.code, locale);
   const free = group.free_count > 0;
 
   const body = (
@@ -178,7 +186,7 @@ function AvailabilityTypeCard({
       <h3 className="font-display text-lg leading-snug font-semibold text-ink">{label}</h3>
       <p className={cn("mt-3 text-sm", free ? "text-sage-deep" : "text-stone/70")}>
         {free
-          ? `${group.free_count} ${freeLabel(group.free_count)} ${common.availabilityBand.ofTotal} ${group.total_count}`
+          ? `${group.free_count} ${freeLabel(group.free_count, common)} ${common.availabilityBand.ofTotal} ${group.total_count}`
           : common.availabilityBand.none}
       </p>
       <p className="mt-2 text-sm text-stone">
@@ -204,13 +212,13 @@ function AvailabilityTypeCard({
   }
 
   return (
-    <Link
+    <LocaleLink
       to="/apartamentai/tipas/$categorySlug"
       params={{ categorySlug: categorySlug(group.code) }}
       search={{ nuo: dateFrom, iki: dateTo, sveciai: adults }}
       className="group rounded-2xl border border-border bg-linen/60 p-5 transition-shadow hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage"
     >
       {body}
-    </Link>
+    </LocaleLink>
   );
 }
