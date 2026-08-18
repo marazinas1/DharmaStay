@@ -1,6 +1,6 @@
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection } from "@/components/site/Prose";
-import { legal } from "@/content/lt/legal";
+import { useContent } from "@/content";
 import type { LegalDocument as LegalDocumentData } from "@/lib/rentivo-schemas";
 
 /** Renders a legal document served (and sanitized) by the Core backend. */
@@ -15,6 +15,7 @@ export function LegalDocumentPage({
   lead: string;
   doc: LegalDocumentData | null;
 }) {
+  const { common, legal } = useContent();
   const hasContent = Boolean(doc && doc.html.trim().length > 0);
   const updated = doc?.updated_at
     ? new Date(doc.updated_at).toLocaleDateString("lt-LT", {
@@ -30,7 +31,7 @@ export function LegalDocumentPage({
         eyebrow={eyebrow}
         title={title}
         lead={lead}
-        crumbs={[{ label: "Pagrindinis", to: "/" }, { label: title }]}
+        crumbs={[{ label: common.nav.home, to: "/" }, { label: title }]}
       />
       <PageSection>
         <div className="mx-auto max-w-3xl">

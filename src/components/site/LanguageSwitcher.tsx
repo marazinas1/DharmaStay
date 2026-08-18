@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
 import type { LinkProps } from "@tanstack/react-router";
 
+
 import { useLocale } from "@/content";
 import {
   LOCALES,
@@ -47,22 +48,23 @@ export function LanguageSwitcher({ className, tone = "dark" }: { className?: str
         <span key={locale} className="flex items-center gap-1">
           {index > 0 ? <span className="opacity-40">/</span> : null}
           <Link
-            to={localizePath(basePath, locale) as LinkProps["to"]}
-            search={location.search as never}
-            hreflang={locale}
-            aria-current={locale === current ? "true" : undefined}
-            onClick={() => rememberLocale(locale)}
-            className={cn(
-              "uppercase tracking-wide transition-opacity",
-              locale === current
-                ? tone === "light"
-                  ? "text-warm-white"
-                  : "text-sage"
-                : "opacity-60 hover:opacity-100",
-            )}
-          >
-            {locale}
-          </Link>
+            {...({
+              to: localizePath(basePath, locale),
+              search: location.search,
+              hrefLang: locale,
+              "aria-current": locale === current ? "true" : undefined,
+              onClick: () => rememberLocale(locale),
+              className: cn(
+                "uppercase tracking-wide transition-opacity",
+                locale === current
+                  ? tone === "light"
+                    ? "text-warm-white"
+                    : "text-sage"
+                  : "opacity-60 hover:opacity-100",
+              ),
+              children: locale,
+            } as unknown as LinkProps)}
+          />
         </span>
       ))}
     </div>

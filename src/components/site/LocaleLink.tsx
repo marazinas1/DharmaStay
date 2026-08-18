@@ -17,7 +17,8 @@ export type LocaleLinkProps = AnchorProps &
 export function LocaleLink({ to, locale, ...rest }: LocaleLinkProps) {
   const current = useLocale();
   const target = localizePath(to, locale ?? current);
-  return <Link {...(rest as LinkProps)} to={target as LinkProps["to"]} />;
+  const props = { ...rest, to: target } as unknown as LinkProps;
+  return <Link {...props} />;
 }
 
 /** Programmatic navigation that stays inside the current locale. */
