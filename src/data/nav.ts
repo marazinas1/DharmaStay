@@ -10,7 +10,7 @@ const FALLBACK_SITE_URL = "https://dharma.revoo.lt";
 
 /** Canonical site origin; override with VITE_SITE_URL if the domain changes. */
 export const SITE_URL = (
-  import.meta.env?.VITE_SITE_URL || FALLBACK_SITE_URL
+  import.meta.env?.['VITE_SITE_URL'] || FALLBACK_SITE_URL
 ).replace(/\/$/, "");
 
 export function mainNav(locale: Locale): NavEntry[] {
