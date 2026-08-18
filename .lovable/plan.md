@@ -11,6 +11,7 @@ TanStack file routing needs a real file per URL, so English gets its own route f
 - `src/routes/en/route.tsx` is the layout segment: it renders `<Outlet />` and provides `LocaleContext value="en"`. `__root` provides the default `"lt"`. Page components call `useLocale()` — no per-page locale branching.
 - URL slugs stay Lithuanian under `/en/` (`/en/apartamentai`, `/en/banketine-sale`). Recommended: translated slugs would double the route files, break existing inbound links, and add a slug-mapping table to the switcher and to every `<Link>`; guests do not read slugs. Cost of changing later: one redirect table.
 - Dynamic routes (`apartamentai.$propertyId`, `apartamentai.tipas.$categorySlug`) mirror the same way; property slugs stay as they are.
+- Legacy 301 stubs (`/apartamentai/standartiniai`, `/apartamentai/su-terasa`, `/namelis`) get `/en/` twins that 301 to `/en/apartamentai`, so English inbound links never 404 or cross locales.
 
 ## 2. Content
 
@@ -32,6 +33,7 @@ Written fresh in the same calm, concrete register — not literal translation. P
 - Small uppercase letter-spaced `LT / EN` in the header (desktop nav + mobile menu) and in the footer, matching existing nav styling.
 - It reads the current match from `useRouterState` and rebuilds the same route in the other locale — same path, same path params, same search params, so `nuo` / `iki` / `sveciai` survive the switch. Implemented as a `localizePath(pathname, target)` helper (add or strip the `/en` prefix), navigating with the existing `search` object.
 - The chosen locale is written to a `locale` cookie (SSR-readable, 1 year). The URL always wins; the cookie is only used on a first visit to `/` to offer/redirect, and the switcher always writes it.
+- The cookie is written **only** by an explicit switcher click (value `lt` or `en`, plus a marker that it was user-chosen). On `/` the server redirects to `/en/` only when that explicit cookie says `en`. `Accept-Language` is never used. No cookie means no redirect: crawlers and first-time visitors get the Lithuanian root directly, with no redirect chain.
 
 ## 6. SEO
 
@@ -39,6 +41,7 @@ Written fresh in the same calm, concrete register — not literal translation. P
 - `og:locale` becomes `lt_LT` / `en_US` per page.
 - `<html lang>` in `__root`'s shell is set from the request path during SSR so crawlers get the right attribute without hydration mismatch.
 - JSON-LD on the home page uses the active bundle's name/description.
+- Add `src/routes/sitemap[.]xml.ts` (server route) listing every public route in both locales — each `<url>` carrying `xhtml:link` alternates for `lt`, `en` and `x-default` — and reference it with a `Sitemap:` line in `public/robots.txt`. Redirect stubs and non-indexable paths are excluded; no fabricated `lastmod`.
 
 ## 7. API content (known limitation)
 
