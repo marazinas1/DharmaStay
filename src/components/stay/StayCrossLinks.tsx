@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { Reveal } from "@/components/site/Reveal";
-import { common } from "@/content/lt/common";
+import { useContent, useLocale } from "@/content";
 import { propertiesQuery } from "@/lib/property-queries";
 import { toPropertyView } from "@/lib/property-view";
 import { usePropertySlug } from "@/lib/property-slug";
@@ -25,7 +25,7 @@ export function StayCrossLinks({ currentId }: { currentId: string }) {
       <div className="mt-8 grid gap-8 sm:grid-cols-2">
         {others.map((stay, index) => (
           <Reveal key={stay.id} delay={index * 90}>
-            <Link
+            <LocaleLink
               to="/apartamentai/$propertyId"
               params={{ propertyId: slugFor(stay.id) }}
               className="group block overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow duration-500 hover:shadow-lift"
@@ -55,7 +55,7 @@ export function StayCrossLinks({ currentId }: { currentId: string }) {
                   <ArrowRight className="arrow-nudge h-4 w-4" aria-hidden />
                 </span>
               </div>
-            </Link>
+            </LocaleLink>
           </Reveal>
         ))}
       </div>
