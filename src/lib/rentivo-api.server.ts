@@ -92,13 +92,20 @@ function parseOrThrow<T>(
   return result.data;
 }
 
-export async function fetchProperties() {
-  const payload = await rentivoFetch("/properties");
+/** The engine ignores unknown query params, so sending `language` is safe. */
+function languageQuery(language?: string): string {
+  return language && language !== "lt" ? `?language=${encodeURIComponent(language)}` : "";
+}
+
+export async function fetchProperties(language?: string) {
+  const payload = await rentivoFetch(`/properties${languageQuery(language)}`);
   return parseOrThrow(propertiesResponseSchema, payload, "/properties").data;
 }
 
-export async function fetchProperty(id: string) {
-  const payload = await rentivoFetch(`/properties/${encodeURIComponent(id)}`);
+export async function fetchProperty(id: string, language?: string) {
+  const payload = await rentivoFetch(
+    `/properties/${encodeURIComponent(id)}${languageQuery(language)}`,
+  );
   return parseOrThrow(propertyDetailResponseSchema, payload, "/properties/:id").data;
 }
 
