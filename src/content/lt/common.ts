@@ -41,6 +41,7 @@ export const common = {
     amenities: "Patogumai",
     contacts: "Kontaktai",
     otherStays: "Kiti apgyvendinimo variantai",
+    breadcrumb: "Naršymo kelias",
   },
   stays: {
     availabilityTitle: "Laisvos datos",
@@ -119,6 +120,11 @@ export const common = {
     consentAnd: "ir",
     consentPrivacy: "privatumo politika",
     consentError: "Norėdami tęsti, patvirtinkite sutikimą su taisyklėmis.",
+    dialogTitle: "Tikrinti laisvas datas",
+    dialogDescription:
+      "Rezervacija vyksta čia, Dharma Stay svetainėje. Apmokėjimas – banko pavedimu, rekvizitus parodysime iš karto po rezervacijos.",
+    stayLabel: "Apgyvendinimas",
+    noCommissionNote: "Be tarpininkų ir be Booking.com komisinių.",
   },
   footer: {
     intro: "Apgyvendinimas Telšių senamiestyje. Iš namų į namus.",
