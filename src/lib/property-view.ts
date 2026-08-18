@@ -1,4 +1,5 @@
-import { common } from "@/content/lt/common";
+import { getContent } from "@/content";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
 import type { Property } from "@/lib/rentivo-schemas";
 
 /**
@@ -16,7 +17,9 @@ export type PropertyView = {
   amenities: string[];
 };
 
-const amenityLabels: Record<string, string> = {
+type AmenityDict = Record<string, string>;
+
+const amenityLabelsLt: AmenityDict = {
   wifi: "Belaidis internetas",
   parking: "Automobilių stovėjimo vieta",
   kitchen: "Virtuvėlė",
@@ -52,18 +55,60 @@ const amenityLabels: Record<string, string> = {
   bbq: "Kepsninė",
 };
 
+/** English labels keyed by the same engine codes. */
+const amenityLabelsEn: AmenityDict = {
+  wifi: "Wi-Fi",
+  parking: "Parking space",
+  kitchen: "Kitchenette",
+  tv: "TV",
+  sauna: "Sauna",
+  hot_tub: "Hot tub",
+  terrace: "Terrace",
+  air_conditioning: "Air conditioning",
+  washing_machine: "Washing machine",
+  coffee: "Coffee machine",
+  coffee_machine: "Coffee machine",
+  breakfast: "Breakfast",
+  pets: "Pets allowed",
+  pet_friendly: "Pets allowed",
+  pool: "Pool",
+  first_aid: "First aid kit",
+  extra_baby_bed: "Extra baby cot",
+  balcony: "Balcony",
+  bathroom: "Bathroom",
+  workspace: "Workspace",
+  smoke_alarm: "Smoke alarm",
+  "smoke alarm": "Smoke alarm",
+  heating: "Heating",
+  hair_dryer: "Hair dryer",
+  shower: "Shower",
+  fridge: "Fridge",
+  microwave: "Microwave",
+  iron: "Iron",
+  towels: "Towels",
+  linens: "Bed linen",
+  elevator: "Lift",
+  garden: "Garden",
+  bbq: "Barbecue",
+};
+
+const amenityDicts: Record<Locale, AmenityDict> = { lt: amenityLabelsLt, en: amenityLabelsEn };
+
 /** Known amenity label, or null when the engine sends a code we can't translate. */
-export function amenityLabel(code: string): string | null {
+export function amenityLabel(code: string, locale: Locale = DEFAULT_LOCALE): string | null {
   const key = code.trim().toLowerCase();
-  return amenityLabels[key] ?? null;
+  return amenityDicts[locale]?.[key] ?? amenityLabelsLt[key] ?? null;
 }
 
 /** Labels for display: unknown codes are dropped, never rendered raw. */
-export function knownAmenities(codes: string[]): string[] {
-  return codes.map(amenityLabel).filter((label): label is string => label !== null);
+export function knownAmenities(codes: string[], locale: Locale = DEFAULT_LOCALE): string[] {
+  return codes
+    .map((code) => amenityLabel(code, locale))
+    .filter((label): label is string => label !== null);
 }
 
-export function propertyMeta(property: Property): string {
+export function propertyMeta(property: Property, locale: Locale = DEFAULT_LOCALE): string {
+  const { common } = getContent(locale);
   const parts: string[] = [];
   if (property.area_m2) parts.push(`${property.area_m2} m²`);
   if (property.max_guests) parts.push(`${common.labels.upTo} ${property.max_guests} ${common.labels.guestsLower}`);
@@ -72,16 +117,17 @@ export function propertyMeta(property: Property): string {
   return parts.join(" · ");
 }
 
-export function toPropertyView(property: Property): PropertyView {
+export function toPropertyView(property: Property, locale: Locale = DEFAULT_LOCALE): PropertyView {
+  const { common } = getContent(locale);
   return {
     id: property.id,
     name: property.name,
     description: property.description ?? "",
-    meta: propertyMeta(property),
+    meta: propertyMeta(property, locale),
     priceFrom: typeof property.price_per_night === "number" ? property.price_per_night : null,
     image: property.cover_image_url ?? property.image_urls[0] ?? null,
     imageAlt: `${property.name} — ${common.brand}`,
-    amenities: knownAmenities(property.amenities),
+    amenities: knownAmenities(property.amenities, locale),
   };
 }
 
