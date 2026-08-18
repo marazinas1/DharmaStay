@@ -1,24 +1,14 @@
 import { EnsoFrame } from "@/components/site/Enso";
 import { Reveal } from "@/components/site/Reveal";
-
-const ratings = [
-  {
-    score: "9,0",
-    label: "Standartiniai apartamentai",
-    note: "Booking.com svečių įvertinimas. Dažniausiai giriama švara ir vieta.",
-  },
-  {
-    score: "9,3",
-    label: "Apartamentai su terasa",
-    note: "Booking.com svečių įvertinimas. Dažniausiai giriama terasa ir ramybė.",
-  },
-];
+import { useContent } from "@/content";
 
 export function Ratings() {
+  const { home } = useContent();
+  const ratings = home.ratings.items;
   return (
     <section className="bg-warm-white px-6 py-20 lg:px-12 lg:py-24">
       <div className="mx-auto max-w-4xl">
-        <p className="label-caps text-center text-stone">Booking.com įvertinimai</p>
+        <p className="label-caps text-center text-stone">{home.ratings.eyebrow}</p>
 
         <div className="mt-12 grid gap-12 sm:grid-cols-2">
           {ratings.map((rating, index) => (
