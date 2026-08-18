@@ -1,4 +1,3 @@
-import { useLoaderData } from "@tanstack/react-router";
 
 import { AvailabilityBand } from "@/components/home/AvailabilityBand";
 import { BookingBand } from "@/components/home/BookingBand";
@@ -12,6 +11,7 @@ import { getContent } from "@/content";
 import { SITE_URL } from "@/data/nav";
 import type { Locale } from "@/lib/locale";
 import { propertiesQueryFor } from "@/lib/property-queries";
+import { useLooseLoaderData } from "@/lib/route-data";
 import type { Property } from "@/lib/rentivo-schemas";
 import { pageHead } from "@/lib/seo";
 
@@ -67,7 +67,7 @@ export function homeRoute(locale: Locale) {
 }
 
 function Index() {
-  const { properties } = useLoaderData({ strict: false }) as HomeLoaderData;
+  const { properties } = useLooseLoaderData<HomeLoaderData>();
 
   return (
     <>
