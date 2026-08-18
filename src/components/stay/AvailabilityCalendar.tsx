@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import { differenceInCalendarDays, format } from "date-fns";
-import { lt } from "date-fns/locale";
+import { enGB, lt } from "date-fns/locale";
 import type { DateRange } from "react-day-picker";
 
 import { Calendar } from "@/components/ui/calendar";
 import { Enso } from "@/components/site/Enso";
-import { common } from "@/content/lt/common";
+import { useContent, useLocale } from "@/content";
 import { cn } from "@/lib/utils";
 
 export type OccupiedRange = { date_from: string; date_to: string };
