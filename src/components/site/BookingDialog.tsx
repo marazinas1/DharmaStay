@@ -375,9 +375,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       });
       setIsOpen(false);
       await navigate({
-        to: "/rezervacija/patvirtinta",
+        to: localizePath("/rezervacija/patvirtinta", locale),
         search: { nr: result.booking_number },
-      });
+      } as never);
     } catch (error) {
       setSubmitError(bookingErrorMessage(error, common));
     } finally {
