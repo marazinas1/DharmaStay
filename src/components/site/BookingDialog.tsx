@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import {
   useCallback,
   useEffect,
@@ -22,9 +22,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { common } from "@/content/lt/common";
+import { LocaleLink } from "@/components/site/LocaleLink";
+import { getContent, useContent, useLocale } from "@/content";
+import { localizePath } from "@/lib/locale";
 import { storeBooking } from "@/lib/booking-storage";
-import { propertiesQuery } from "@/lib/property-queries";
+import { propertiesQueryFor } from "@/lib/property-queries";
 import { formatPrice } from "@/lib/property-view";
 import type { ExtraService } from "@/lib/rentivo-schemas";
 import { createBookingFn, getQuote } from "@/lib/rentivo.functions";
@@ -43,7 +45,9 @@ function useDebounced<T>(value: T, delay: number): T {
   return debounced;
 }
 
-function quoteErrorMessage(error: unknown): string {
+type Common = ReturnType<typeof getContent>["common"];
+
+function quoteErrorMessage(error: unknown, common: Common): string {
   const message = error instanceof Error ? error.message : String(error ?? "");
   if (message.includes("too_many_guests")) return common.booking.tooManyGuests;
   if (message.includes("not_found")) return common.booking.notFound;
@@ -51,7 +55,7 @@ function quoteErrorMessage(error: unknown): string {
   return common.booking.genericError;
 }
 
-function bookingErrorMessage(error: unknown): string {
+function bookingErrorMessage(error: unknown, common: Common): string {
   const message = error instanceof Error ? error.message : String(error ?? "");
   if (message.includes("dates_unavailable")) return common.booking.datesUnavailable;
   if (message.includes("too_many_guests")) return common.booking.tooManyGuests;
@@ -60,29 +64,39 @@ function bookingErrorMessage(error: unknown): string {
   return common.booking.submitError;
 }
 
-const baseContactSchema = z.object({
-  customer_name: z.string().trim().min(2, common.booking.nameError).max(200, common.booking.nameError),
-  customer_email: z
-    .string()
-    .trim()
-    .email(common.booking.emailError)
-    .max(255, common.booking.emailError),
-  customer_phone: z
-    .string()
-    .trim()
-    .min(5, common.booking.phoneError)
-    .max(50, common.booking.phoneError),
-});
+const contactSchemaFor = (common: Common) =>
+  z.object({
+    customer_name: z
+      .string()
+      .trim()
+      .min(2, common.booking.nameError)
+      .max(200, common.booking.nameError),
+    customer_email: z
+      .string()
+      .trim()
+      .email(common.booking.emailError)
+      .max(255, common.booking.emailError),
+    customer_phone: z
+      .string()
+      .trim()
+      .min(5, common.booking.phoneError)
+      .max(50, common.booking.phoneError),
+  });
 
-const companySchema = z.object({
-  company_name: z.string().trim().min(2, common.booking.companyNameError).max(200),
-  company_code: z.string().trim().min(2, common.booking.companyCodeError).max(50),
-  company_vat_code: z.string().trim().max(50).optional(),
-  company_address: z.string().trim().min(4, common.booking.companyAddressError).max(300),
-});
+const companySchemaFor = (common: Common) =>
+  z.object({
+    company_name: z.string().trim().min(2, common.booking.companyNameError).max(200),
+    company_code: z.string().trim().min(2, common.booking.companyCodeError).max(50),
+    company_vat_code: z.string().trim().max(50).optional(),
+    company_address: z.string().trim().min(4, common.booking.companyAddressError).max(300),
+  });
 
 type ContactErrors = Partial<
-  Record<keyof z.infer<typeof baseContactSchema> | keyof z.infer<typeof companySchema>, string>
+  Record<
+    | keyof z.infer<ReturnType<typeof contactSchemaFor>>
+    | keyof z.infer<ReturnType<typeof companySchemaFor>>,
+    string
+  >
 >;
 
 function TextField({
@@ -116,7 +130,7 @@ function TextField({
   );
 }
 
-function extraHint(extra: ExtraService): string | null {
+function extraHint(extra: ExtraService, common: Common): string | null {
   if (typeof extra.pricePerDay !== "number") return null;
   const unit =
     extra.calc === "per_person"
@@ -167,6 +181,7 @@ type QuoteData = {
 };
 
 function PriceBreakdown({ quote }: { quote: QuoteData }) {
+  const { common } = useContent();
   const currency = quote.currency === "EUR" ? "€" : quote.currency;
   return (
     <dl className="space-y-2 text-sm text-stone">
@@ -237,9 +252,14 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const locale = useLocale();
+  const { common } = useContent();
 
   /** Only needed when the dialog is opened without a property context. */
-  const propertyOptions = useQuery({ ...propertiesQuery, enabled: isOpen && !property });
+  const propertyOptions = useQuery({
+    ...propertiesQueryFor(locale),
+    enabled: isOpen && !property,
+  });
 
   const open = useCallback((id?: string, dates?: BookingDates, prop?: BookingProperty) => {
     if (id) setStayId(id);
@@ -297,8 +317,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (isSubmitting) return;
     setSubmitError(null);
 
-    const parsed = baseContactSchema.safeParse(contact);
-    const parsedCompany = isCompany ? companySchema.safeParse(company) : null;
+    const parsed = contactSchemaFor(common).safeParse(contact);
+    const parsedCompany = isCompany ? companySchemaFor(common).safeParse(company) : null;
     if (!parsed.success || (parsedCompany && !parsedCompany.success)) {
       const errors: ContactErrors = {};
       const issues = [
@@ -359,7 +379,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         search: { nr: result.booking_number },
       });
     } catch (error) {
-      setSubmitError(bookingErrorMessage(error));
+      setSubmitError(bookingErrorMessage(error, common));
     } finally {
       setIsSubmitting(false);
     }
@@ -374,18 +394,17 @@ export function BookingProvider({ children }: { children: ReactNode }) {
             <DialogHeader className="space-y-3 text-left">
               <Enso className="h-8 w-8" />
               <DialogTitle className="font-display text-2xl font-medium text-ink">
-                Tikrinti laisvas datas
+                {common.booking.dialogTitle}
               </DialogTitle>
               <DialogDescription className="text-stone">
-                Rezervacija vyksta čia, Dharma Stay svetainėje. Apmokėjimas – banko
-                pavedimu, rekvizitus parodysime iš karto po rezervacijos.
+                {common.booking.dialogDescription}
               </DialogDescription>
             </DialogHeader>
 
             <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block space-y-2">
-                  <span className="label-caps text-stone">Atvykimas</span>
+                  <span className="label-caps text-stone">{common.stays.checkin}</span>
                   <input
                     type="date"
                     name="checkin"
@@ -395,7 +414,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                   />
                 </label>
                 <label className="block space-y-2">
-                  <span className="label-caps text-stone">Išvykimas</span>
+                  <span className="label-caps text-stone">{common.stays.checkout}</span>
                   <input
                     type="date"
                     name="checkout"
@@ -407,7 +426,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
               </div>
 
               <div className="block space-y-2">
-                <span className="label-caps text-stone">Apgyvendinimas</span>
+                <span className="label-caps text-stone">{common.booking.stayLabel}</span>
                 {property ? (
                   <p className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink">
                     {property?.name ?? common.nav.stays}
@@ -454,7 +473,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 <fieldset className="space-y-3">
                   <legend className="label-caps text-stone">{common.booking.extras}</legend>
                   {extras.slice(0, 20).map((extra) => {
-                    const hint = extraHint(extra);
+                    const hint = extraHint(extra, common);
                     const checked = selectedExtras.includes(extra.name);
                     return (
                       <label
@@ -489,7 +508,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 ) : quote.isPending || quote.isFetching ? (
                   <p className="text-sm text-stone">{common.booking.calculating}</p>
                 ) : quote.isError ? (
-                  <p className="text-sm text-stone">{quoteErrorMessage(quote.error)}</p>
+                  <p className="text-sm text-stone">{quoteErrorMessage(quote.error, common)}</p>
                 ) : quote.data && quote.data.available === false ? (
                   <p className="text-sm text-stone">{common.booking.unavailable}</p>
                 ) : quote.data ? (
@@ -579,23 +598,23 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 />
                 <span>
                   {common.booking.consentPrefix}{" "}
-                  <Link
+                  <LocaleLink
                     to="/taisykles"
                     target="_blank"
                     className="text-sage underline underline-offset-2"
                     onClick={(event) => event.stopPropagation()}
                   >
                     {common.booking.consentTerms}
-                  </Link>{" "}
+                  </LocaleLink>{" "}
                   {common.booking.consentAnd}{" "}
-                  <Link
+                  <LocaleLink
                     to="/privatumo-politika"
                     target="_blank"
                     className="text-sage underline underline-offset-2"
                     onClick={(event) => event.stopPropagation()}
                   >
                     {common.booking.consentPrivacy}
-                  </Link>
+                  </LocaleLink>
                   .
                 </span>
               </label>
@@ -620,7 +639,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                 {isSubmitting ? common.booking.submitting : common.booking.submit}
               </button>
               <p className="text-center text-xs text-stone">
-                Be tarpininkų ir be Booking.com komisinių.
+                {common.booking.noCommissionNote}
               </p>
             </form>
           </div>
