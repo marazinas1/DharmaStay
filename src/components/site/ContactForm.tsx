@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { z } from "zod";
 
-import { kontaktaiForm } from "@/content/lt/kontaktai";
+import { useContent } from "@/content";
 import { contact } from "@/data/contact";
 import { sendContactMessageFn } from "@/lib/rentivo.functions";
 
-const formSchema = z.object({
-  name: z.string().trim().min(2, kontaktaiForm.nameError).max(120, kontaktaiForm.nameError),
-  email: z.string().trim().email(kontaktaiForm.emailError).max(255, kontaktaiForm.emailError),
-  phone: z.string().trim().max(50, kontaktaiForm.phoneError),
-  message: z
-    .string()
-    .trim()
-    .min(10, kontaktaiForm.messageError)
-    .max(2000, kontaktaiForm.messageError),
-});
+function buildFormSchema(kontaktaiForm: ReturnType<typeof useContent>["kontaktaiForm"]) {
+  return z.object({
+    name: z.string().trim().min(2, kontaktaiForm.nameError).max(120, kontaktaiForm.nameError),
+    email: z.string().trim().email(kontaktaiForm.emailError).max(255, kontaktaiForm.emailError),
+    phone: z.string().trim().max(50, kontaktaiForm.phoneError),
+    message: z
+      .string()
+      .trim()
+      .min(10, kontaktaiForm.messageError)
+      .max(2000, kontaktaiForm.messageError),
+  });
+}
 
-type Errors = Partial<Record<keyof z.infer<typeof formSchema>, string>>;
+type FormSchema = ReturnType<typeof buildFormSchema>;
+
+type Errors = Partial<Record<keyof z.infer<FormSchema>, string>>;
 
 function Field({
   label,
@@ -68,6 +72,8 @@ function Field({
 /** Contact form on /kontaktai. Sends through a server function; on backend
  *  failure it offers the plain e-mail route instead of losing the message. */
 export function ContactForm() {
+  const { kontaktaiForm } = useContent();
+  const formSchema = buildFormSchema(kontaktaiForm);
   const [values, setValues] = useState({ name: "", email: "", phone: "", message: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "failed">("idle");
