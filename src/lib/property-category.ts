@@ -1,4 +1,5 @@
-import { common } from "@/content/lt/common";
+import { getContent } from "@/content";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
 import type { Property } from "@/lib/rentivo-schemas";
 import { slugify } from "@/lib/property-slug";
 
@@ -26,16 +27,17 @@ export function normalizeCategory(value: string | null | undefined): string {
   return (value ?? "").trim().toLowerCase();
 }
 
-export function categoryLabel(code: string): string {
+export function categoryLabel(code: string, locale: Locale = DEFAULT_LOCALE): string {
   const key = normalizeCategory(code);
-  const known = (common.categories as Record<string, string>)[key];
+  const known = (getContent(locale).common.categories as Record<string, string>)[key];
   if (known) return known;
   const words = key.replace(/[_-]+/g, " ").trim();
   return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 /** Lithuanian plural for "variantas" (option). */
-export function optionsLabel(count: number): string {
+export function optionsLabel(count: number, locale: Locale = DEFAULT_LOCALE): string {
+  const { common } = getContent(locale);
   const last = count % 10;
   const lastTwo = count % 100;
   if (last === 1 && lastTwo !== 11) return `${count} ${common.categoryCard.optionsOne}`;
@@ -73,7 +75,8 @@ export function uncategorized(properties: Property[]): Property[] {
 }
 
 /** Compact facts line for a category card: "18–35 m² · iki 4 svečių". */
-export function categoryFacts(group: CategoryGroup): string {
+export function categoryFacts(group: CategoryGroup, locale: Locale = DEFAULT_LOCALE): string {
+  const { common } = getContent(locale);
   const parts: string[] = [];
   if (group.areaMin !== null && group.areaMax !== null) {
     parts.push(
@@ -88,7 +91,11 @@ export function categoryFacts(group: CategoryGroup): string {
   return parts.join(" · ");
 }
 
-export function groupByCategory(properties: Property[]): CategoryGroup[] {
+export function groupByCategory(
+  properties: Property[],
+  locale: Locale = DEFAULT_LOCALE,
+): CategoryGroup[] {
+  const { common } = getContent(locale);
   const buckets = new Map<string, Property[]>();
   for (const property of properties) {
     const code = normalizeCategory(property.property_type);
@@ -113,7 +120,7 @@ export function groupByCategory(properties: Property[]): CategoryGroup[] {
       .filter((item) => priceOf(item) !== null)
       .sort((a, b) => (priceOf(a) as number) - (priceOf(b) as number));
     const cheapest = priced[0];
-    const label = categoryLabel(code);
+    const label = categoryLabel(code, locale);
     const image =
       (cheapest ? imageOf(cheapest) : null) ??
       items.map(imageOf).find((url): url is string => Boolean(url)) ??
@@ -155,15 +162,18 @@ export function hasCategory(properties: Property[], code: string | undefined): b
 }
 
 /** Pretty URL segment for a category, derived from its Lithuanian label. */
+/** Slugs stay Lithuanian in every locale so both language trees share URLs. */
 export function categorySlug(code: string): string {
   const key = normalizeCategory(code);
-  return slugify(categoryLabel(key)) || slugify(key) || "apartamentai";
+  return slugify(categoryLabel(key, "lt")) || slugify(key) || "apartamentai";
 }
 
 /** Resolves a URL slug back to the raw property_type code found in the data. */
 export function codeForSlug(properties: Property[], slug: string): string | undefined {
   const target = slug.toLowerCase();
-  const known = Object.keys(common.categories).find((code) => categorySlug(code) === target);
+  const known = Object.keys(getContent("lt").common.categories).find(
+    (code) => categorySlug(code) === target,
+  );
   const codes = distinctCategories(properties);
   return (
     codes.find((code) => categorySlug(code) === target) ??

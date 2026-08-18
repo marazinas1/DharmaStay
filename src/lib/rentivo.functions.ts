@@ -17,18 +17,21 @@ import {
  * key path is never reachable from the client bundle.
  */
 
-const idInput = z.object({ id: z.string().uuid() });
+const languageInput = z.object({ language: z.enum(["lt", "en"]).optional() });
+const idInput = z.object({ id: z.string().uuid(), language: z.enum(["lt", "en"]).optional() });
 
-export const listProperties = createServerFn({ method: "GET" }).handler(async () => {
-  const { fetchProperties } = await import("@/lib/rentivo-api.server");
-  return fetchProperties();
-});
+export const listProperties = createServerFn({ method: "GET" })
+  .inputValidator((data: unknown) => languageInput.parse(data ?? {}))
+  .handler(async ({ data }) => {
+    const { fetchProperties } = await import("@/lib/rentivo-api.server");
+    return fetchProperties(data.language);
+  });
 
 export const getProperty = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => idInput.parse(data))
   .handler(async ({ data }) => {
     const { fetchProperty } = await import("@/lib/rentivo-api.server");
-    return fetchProperty(data.id);
+    return fetchProperty(data.id, data.language);
   });
 
 export const getQuote = createServerFn({ method: "POST" })

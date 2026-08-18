@@ -1,5 +1,5 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/apartamentai")({
-  component: () => <Outlet />,
-});
+import { staysLayoutRoute } from "@/pages/apartamentai-layout";
+
+export const Route = createFileRoute("/apartamentai")(staysLayoutRoute() as never);

@@ -10,4 +10,5 @@ export const restobaras = {
     "Svečiams, gyvenantiems Dharma Stay, restobaras yra artimiausias stalas – nereikia niekur eiti.",
     "Detalų meniu ir darbo laiką paskelbsime čia netrukus. Dėl staliuko ar šventės susisiekite telefonu.",
   ],
+  ctaTitle: "Rezervuoti staliuką",
 };

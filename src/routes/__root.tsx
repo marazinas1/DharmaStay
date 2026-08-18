@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
@@ -13,35 +12,37 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { BookingProvider } from "@/components/site/BookingDialog";
 import { Enso } from "@/components/site/Enso";
+import { LocaleLink } from "@/components/site/LocaleLink";
+import { useRememberedLocaleRedirect } from "@/components/site/LanguageSwitcher";
+import { useContent, useLocale } from "@/content";
+import { htmlLang } from "@/lib/locale";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 
 function NotFoundComponent() {
+  const { home } = useContent();
   return (
     <div className="flex min-h-[70vh] items-center justify-center bg-linen px-6 py-32">
       <div className="max-w-md text-center">
         <Enso className="mx-auto h-12 w-12 text-sage/70" />
         <p className="label-caps mt-8 text-stone">404</p>
         <h1 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.75rem)] font-medium text-ink">
-          Puslapio nėra
+          {home.notFound.title}
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-stone">
-          Šis adresas neveikia arba puslapis buvo perkeltas. Grįžkite į pradžią arba peržiūrėkite
-          apartamentus.
-        </p>
+        <p className="mt-4 text-base leading-relaxed text-stone">{home.notFound.text}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link
+          <LocaleLink
             to="/"
             className="rounded-full bg-sage px-6 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
           >
-            Į pradžią
-          </Link>
-          <Link
+            {home.notFound.home}
+          </LocaleLink>
+          <LocaleLink
             to="/apartamentai"
             className="rounded-full border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
           >
-            Apartamentai
-          </Link>
+            {home.notFound.stays}
+          </LocaleLink>
         </div>
       </div>
     </div>
@@ -97,7 +98,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Dharma Stay" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:locale", content: "lt_LT" },
     ],
     links: [
       {
@@ -114,8 +114,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const locale = useLocale();
   return (
-    <html lang="lt">
+    <html lang={htmlLang[locale]}>
       <head>
         <HeadContent />
       </head>
@@ -129,6 +130,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useRememberedLocaleRedirect();
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -6,6 +6,7 @@ import locationImage from "@/assets/location-telsiai-aerial.jpg";
 import locationImageWebp from "@/assets/location-telsiai-aerial.webp";
 import { EnsoDivider } from "@/components/site/Enso";
 import { Reveal } from "@/components/site/Reveal";
+import { useContent } from "@/content";
 import { contact } from "@/data/contact";
 
 const LocationMap = lazy(() => import("@/components/home/LocationMap"));
@@ -15,6 +16,7 @@ function MapSkeleton() {
 }
 
 export function LocationSection() {
+  const { common, home } = useContent();
   return (
     <section id="vieta" className="scroll-mt-24 bg-warm-white px-6 py-24 lg:px-12 lg:py-32">
       <div className="mx-auto max-w-7xl">
@@ -22,17 +24,14 @@ export function LocationSection() {
 
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <Reveal direction="left">
-            <p className="label-caps text-sage">Vieta</p>
+            <p className="label-caps text-sage">{home.location.eyebrow}</p>
             <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
-              Telšiuose, prie pat aikštės
+              {home.location.title}
             </h2>
             <div className="mt-6 space-y-4 text-base leading-[1.75] text-stone sm:text-lg">
-              <p>
-                Apartamentai — Birutės gatvėje, vos keli žingsniai nuo pagrindinės Turgaus
-                aikštės, Švč. Mergelės Marijos bažnyčios ir turizmo informacijos centro.
-              </p>
-              <p>Iki Masčio ežero — keli šimtai metrų. Šalia netrūksta kavinių ir restoranų.</p>
-              <p>Aplinkui — Žemaitija: ramesnis miestas, artima gamta ir neskubantis laikas.</p>
+              {home.location.body.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
 
             <div className="mt-8 flex items-start gap-3 text-sm text-stone">
@@ -45,7 +44,7 @@ export function LocationSection() {
               rel="noreferrer"
               className="mt-6 inline-flex rounded-full border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
             >
-              Atidaryti žemėlapyje
+              {common.cta.openMap}
             </a>
           </Reveal>
 
@@ -55,7 +54,7 @@ export function LocationSection() {
                 <source srcSet={locationImageWebp} type="image/webp" />
                 <img
                   src={locationImage}
-                  alt="Telšių senamiestis iš paukščio skrydžio: bažnyčia, pagrindinė aikštė ir raudoni stogai"
+                  alt={home.location.imageAlt}
                   loading="lazy"
                   decoding="async"
                   width={1400}

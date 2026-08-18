@@ -1,8 +1,8 @@
-import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { Reveal } from "@/components/site/Reveal";
-import { common } from "@/content/lt/common";
+import { useContent, useLocale } from "@/content";
 import {
   categoryFacts,
   categorySlug,
@@ -16,10 +16,12 @@ import { formatPrice } from "@/lib/property-view";
  * PropertyCard, but it leads to the filtered listing instead of booking.
  */
 export function CategoryCard({ group, index }: { group: CategoryGroup; index: number }) {
-  const facts = categoryFacts(group);
+  const { common } = useContent();
+  const locale = useLocale();
+  const facts = categoryFacts(group, locale);
   return (
     <Reveal delay={index * 110}>
-      <Link
+      <LocaleLink
         to="/apartamentai/tipas/$categorySlug"
         params={{ categorySlug: categorySlug(group.code) }}
         aria-label={group.label}
@@ -48,7 +50,7 @@ export function CategoryCard({ group, index }: { group: CategoryGroup; index: nu
             {group.label}
           </h3>
           <p className="mt-4 text-xs tracking-wide text-stone/80">
-            {[optionsLabel(group.count), facts].filter(Boolean).join(" · ")}
+            {[optionsLabel(group.count, locale), facts].filter(Boolean).join(" · ")}
           </p>
 
           <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6">
@@ -59,7 +61,7 @@ export function CategoryCard({ group, index }: { group: CategoryGroup; index: nu
           </div>
         </div>
       </article>
-      </Link>
+      </LocaleLink>
     </Reveal>
   );
 }

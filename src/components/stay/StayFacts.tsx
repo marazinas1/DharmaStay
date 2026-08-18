@@ -1,9 +1,10 @@
 import { Reveal } from "@/components/site/Reveal";
-import { common } from "@/content/lt/common";
+import { useContent } from "@/content";
 
 export type Fact = { label: string; value: string };
 
 export function StayFacts({ facts, amenities }: { facts: Fact[]; amenities: string[] }) {
+  const { common } = useContent();
   return (
     <Reveal>
       <dl className="grid gap-8 rounded-2xl bg-linen p-8 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,8 +1,10 @@
-import { Link, type LinkProps } from "@tanstack/react-router";
+import type { LinkProps } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 import { Enso } from "@/components/site/Enso";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { Reveal } from "@/components/site/Reveal";
+import { useContent } from "@/content";
 import { cn } from "@/lib/utils";
 
 export type Crumb = { label: string; to?: LinkProps["to"] };
@@ -31,6 +33,7 @@ export function PageHero({
   crumbs?: Crumb[];
   children?: ReactNode;
 }) {
+  const { common } = useContent();
   const hasImage = Boolean(image);
 
   return (
@@ -91,7 +94,7 @@ export function PageHero({
           {children ? <div className="mt-8">{children}</div> : null}
           {crumbs?.length ? (
             <nav
-              aria-label="Naršymo kelias"
+              aria-label={common.labels.breadcrumb}
               className={cn(
                 "mt-8 flex flex-wrap items-center justify-center gap-2 text-xs",
                 hasImage ? "text-warm-white/70" : "text-stone/80",
@@ -101,9 +104,9 @@ export function PageHero({
                 <span key={crumb.label} className="flex items-center gap-2">
                   {index > 0 ? <span aria-hidden>·</span> : null}
                   {crumb.to ? (
-                    <Link to={crumb.to} className="hover:underline">
+                    <LocaleLink to={crumb.to} className="hover:underline">
                       {crumb.label}
-                    </Link>
+                    </LocaleLink>
                   ) : (
                     <span>{crumb.label}</span>
                   )}

@@ -1,8 +1,7 @@
-import { Link } from "@tanstack/react-router";
-
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
-import { apartamentai } from "@/content/lt/apartamentai";
+import { useContent } from "@/content";
 
 /** Shared chrome for /apartamentai and its category pages. */
 export function StaysShell({
@@ -12,6 +11,7 @@ export function StaysShell({
   children: React.ReactNode;
   categoryLabelText?: string | null;
 }) {
+  const { common, apartamentai } = useContent();
   const filtered = Boolean(categoryLabelText);
   return (
     <>
@@ -22,11 +22,11 @@ export function StaysShell({
         crumbs={
           filtered
             ? [
-                { label: "Pagrindinis", to: "/" },
+                { label: common.nav.home, to: "/" },
                 { label: apartamentai.title, to: "/apartamentai" },
                 { label: categoryLabelText as string },
               ]
-            : [{ label: "Pagrindinis", to: "/" }, { label: apartamentai.title }]
+            : [{ label: common.nav.home, to: "/" }, { label: apartamentai.title }]
         }
       />
       <section
@@ -36,12 +36,12 @@ export function StaysShell({
         <div className="mx-auto max-w-7xl">
           {filtered ? (
             <div className="mb-8">
-              <Link
+              <LocaleLink
                 to="/apartamentai"
                 className="text-sm font-medium text-sage hover:text-sage-deep"
               >
                 ← {apartamentai.clearFilter}
-              </Link>
+              </LocaleLink>
             </div>
           ) : null}
           {children}

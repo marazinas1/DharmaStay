@@ -1,4 +1,4 @@
-import { common } from "@/content/lt/common";
+import { useContent, useLocale } from "@/content";
 import { contact } from "@/data/contact";
 import { PropertyCard } from "@/components/stay/PropertyCard";
 import { toPropertyView } from "@/lib/property-view";
@@ -15,6 +15,7 @@ export function PropertyGrid({
   iki?: string;
   sveciai?: number;
 }) {
+  const locale = useLocale();
   if (properties.length === 0) return <PropertyEmpty />;
 
   return (
@@ -22,7 +23,7 @@ export function PropertyGrid({
       {properties.map((property, index) => (
         <PropertyCard
           key={property.id}
-          property={toPropertyView(property)}
+          property={toPropertyView(property, locale)}
           index={index}
           {...(nuo ? { nuo } : {})}
           {...(iki ? { iki } : {})}
@@ -34,6 +35,7 @@ export function PropertyGrid({
 }
 
 export function PropertyGridSkeleton() {
+  const { common } = useContent();
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3" aria-busy="true">
       {[0, 1, 2].map((index) => (
@@ -68,6 +70,7 @@ function ContactFallback() {
 }
 
 export function PropertyEmpty() {
+  const { common } = useContent();
   return (
     <div className="rounded-2xl bg-warm-white px-8 py-16 text-center shadow-soft">
       <h2 className="font-display text-2xl font-medium text-ink">{common.stays.emptyTitle}</h2>
@@ -80,6 +83,7 @@ export function PropertyEmpty() {
 }
 
 export function PropertyError({ onRetry }: { onRetry: () => void }) {
+  const { common } = useContent();
   return (
     <div className="rounded-2xl bg-warm-white px-8 py-16 text-center shadow-soft" role="alert">
       <h2 className="font-display text-2xl font-medium text-ink">{common.stays.errorTitle}</h2>
