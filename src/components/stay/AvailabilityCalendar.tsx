@@ -26,12 +26,12 @@ function startOfToday(): Date {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
-function nightsLabel(count: number): string {
+function nightsLabel(count: number, stays: { night: string; nights: string; nightsMany: string }): string {
   const mod100 = count % 100;
   const mod10 = count % 10;
-  if (mod10 === 1 && mod100 !== 11) return common.stays.night;
-  if (mod10 === 0 || (mod100 >= 11 && mod100 <= 19)) return common.stays.nightsMany;
-  return common.stays.nights;
+  if (mod10 === 1 && mod100 !== 11) return stays.night;
+  if (mod10 === 0 || (mod100 >= 11 && mod100 <= 19)) return stays.nightsMany;
+  return stays.nights;
 }
 
 export function AvailabilityCalendar({
@@ -46,6 +46,8 @@ export function AvailabilityCalendar({
   className?: string;
 }) {
   const today = useMemo(startOfToday, []);
+  const locale = useLocale();
+  const common = useContent().common;
 
   const occupiedMatchers = useMemo(
     () =>
@@ -80,7 +82,7 @@ export function AvailabilityCalendar({
       <div className="mt-6 flex justify-center">
         <Calendar
           mode="range"
-          locale={lt}
+          locale={locale === "en" ? enGB : lt}
           weekStartsOn={1}
           numberOfMonths={1}
           selected={range}
@@ -127,7 +129,7 @@ export function AvailabilityCalendar({
         </span>
         {nights > 0 ? (
           <span aria-live="polite" className="text-ink">
-            {nights} {nightsLabel(nights)}
+            {nights} {nightsLabel(nights, common.stays)}
           </span>
         ) : null}
         {range?.from ? (
