@@ -1,5 +1,5 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/apie")({
-  component: () => <Outlet />,
-});
+import { apieLayoutRoute } from "@/pages/apie-layout";
+
+export const Route = createFileRoute("/apie")(apieLayoutRoute() as never);
