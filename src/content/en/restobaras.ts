@@ -10,4 +10,5 @@ export const restobaras = {
     "For guests staying at Dharma Stay, the restobar is the nearest table — no need to go anywhere.",
     "We'll publish the full menu and opening hours here soon. For a table or an event, please contact us by phone.",
   ],
+  ctaTitle: "Reserve a table",
 };

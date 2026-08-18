@@ -10,4 +10,5 @@ export const banketineSale = {
     "Maitinimą paruošia mūsų restobaras, o svečiai gali likti nakvoti tame pačiame kieme – apartamentuose ar namelyje.",
     "Dėl laisvų datų, salės talpos ir meniu susisiekite telefonu arba el. paštu.",
   ],
+  ctaTitle: "Teiraukitės dėl datos",
 };

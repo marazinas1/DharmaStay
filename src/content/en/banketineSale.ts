@@ -10,4 +10,5 @@ export const banketineSale = {
     "Catering is prepared by our restobar, and guests can stay overnight in the same courtyard — in the apartments or the cottage.",
     "For available dates, hall capacity, and the menu, please contact us by phone or email.",
   ],
+  ctaTitle: "Ask about a date",
 };
