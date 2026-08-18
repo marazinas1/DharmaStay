@@ -170,6 +170,11 @@ export function SiteHeader() {
             tone={solid ? "dark" : "light"}
           />
 
+          <LanguageSwitcher
+            className={cn("flex text-sm lg:hidden", solid ? "text-stone" : "text-warm-white/85")}
+            tone={solid ? "dark" : "light"}
+          />
+
           <button
             type="button"
             onClick={() => setMenuOpen((value) => !value)}
@@ -243,7 +248,6 @@ export function SiteHeader() {
           >
             {common.cta.checkDates}
           </button>
-          <LanguageSwitcher className="mt-6 justify-center text-stone" />
         </div>
       ) : null}
     </header>
