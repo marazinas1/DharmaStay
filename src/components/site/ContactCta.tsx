@@ -1,8 +1,9 @@
-import { common } from "@/content/lt/common";
+import { useContent } from "@/content";
 import { contact } from "@/data/contact";
 
 /** Small closing block used on the quieter service pages. */
 export function ContactCta({ title, text }: { title: string; text?: string }) {
+  const { common } = useContent();
   const phone = contact.phones[0] ?? "";
   return (
     <div className="rounded-2xl bg-sage-deep px-8 py-12 text-center text-warm-white">
