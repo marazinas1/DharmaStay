@@ -119,6 +119,11 @@ export const common = {
     consentTerms: "terms of service",
     consentAnd: "and",
     consentPrivacy: "privacy policy",
+    dialogTitle: "Check availability",
+    dialogDescription:
+      "You are booking directly on the Dharma Stay website. Payment is by bank transfer — we show the details right after your booking.",
+    stayLabel: "Accommodation",
+    noCommissionNote: "Direct booking — no agents, no Booking.com commission.",
     consentError: "Please confirm your agreement to the terms to continue.",
   },
   footer: {

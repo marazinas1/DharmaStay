@@ -4,18 +4,20 @@ import { ArrowRight } from "lucide-react";
 import { LocaleLink } from "@/components/site/LocaleLink";
 import { Reveal } from "@/components/site/Reveal";
 import { useContent, useLocale } from "@/content";
-import { propertiesQuery } from "@/lib/property-queries";
+import { propertiesQueryFor } from "@/lib/property-queries";
 import { toPropertyView } from "@/lib/property-view";
 import { usePropertySlug } from "@/lib/property-slug";
 
 /** Other real properties from the shared ["properties"] cache — no extra fetch. */
 export function StayCrossLinks({ currentId }: { currentId: string }) {
-  const { data } = useQuery(propertiesQuery);
+  const locale = useLocale();
+  const { common } = useContent();
+  const { data } = useQuery(propertiesQueryFor(locale));
   const slugFor = usePropertySlug();
   const others = (data ?? [])
     .filter((property) => property.id !== currentId)
     .slice(0, 2)
-    .map((property) => toPropertyView(property));
+    .map((property) => toPropertyView(property, locale));
 
   if (others.length === 0) return null;
 
