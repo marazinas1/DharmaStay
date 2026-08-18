@@ -20,6 +20,7 @@ import { Route as NamelisRouteImport } from './routes/namelis'
 import { Route as PrivatumoPolitikaRouteImport } from './routes/privatumo-politika'
 import { Route as RestobarasRouteImport } from './routes/restobaras'
 import { Route as SaunaRouteImport } from './routes/sauna'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TaisyklesRouteImport } from './routes/taisykles'
 import { Route as ApartamentaiIndexRouteImport } from './routes/apartamentai.index'
 import { Route as ApartamentaiPropertyIdRouteImport } from './routes/apartamentai.$propertyId'
@@ -102,6 +103,11 @@ const RestobarasRoute = RestobarasRouteImport.update({
 const SaunaRoute = SaunaRouteImport.update({
   id: '/sauna',
   path: '/sauna',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TaisyklesRoute = TaisyklesRouteImport.update({
@@ -263,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taisykles': typeof TaisyklesRoute
   '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
@@ -301,6 +308,7 @@ export interface FileRoutesByTo {
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taisykles': typeof TaisyklesRoute
   '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
@@ -341,6 +349,7 @@ export interface FileRoutesById {
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
   '/sauna': typeof SaunaRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taisykles': typeof TaisyklesRoute
   '/apartamentai/$propertyId': typeof ApartamentaiPropertyIdRoute
   '/apartamentai/standartiniai': typeof ApartamentaiStandartiniaiRoute
@@ -384,6 +393,7 @@ export interface FileRouteTypes {
     | '/privatumo-politika'
     | '/restobaras'
     | '/sauna'
+    | '/sitemap.xml'
     | '/taisykles'
     | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
@@ -422,6 +432,7 @@ export interface FileRouteTypes {
     | '/privatumo-politika'
     | '/restobaras'
     | '/sauna'
+    | '/sitemap.xml'
     | '/taisykles'
     | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
@@ -461,6 +472,7 @@ export interface FileRouteTypes {
     | '/privatumo-politika'
     | '/restobaras'
     | '/sauna'
+    | '/sitemap.xml'
     | '/taisykles'
     | '/apartamentai/$propertyId'
     | '/apartamentai/standartiniai'
@@ -503,6 +515,7 @@ export interface RootRouteChildren {
   PrivatumoPolitikaRoute: typeof PrivatumoPolitikaRoute
   RestobarasRoute: typeof RestobarasRoute
   SaunaRoute: typeof SaunaRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TaisyklesRoute: typeof TaisyklesRoute
   RezervacijaPatvirtintaRoute: typeof RezervacijaPatvirtintaRoute
 }
@@ -584,6 +597,13 @@ declare module '@tanstack/react-router' {
       path: '/sauna'
       fullPath: '/sauna'
       preLoaderRoute: typeof SaunaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/taisykles': {
@@ -895,6 +915,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivatumoPolitikaRoute: PrivatumoPolitikaRoute,
   RestobarasRoute: RestobarasRoute,
   SaunaRoute: SaunaRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TaisyklesRoute: TaisyklesRoute,
   RezervacijaPatvirtintaRoute: RezervacijaPatvirtintaRoute,
 }
