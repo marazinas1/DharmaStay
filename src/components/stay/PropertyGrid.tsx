@@ -59,7 +59,6 @@ export function PropertyGridSkeleton() {
 }
 
 function ContactFallback() {
-  const { contact: _unused } = { contact: undefined };
   return (
     <p className="mt-6 text-sm text-stone">
       {contact.phones.join(" · ")} ·{" "}
@@ -71,6 +70,7 @@ function ContactFallback() {
 }
 
 export function PropertyEmpty() {
+  const { common } = useContent();
   return (
     <div className="rounded-2xl bg-warm-white px-8 py-16 text-center shadow-soft">
       <h2 className="font-display text-2xl font-medium text-ink">{common.stays.emptyTitle}</h2>
@@ -83,6 +83,7 @@ export function PropertyEmpty() {
 }
 
 export function PropertyError({ onRetry }: { onRetry: () => void }) {
+  const { common } = useContent();
   return (
     <div className="rounded-2xl bg-warm-white px-8 py-16 text-center shadow-soft" role="alert">
       <h2 className="font-display text-2xl font-medium text-ink">{common.stays.errorTitle}</h2>
