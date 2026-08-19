@@ -291,7 +291,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   );
 
   const quote = useQuery({
-    queryKey: ["quote", quoteKey],
+    queryKey: ["quote", quoteKey, locale],
     enabled: canQuote,
     retry: false,
     staleTime: 60_000,
@@ -305,6 +305,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
           children: children_,
           infants,
           extras: selectedExtras.map((name) => ({ name })),
+          language: locale,
         },
       }),
   });
@@ -358,6 +359,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
           ...parsed.data,
           accepted_terms: true,
           is_company: isCompany,
+          language: locale,
           ...(isCompany && parsedCompany?.success ? parsedCompany.data : {}),
         },
       });
