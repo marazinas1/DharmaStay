@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { propertiesQuery } from "@/lib/property-queries";
+import { useLocale } from "@/content";
+import { propertiesQueryFor } from "@/lib/property-queries";
 import type { Property } from "@/lib/rentivo-schemas";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -55,7 +56,7 @@ export function idForSlug(properties: Property[], slug: string): string | undefi
 
 /** Cache-only lookup for cards; falls back to the raw id before data lands. */
 export function usePropertySlug(): (id: string) => string {
-  const { data } = useQuery(propertiesQuery);
+  const { data } = useQuery(propertiesQueryFor(useLocale()));
   const index = buildSlugIndex(data ?? []);
   return (id: string) => index.byId.get(id) ?? id;
 }
