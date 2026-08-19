@@ -57,12 +57,13 @@ export function propertyRoute(locale: Locale) {
     loader: async ({
       context,
       params,
-      search,
+      location,
     }: {
       context: { queryClient: { ensureQueryData: (q: unknown) => Promise<unknown> } };
       params: { propertyId: string };
-      search?: PropertySearch;
+      location?: { search?: PropertySearch };
     }): Promise<PropertyLoaderData> => {
+      const search = location?.search ?? {};
       const properties = (await context.queryClient.ensureQueryData(
         propertiesQueryFor(locale),
       )) as Property[];
@@ -73,7 +74,7 @@ export function propertyRoute(locale: Locale) {
           throw redirect({
             to: localizePath("/apartamentai/$propertyId", locale) as never,
             params: { propertyId: slug },
-            search: search ?? {},
+            search,
             statusCode: 301,
           });
         }
@@ -93,7 +94,7 @@ export function propertyRoute(locale: Locale) {
           throw redirect({
             to: localizePath("/apartamentai/$propertyId", locale) as never,
             params: { propertyId: localSlug },
-            search: search ?? {},
+            search,
           });
         }
         throw notFound();
