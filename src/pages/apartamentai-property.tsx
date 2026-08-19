@@ -57,10 +57,13 @@ export function propertyRoute(locale: Locale) {
     loader: async ({
       context,
       params,
+      location,
     }: {
       context: { queryClient: { ensureQueryData: (q: unknown) => Promise<unknown> } };
       params: { propertyId: string };
+      location?: { search?: PropertySearch };
     }): Promise<PropertyLoaderData> => {
+      const search = location?.search ?? {};
       const properties = (await context.queryClient.ensureQueryData(
         propertiesQueryFor(locale),
       )) as Property[];
@@ -71,12 +74,31 @@ export function propertyRoute(locale: Locale) {
           throw redirect({
             to: localizePath("/apartamentai/$propertyId", locale) as never,
             params: { propertyId: slug },
+            search,
             statusCode: 301,
           });
         }
       }
       const id = idForSlug(properties, params.propertyId);
-      if (!id) throw notFound();
+      if (!id) {
+        // Slugs come from localized property names, so a slug minted in the
+        // other locale won't resolve here (language switch on a room page).
+        // Resolve it against the other locale and redirect to this locale's slug.
+        const otherLocale: Locale = locale === "en" ? "lt" : "en";
+        const otherProperties = (await context.queryClient.ensureQueryData(
+          propertiesQueryFor(otherLocale),
+        )) as Property[];
+        const otherId = idForSlug(otherProperties, params.propertyId);
+        const localSlug = otherId ? slugForId(properties, otherId) : null;
+        if (localSlug && localSlug !== params.propertyId) {
+          throw redirect({
+            to: localizePath("/apartamentai/$propertyId", locale) as never,
+            params: { propertyId: localSlug },
+            search,
+          });
+        }
+        throw notFound();
+      }
       const property = (await context.queryClient.ensureQueryData(
         propertyQuery(id, locale),
       )) as Property;

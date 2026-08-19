@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { lt } from "date-fns/locale";
+import { enGB, lt } from "date-fns/locale";
 import type { DateRange } from "react-day-picker";
 import { ArrowRight } from "lucide-react";
 
@@ -76,7 +76,7 @@ export function AvailabilityBand() {
           <div>
             <Calendar
               mode="range"
-              locale={lt}
+              locale={locale === "en" ? enGB : lt}
               weekStartsOn={1}
               numberOfMonths={1}
               selected={range}

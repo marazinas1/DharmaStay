@@ -32,3 +32,13 @@ export function localizePath(path: string, locale: Locale): string {
   if (locale === "lt") return base;
   return base === "/" ? LOCALE_PREFIX : `${LOCALE_PREFIX}${base}`;
 }
+
+/**
+ * Maps a router route id (e.g. "/apartamentai/$propertyId") to its counterpart
+ * in the target locale. The LT and EN route trees mirror each other, so this is
+ * the same prefix rule as localizePath, applied to route patterns.
+ */
+export function localizeRouteId(routeId: string, locale: Locale): string {
+  const id = routeId.replace(/\/$/, "") || "/";
+  return localizePath(id, locale);
+}

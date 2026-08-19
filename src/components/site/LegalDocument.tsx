@@ -1,6 +1,6 @@
 import { PageHero } from "@/components/site/PageHero";
 import { PageSection } from "@/components/site/Prose";
-import { useContent } from "@/content";
+import { useContent, useLocale } from "@/content";
 import type { LegalDocument as LegalDocumentData } from "@/lib/rentivo-schemas";
 
 /** Renders a legal document served (and sanitized) by the Core backend. */
@@ -16,9 +16,10 @@ export function LegalDocumentPage({
   doc: LegalDocumentData | null;
 }) {
   const { common, legal } = useContent();
+  const locale = useLocale();
   const hasContent = Boolean(doc && doc.html.trim().length > 0);
   const updated = doc?.updated_at
-    ? new Date(doc.updated_at).toLocaleDateString("lt-LT", {
+    ? new Date(doc.updated_at).toLocaleDateString(locale === "en" ? "en-GB" : "lt-LT", {
         year: "numeric",
         month: "long",
         day: "numeric",
