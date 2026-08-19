@@ -87,6 +87,9 @@ export const quoteInputSchema = z.object({
   children: z.number().int().min(0).max(50).default(0),
   infants: z.number().int().min(0).max(50).default(0),
   extras: z.array(z.object({ name: z.string() })).max(20).default([]),
+  // The engine stores this on the booking and uses it for guest emails and for
+  // matching extra-service names, so it must travel with both requests.
+  language: z.enum(["lt", "en"]).default("lt"),
 });
 
 export const quoteResponseSchema = z.object({
