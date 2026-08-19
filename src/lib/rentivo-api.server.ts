@@ -163,14 +163,30 @@ export async function sendContactMessage(input: ContactMessage): Promise<{ deliv
 const LEGAL_TTL_MS = 5 * 60 * 1000;
 const legalCache = new Map<string, { at: number; doc: LegalDocument }>();
 
-export async function fetchLegal(kind: LegalKind, language = "lt"): Promise<LegalDocument> {
+/**
+ * The engine only publishes templates for languages it has been configured for,
+ * and answers 404 `Active template not found` otherwise. Fall back to the
+ * Lithuanian original, then to `null`, so the page renders its own notice
+ * instead of failing the whole route.
+ */
+export async function fetchLegal(
+  kind: LegalKind,
+  language = "lt",
+): Promise<LegalDocument | null> {
   const key = `${kind}:${language}`;
   const cached = legalCache.get(key);
   if (cached && Date.now() - cached.at < LEGAL_TTL_MS) return cached.doc;
 
-  const payload = await rentivoFetch(
-    `/legal?kind=${encodeURIComponent(kind)}&language=${encodeURIComponent(language)}`,
-  );
+  let payload: unknown;
+  try {
+    payload = await rentivoFetch(
+      `/legal?kind=${encodeURIComponent(kind)}&language=${encodeURIComponent(language)}`,
+    );
+  } catch (error) {
+    const missing = error instanceof RentivoError && error.status === 404;
+    if (!missing) throw error;
+    return language === "lt" ? null : fetchLegal(kind, "lt");
+  }
   const raw = parseOrThrow(legalResponseSchema, payload, "/legal").data;
   const doc: LegalDocument = {
     kind: raw.kind,
