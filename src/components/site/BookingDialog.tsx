@@ -404,27 +404,18 @@ export function BookingProvider({ children }: { children: ReactNode }) {
             </DialogHeader>
 
             <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block space-y-2">
-                  <span className="label-caps text-stone">{common.stays.checkin}</span>
-                  <input
-                    type="date"
-                    name="checkin"
-                    value={checkin}
-                    onChange={(event) => setCheckin(event.target.value)}
-                    className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
-                  />
-                </label>
-                <label className="block space-y-2">
-                  <span className="label-caps text-stone">{common.stays.checkout}</span>
-                  <input
-                    type="date"
-                    name="checkout"
-                    value={checkout}
-                    onChange={(event) => setCheckout(event.target.value)}
-                    className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
-                  />
-                </label>
+              <div className="space-y-2">
+                <span className="label-caps text-stone">{common.stays.availabilityTitle}</span>
+                <BookingDateRange
+                  occupied={occupancy.data?.occupied ?? []}
+                  checkin={checkin}
+                  checkout={checkout}
+                  isLoading={occupancy.isFetching}
+                  onChange={(from, to) => {
+                    setCheckin(from);
+                    setCheckout(to);
+                  }}
+                />
               </div>
 
               <div className="block space-y-2">
