@@ -14,6 +14,7 @@ import {
   type BookingDates,
   type BookingProperty,
 } from "@/components/site/booking-context";
+import { BookingDateRange } from "@/components/site/BookingDateRange";
 import { Enso } from "@/components/site/Enso";
 import {
   Dialog,
@@ -29,7 +30,7 @@ import { storeBooking } from "@/lib/booking-storage";
 import { propertiesQueryFor } from "@/lib/property-queries";
 import { formatPrice } from "@/lib/property-view";
 import type { ExtraService } from "@/lib/rentivo-schemas";
-import { createBookingFn, getQuote } from "@/lib/rentivo.functions";
+import { createBookingFn, getProperty, getQuote } from "@/lib/rentivo.functions";
 
 export type { BookingDates, BookingProperty } from "@/components/site/booking-context";
 export { useBooking } from "@/components/site/booking-context";
@@ -259,6 +260,14 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const propertyOptions = useQuery({
     ...propertiesQueryFor(locale),
     enabled: isOpen && !property,
+  });
+
+  const occupancy = useQuery({
+    queryKey: ["property-occupancy", stayId, locale] as const,
+    enabled: isOpen && UUID_RE.test(stayId),
+    staleTime: 60_000,
+    retry: false,
+    queryFn: () => getProperty({ data: { id: stayId, language: locale } }),
   });
 
   const open = useCallback((id?: string, dates?: BookingDates, prop?: BookingProperty) => {
