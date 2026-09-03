@@ -14,6 +14,7 @@ import {
   type BookingDates,
   type BookingProperty,
 } from "@/components/site/booking-context";
+import { BookingDateRange } from "@/components/site/BookingDateRange";
 import { Enso } from "@/components/site/Enso";
 import {
   Dialog,
@@ -29,7 +30,7 @@ import { storeBooking } from "@/lib/booking-storage";
 import { propertiesQueryFor } from "@/lib/property-queries";
 import { formatPrice } from "@/lib/property-view";
 import type { ExtraService } from "@/lib/rentivo-schemas";
-import { createBookingFn, getQuote } from "@/lib/rentivo.functions";
+import { createBookingFn, getProperty, getQuote } from "@/lib/rentivo.functions";
 
 export type { BookingDates, BookingProperty } from "@/components/site/booking-context";
 export { useBooking } from "@/components/site/booking-context";
@@ -261,6 +262,14 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     enabled: isOpen && !property,
   });
 
+  const occupancy = useQuery({
+    queryKey: ["property-occupancy", stayId, locale] as const,
+    enabled: isOpen && UUID_RE.test(stayId),
+    staleTime: 60_000,
+    retry: false,
+    queryFn: () => getProperty({ data: { id: stayId, language: locale } }),
+  });
+
   const open = useCallback((id?: string, dates?: BookingDates, prop?: BookingProperty) => {
     if (id) setStayId(id);
     if (dates) {
@@ -404,27 +413,18 @@ export function BookingProvider({ children }: { children: ReactNode }) {
             </DialogHeader>
 
             <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block space-y-2">
-                  <span className="label-caps text-stone">{common.stays.checkin}</span>
-                  <input
-                    type="date"
-                    name="checkin"
-                    value={checkin}
-                    onChange={(event) => setCheckin(event.target.value)}
-                    className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
-                  />
-                </label>
-                <label className="block space-y-2">
-                  <span className="label-caps text-stone">{common.stays.checkout}</span>
-                  <input
-                    type="date"
-                    name="checkout"
-                    value={checkout}
-                    onChange={(event) => setCheckout(event.target.value)}
-                    className="w-full rounded-xl border border-border bg-linen px-4 py-3 text-sm text-ink"
-                  />
-                </label>
+              <div className="space-y-2">
+                <span className="label-caps text-stone">{common.stays.availabilityTitle}</span>
+                <BookingDateRange
+                  occupied={occupancy.data?.occupied ?? []}
+                  checkin={checkin}
+                  checkout={checkout}
+                  isLoading={occupancy.isFetching}
+                  onChange={(from, to) => {
+                    setCheckin(from);
+                    setCheckout(to);
+                  }}
+                />
               </div>
 
               <div className="block space-y-2">

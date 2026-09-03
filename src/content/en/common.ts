@@ -119,6 +119,7 @@ export const common = {
     consentTerms: "terms of service",
     consentAnd: "and",
     consentPrivacy: "privacy policy",
+    datesLoading: "Checking availability…",
     dialogTitle: "Check availability",
     dialogDescription:
       "You are booking directly on the Dharma Stay website. Payment is by bank transfer — we show the details right after your booking.",
