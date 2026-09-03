@@ -1,0 +1,44 @@
+import heroImage from "@/assets/hero-telsiai-lake.jpg";
+import heroImageWebp from "@/assets/hero-telsiai-lake.webp";
+import { SearchBar } from "@/components/search/SearchBar";
+import { Enso } from "@/components/site/Enso";
+import { useContent } from "@/content";
+
+/**
+ * Home V2 hero: the booking search is the first thing a visitor sees —
+ * no scrolling, no category step before results.
+ */
+export function HeroV2() {
+  const { common, home } = useContent();
+
+  return (
+    <section id="top" className="relative isolate overflow-hidden bg-ink pb-20 lg:pb-28">
+      <picture>
+        <source srcSet={heroImageWebp} type="image/webp" />
+        <img
+          src={heroImage}
+          alt={home.hero.imageAlt}
+          width={2560}
+          height={1440}
+          fetchPriority="high"
+          decoding="async"
+          className="ken-burns absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/35 to-ink/70" />
+
+      <div className="relative mx-auto flex min-h-[88vh] max-w-5xl flex-col items-center justify-center px-6 pt-36 text-center lg:px-12">
+        <Enso className="h-12 w-12 animate-[spin_22s_linear_infinite] text-warm-white/55" />
+        <p className="label-caps mt-8 text-warm-white/75">{common.search.eyebrow}</p>
+        <h1 className="mt-5 font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[1.06] font-medium text-warm-white">
+          {common.search.title}
+        </h1>
+        <p className="mt-6 max-w-xl text-base leading-relaxed text-warm-white/85 sm:text-lg">
+          {common.search.lead}
+        </p>
+
+        <SearchBar className="mt-12 w-full" />
+      </div>
+    </section>
+  );
+}
