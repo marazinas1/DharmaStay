@@ -120,6 +120,7 @@ export const common = {
     consentAnd: "ir",
     consentPrivacy: "privatumo politika",
     consentError: "Norėdami tęsti, patvirtinkite sutikimą su taisyklėmis.",
+    datesLoading: "Tikriname laisvas datas…",
     dialogTitle: "Tikrinti laisvas datas",
     dialogDescription:
       "Rezervacija vyksta čia, Dharma Stay svetainėje. Apmokėjimas – banko pavedimu, rekvizitus parodysime iš karto po rezervacijos.",
