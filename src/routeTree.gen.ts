@@ -17,6 +17,7 @@ import { Route as DovanuKuponaiRouteImport } from './routes/dovanu-kuponai'
 import { Route as EnRouteRouteImport } from './routes/en/route'
 import { Route as HomeV2RouteImport } from './routes/home-v2'
 import { Route as KontaktaiRouteImport } from './routes/kontaktai'
+import { Route as LaisviKambariaiRouteImport } from './routes/laisvi-kambariai'
 import { Route as NamelisRouteImport } from './routes/namelis'
 import { Route as PrivatumoPolitikaRouteImport } from './routes/privatumo-politika'
 import { Route as RestobarasRouteImport } from './routes/restobaras'
@@ -90,6 +91,11 @@ const HomeV2Route = HomeV2RouteImport.update({
 const KontaktaiRoute = KontaktaiRouteImport.update({
   id: '/kontaktai',
   path: '/kontaktai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LaisviKambariaiRoute = LaisviKambariaiRouteImport.update({
+  id: '/laisvi-kambariai',
+  path: '/laisvi-kambariai',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NamelisRoute = NamelisRouteImport.update({
@@ -278,6 +284,7 @@ export interface FileRoutesByFullPath {
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
   '/home-v2': typeof HomeV2Route
   '/kontaktai': typeof KontaktaiRoute
+  '/laisvi-kambariai': typeof LaisviKambariaiRoute
   '/namelis': typeof NamelisRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
@@ -319,6 +326,7 @@ export interface FileRoutesByTo {
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
   '/home-v2': typeof HomeV2Route
   '/kontaktai': typeof KontaktaiRoute
+  '/laisvi-kambariai': typeof LaisviKambariaiRoute
   '/namelis': typeof NamelisRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
@@ -362,6 +370,7 @@ export interface FileRoutesById {
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
   '/home-v2': typeof HomeV2Route
   '/kontaktai': typeof KontaktaiRoute
+  '/laisvi-kambariai': typeof LaisviKambariaiRoute
   '/namelis': typeof NamelisRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
   '/restobaras': typeof RestobarasRoute
@@ -408,6 +417,7 @@ export interface FileRouteTypes {
     | '/dovanu-kuponai'
     | '/home-v2'
     | '/kontaktai'
+    | '/laisvi-kambariai'
     | '/namelis'
     | '/privatumo-politika'
     | '/restobaras'
@@ -449,6 +459,7 @@ export interface FileRouteTypes {
     | '/dovanu-kuponai'
     | '/home-v2'
     | '/kontaktai'
+    | '/laisvi-kambariai'
     | '/namelis'
     | '/privatumo-politika'
     | '/restobaras'
@@ -491,6 +502,7 @@ export interface FileRouteTypes {
     | '/dovanu-kuponai'
     | '/home-v2'
     | '/kontaktai'
+    | '/laisvi-kambariai'
     | '/namelis'
     | '/privatumo-politika'
     | '/restobaras'
@@ -536,6 +548,7 @@ export interface RootRouteChildren {
   DovanuKuponaiRoute: typeof DovanuKuponaiRoute
   HomeV2Route: typeof HomeV2Route
   KontaktaiRoute: typeof KontaktaiRoute
+  LaisviKambariaiRoute: typeof LaisviKambariaiRoute
   NamelisRoute: typeof NamelisRoute
   PrivatumoPolitikaRoute: typeof PrivatumoPolitikaRoute
   RestobarasRoute: typeof RestobarasRoute
@@ -601,6 +614,13 @@ declare module '@tanstack/react-router' {
       path: '/kontaktai'
       fullPath: '/kontaktai'
       preLoaderRoute: typeof KontaktaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/laisvi-kambariai': {
+      id: '/laisvi-kambariai'
+      path: '/laisvi-kambariai'
+      fullPath: '/laisvi-kambariai'
+      preLoaderRoute: typeof LaisviKambariaiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/namelis': {
@@ -953,6 +973,7 @@ const rootRouteChildren: RootRouteChildren = {
   DovanuKuponaiRoute: DovanuKuponaiRoute,
   HomeV2Route: HomeV2Route,
   KontaktaiRoute: KontaktaiRoute,
+  LaisviKambariaiRoute: LaisviKambariaiRoute,
   NamelisRoute: NamelisRoute,
   PrivatumoPolitikaRoute: PrivatumoPolitikaRoute,
   RestobarasRoute: RestobarasRoute,
