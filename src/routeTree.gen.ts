@@ -37,6 +37,7 @@ import { Route as EnBanketineSaleRouteImport } from './routes/en/banketine-sale'
 import { Route as EnDovanuKuponaiRouteImport } from './routes/en/dovanu-kuponai'
 import { Route as EnHomeV2RouteImport } from './routes/en/home-v2'
 import { Route as EnKontaktaiRouteImport } from './routes/en/kontaktai'
+import { Route as EnLaisviKambariaiRouteImport } from './routes/en/laisvi-kambariai'
 import { Route as EnNamelisRouteImport } from './routes/en/namelis'
 import { Route as EnPrivatumoPolitikaRouteImport } from './routes/en/privatumo-politika'
 import { Route as EnRestobarasRouteImport } from './routes/en/restobaras'
@@ -194,6 +195,11 @@ const EnKontaktaiRoute = EnKontaktaiRouteImport.update({
   path: '/kontaktai',
   getParentRoute: () => EnRouteRoute,
 } as any)
+const EnLaisviKambariaiRoute = EnLaisviKambariaiRouteImport.update({
+  id: '/laisvi-kambariai',
+  path: '/laisvi-kambariai',
+  getParentRoute: () => EnRouteRoute,
+} as any)
 const EnNamelisRoute = EnNamelisRouteImport.update({
   id: '/namelis',
   path: '/namelis',
@@ -301,6 +307,7 @@ export interface FileRoutesByFullPath {
   '/en/dovanu-kuponai': typeof EnDovanuKuponaiRoute
   '/en/home-v2': typeof EnHomeV2Route
   '/en/kontaktai': typeof EnKontaktaiRoute
+  '/en/laisvi-kambariai': typeof EnLaisviKambariaiRoute
   '/en/namelis': typeof EnNamelisRoute
   '/en/privatumo-politika': typeof EnPrivatumoPolitikaRoute
   '/en/restobaras': typeof EnRestobarasRoute
@@ -341,6 +348,7 @@ export interface FileRoutesByTo {
   '/en/dovanu-kuponai': typeof EnDovanuKuponaiRoute
   '/en/home-v2': typeof EnHomeV2Route
   '/en/kontaktai': typeof EnKontaktaiRoute
+  '/en/laisvi-kambariai': typeof EnLaisviKambariaiRoute
   '/en/namelis': typeof EnNamelisRoute
   '/en/privatumo-politika': typeof EnPrivatumoPolitikaRoute
   '/en/restobaras': typeof EnRestobarasRoute
@@ -387,6 +395,7 @@ export interface FileRoutesById {
   '/en/dovanu-kuponai': typeof EnDovanuKuponaiRoute
   '/en/home-v2': typeof EnHomeV2Route
   '/en/kontaktai': typeof EnKontaktaiRoute
+  '/en/laisvi-kambariai': typeof EnLaisviKambariaiRoute
   '/en/namelis': typeof EnNamelisRoute
   '/en/privatumo-politika': typeof EnPrivatumoPolitikaRoute
   '/en/restobaras': typeof EnRestobarasRoute
@@ -434,6 +443,7 @@ export interface FileRouteTypes {
     | '/en/dovanu-kuponai'
     | '/en/home-v2'
     | '/en/kontaktai'
+    | '/en/laisvi-kambariai'
     | '/en/namelis'
     | '/en/privatumo-politika'
     | '/en/restobaras'
@@ -474,6 +484,7 @@ export interface FileRouteTypes {
     | '/en/dovanu-kuponai'
     | '/en/home-v2'
     | '/en/kontaktai'
+    | '/en/laisvi-kambariai'
     | '/en/namelis'
     | '/en/privatumo-politika'
     | '/en/restobaras'
@@ -519,6 +530,7 @@ export interface FileRouteTypes {
     | '/en/dovanu-kuponai'
     | '/en/home-v2'
     | '/en/kontaktai'
+    | '/en/laisvi-kambariai'
     | '/en/namelis'
     | '/en/privatumo-politika'
     | '/en/restobaras'
@@ -756,6 +768,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnKontaktaiRouteImport
       parentRoute: typeof EnRouteRoute
     }
+    '/en/laisvi-kambariai': {
+      id: '/en/laisvi-kambariai'
+      path: '/laisvi-kambariai'
+      fullPath: '/en/laisvi-kambariai'
+      preLoaderRoute: typeof EnLaisviKambariaiRouteImport
+      parentRoute: typeof EnRouteRoute
+    }
     '/en/namelis': {
       id: '/en/namelis'
       path: '/namelis'
@@ -904,6 +923,7 @@ interface EnRouteRouteChildren {
   EnDovanuKuponaiRoute: typeof EnDovanuKuponaiRoute
   EnHomeV2Route: typeof EnHomeV2Route
   EnKontaktaiRoute: typeof EnKontaktaiRoute
+  EnLaisviKambariaiRoute: typeof EnLaisviKambariaiRoute
   EnNamelisRoute: typeof EnNamelisRoute
   EnPrivatumoPolitikaRoute: typeof EnPrivatumoPolitikaRoute
   EnRestobarasRoute: typeof EnRestobarasRoute
@@ -920,6 +940,7 @@ const EnRouteRouteChildren: EnRouteRouteChildren = {
   EnDovanuKuponaiRoute: EnDovanuKuponaiRoute,
   EnHomeV2Route: EnHomeV2Route,
   EnKontaktaiRoute: EnKontaktaiRoute,
+  EnLaisviKambariaiRoute: EnLaisviKambariaiRoute,
   EnNamelisRoute: EnNamelisRoute,
   EnPrivatumoPolitikaRoute: EnPrivatumoPolitikaRoute,
   EnRestobarasRoute: EnRestobarasRoute,

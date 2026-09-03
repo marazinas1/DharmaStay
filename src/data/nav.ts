@@ -16,6 +16,13 @@ export const SITE_URL = (
 export function mainNav(locale: Locale): NavEntry[] {
   const { nav } = getContent(locale).common;
   return [
+    {
+      label: nav.home,
+      items: [
+        { label: nav.home1, to: "/" },
+        { label: nav.home2, to: "/home-v2" },
+      ],
+    },
     { label: nav.about, to: "/apie" },
     { label: nav.stays, to: "/apartamentai" },
     { label: nav.restobar, to: "/restobaras" },
