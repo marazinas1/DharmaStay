@@ -61,7 +61,7 @@ export function SearchBar({
         vaikai: guests.children,
         kudikiai: guests.infants,
       },
-    });
+    } as unknown as Parameters<typeof navigate>[0]);
   };
 
   const ready = Boolean(range?.from && range?.to);
@@ -85,7 +85,7 @@ export function SearchBar({
       <button
         type="submit"
         disabled={!ready}
-        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sand px-7 py-4 text-sm font-medium text-ink transition-colors hover:bg-sage hover:text-warm-white disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-full"
+        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-clay px-7 py-4 text-sm font-medium text-ink transition-colors hover:bg-sage hover:text-warm-white disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-full"
       >
         <Search className="h-4 w-4" aria-hidden />
         {common.search.submit}
