@@ -22,6 +22,10 @@ function numberParam(value: unknown, min: number): number | undefined {
   return Number.isFinite(parsed) && parsed >= min ? Math.floor(parsed) : undefined;
 }
 
+function pick(key: string, value: number | undefined): Record<string, number> {
+  return value === undefined ? {} : { [key]: value };
+}
+
 export function availabilityResultsRoute(locale: Locale) {
   const c = getContent(locale);
 
@@ -29,13 +33,9 @@ export function availabilityResultsRoute(locale: Locale) {
     validateSearch: (search: Record<string, unknown>): ResultsSearch => ({
       ...(typeof search["nuo"] === "string" ? { nuo: search["nuo"] } : {}),
       ...(typeof search["iki"] === "string" ? { iki: search["iki"] } : {}),
-      ...(numberParam(search["suauge"], 1) ? { suauge: numberParam(search["suauge"], 1) } : {}),
-      ...(numberParam(search["vaikai"], 0) !== undefined
-        ? { vaikai: numberParam(search["vaikai"], 0) }
-        : {}),
-      ...(numberParam(search["kudikiai"], 0) !== undefined
-        ? { kudikiai: numberParam(search["kudikiai"], 0) }
-        : {}),
+      ...pick("suauge", numberParam(search["suauge"], 1)),
+      ...pick("vaikai", numberParam(search["vaikai"], 0)),
+      ...pick("kudikiai", numberParam(search["kudikiai"], 0)),
     }),
     head: () => {
       const head = pageHead({
