@@ -15,6 +15,7 @@ import { Route as ApieRouteImport } from './routes/apie'
 import { Route as BanketineSaleRouteImport } from './routes/banketine-sale'
 import { Route as DovanuKuponaiRouteImport } from './routes/dovanu-kuponai'
 import { Route as EnRouteRouteImport } from './routes/en/route'
+import { Route as HomeV2RouteImport } from './routes/home-v2'
 import { Route as KontaktaiRouteImport } from './routes/kontaktai'
 import { Route as NamelisRouteImport } from './routes/namelis'
 import { Route as PrivatumoPolitikaRouteImport } from './routes/privatumo-politika'
@@ -78,6 +79,11 @@ const DovanuKuponaiRoute = DovanuKuponaiRouteImport.update({
 const EnRouteRoute = EnRouteRouteImport.update({
   id: '/en',
   path: '/en',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeV2Route = HomeV2RouteImport.update({
+  id: '/home-v2',
+  path: '/home-v2',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KontaktaiRoute = KontaktaiRouteImport.update({
@@ -264,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/apie': typeof ApieRouteWithChildren
   '/banketine-sale': typeof BanketineSaleRoute
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
+  '/home-v2': typeof HomeV2Route
   '/kontaktai': typeof KontaktaiRoute
   '/namelis': typeof NamelisRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
@@ -303,6 +310,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/banketine-sale': typeof BanketineSaleRoute
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
+  '/home-v2': typeof HomeV2Route
   '/kontaktai': typeof KontaktaiRoute
   '/namelis': typeof NamelisRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
@@ -344,6 +352,7 @@ export interface FileRoutesById {
   '/apie': typeof ApieRouteWithChildren
   '/banketine-sale': typeof BanketineSaleRoute
   '/dovanu-kuponai': typeof DovanuKuponaiRoute
+  '/home-v2': typeof HomeV2Route
   '/kontaktai': typeof KontaktaiRoute
   '/namelis': typeof NamelisRoute
   '/privatumo-politika': typeof PrivatumoPolitikaRoute
@@ -388,6 +397,7 @@ export interface FileRouteTypes {
     | '/apie'
     | '/banketine-sale'
     | '/dovanu-kuponai'
+    | '/home-v2'
     | '/kontaktai'
     | '/namelis'
     | '/privatumo-politika'
@@ -427,6 +437,7 @@ export interface FileRouteTypes {
     | '/'
     | '/banketine-sale'
     | '/dovanu-kuponai'
+    | '/home-v2'
     | '/kontaktai'
     | '/namelis'
     | '/privatumo-politika'
@@ -467,6 +478,7 @@ export interface FileRouteTypes {
     | '/apie'
     | '/banketine-sale'
     | '/dovanu-kuponai'
+    | '/home-v2'
     | '/kontaktai'
     | '/namelis'
     | '/privatumo-politika'
@@ -510,6 +522,7 @@ export interface RootRouteChildren {
   ApieRoute: typeof ApieRouteWithChildren
   BanketineSaleRoute: typeof BanketineSaleRoute
   DovanuKuponaiRoute: typeof DovanuKuponaiRoute
+  HomeV2Route: typeof HomeV2Route
   KontaktaiRoute: typeof KontaktaiRoute
   NamelisRoute: typeof NamelisRoute
   PrivatumoPolitikaRoute: typeof PrivatumoPolitikaRoute
@@ -562,6 +575,13 @@ declare module '@tanstack/react-router' {
       path: '/en'
       fullPath: '/en'
       preLoaderRoute: typeof EnRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home-v2': {
+      id: '/home-v2'
+      path: '/home-v2'
+      fullPath: '/home-v2'
+      preLoaderRoute: typeof HomeV2RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kontaktai': {
@@ -910,6 +930,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApieRoute: ApieRouteWithChildren,
   BanketineSaleRoute: BanketineSaleRoute,
   DovanuKuponaiRoute: DovanuKuponaiRoute,
+  HomeV2Route: HomeV2Route,
   KontaktaiRoute: KontaktaiRoute,
   NamelisRoute: NamelisRoute,
   PrivatumoPolitikaRoute: PrivatumoPolitikaRoute,
