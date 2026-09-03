@@ -34,6 +34,7 @@ import { Route as EnApartamentaiRouteImport } from './routes/en/apartamentai'
 import { Route as EnApieRouteImport } from './routes/en/apie'
 import { Route as EnBanketineSaleRouteImport } from './routes/en/banketine-sale'
 import { Route as EnDovanuKuponaiRouteImport } from './routes/en/dovanu-kuponai'
+import { Route as EnHomeV2RouteImport } from './routes/en/home-v2'
 import { Route as EnKontaktaiRouteImport } from './routes/en/kontaktai'
 import { Route as EnNamelisRouteImport } from './routes/en/namelis'
 import { Route as EnPrivatumoPolitikaRouteImport } from './routes/en/privatumo-politika'
@@ -177,6 +178,11 @@ const EnDovanuKuponaiRoute = EnDovanuKuponaiRouteImport.update({
   path: '/dovanu-kuponai',
   getParentRoute: () => EnRouteRoute,
 } as any)
+const EnHomeV2Route = EnHomeV2RouteImport.update({
+  id: '/home-v2',
+  path: '/home-v2',
+  getParentRoute: () => EnRouteRoute,
+} as any)
 const EnKontaktaiRoute = EnKontaktaiRouteImport.update({
   id: '/kontaktai',
   path: '/kontaktai',
@@ -286,6 +292,7 @@ export interface FileRoutesByFullPath {
   '/en/apie': typeof EnApieRouteWithChildren
   '/en/banketine-sale': typeof EnBanketineSaleRoute
   '/en/dovanu-kuponai': typeof EnDovanuKuponaiRoute
+  '/en/home-v2': typeof EnHomeV2Route
   '/en/kontaktai': typeof EnKontaktaiRoute
   '/en/namelis': typeof EnNamelisRoute
   '/en/privatumo-politika': typeof EnPrivatumoPolitikaRoute
@@ -324,6 +331,7 @@ export interface FileRoutesByTo {
   '/apie/taisykles': typeof ApieTaisyklesRoute
   '/en/banketine-sale': typeof EnBanketineSaleRoute
   '/en/dovanu-kuponai': typeof EnDovanuKuponaiRoute
+  '/en/home-v2': typeof EnHomeV2Route
   '/en/kontaktai': typeof EnKontaktaiRoute
   '/en/namelis': typeof EnNamelisRoute
   '/en/privatumo-politika': typeof EnPrivatumoPolitikaRoute
@@ -368,6 +376,7 @@ export interface FileRoutesById {
   '/en/apie': typeof EnApieRouteWithChildren
   '/en/banketine-sale': typeof EnBanketineSaleRoute
   '/en/dovanu-kuponai': typeof EnDovanuKuponaiRoute
+  '/en/home-v2': typeof EnHomeV2Route
   '/en/kontaktai': typeof EnKontaktaiRoute
   '/en/namelis': typeof EnNamelisRoute
   '/en/privatumo-politika': typeof EnPrivatumoPolitikaRoute
@@ -413,6 +422,7 @@ export interface FileRouteTypes {
     | '/en/apie'
     | '/en/banketine-sale'
     | '/en/dovanu-kuponai'
+    | '/en/home-v2'
     | '/en/kontaktai'
     | '/en/namelis'
     | '/en/privatumo-politika'
@@ -451,6 +461,7 @@ export interface FileRouteTypes {
     | '/apie/taisykles'
     | '/en/banketine-sale'
     | '/en/dovanu-kuponai'
+    | '/en/home-v2'
     | '/en/kontaktai'
     | '/en/namelis'
     | '/en/privatumo-politika'
@@ -494,6 +505,7 @@ export interface FileRouteTypes {
     | '/en/apie'
     | '/en/banketine-sale'
     | '/en/dovanu-kuponai'
+    | '/en/home-v2'
     | '/en/kontaktai'
     | '/en/namelis'
     | '/en/privatumo-politika'
@@ -710,6 +722,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnDovanuKuponaiRouteImport
       parentRoute: typeof EnRouteRoute
     }
+    '/en/home-v2': {
+      id: '/en/home-v2'
+      path: '/home-v2'
+      fullPath: '/en/home-v2'
+      preLoaderRoute: typeof EnHomeV2RouteImport
+      parentRoute: typeof EnRouteRoute
+    }
     '/en/kontaktai': {
       id: '/en/kontaktai'
       path: '/kontaktai'
@@ -863,6 +882,7 @@ interface EnRouteRouteChildren {
   EnApieRoute: typeof EnApieRouteWithChildren
   EnBanketineSaleRoute: typeof EnBanketineSaleRoute
   EnDovanuKuponaiRoute: typeof EnDovanuKuponaiRoute
+  EnHomeV2Route: typeof EnHomeV2Route
   EnKontaktaiRoute: typeof EnKontaktaiRoute
   EnNamelisRoute: typeof EnNamelisRoute
   EnPrivatumoPolitikaRoute: typeof EnPrivatumoPolitikaRoute
@@ -878,6 +898,7 @@ const EnRouteRouteChildren: EnRouteRouteChildren = {
   EnApieRoute: EnApieRouteWithChildren,
   EnBanketineSaleRoute: EnBanketineSaleRoute,
   EnDovanuKuponaiRoute: EnDovanuKuponaiRoute,
+  EnHomeV2Route: EnHomeV2Route,
   EnKontaktaiRoute: EnKontaktaiRoute,
   EnNamelisRoute: EnNamelisRoute,
   EnPrivatumoPolitikaRoute: EnPrivatumoPolitikaRoute,
