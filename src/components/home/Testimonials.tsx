@@ -60,7 +60,7 @@ export function Testimonials() {
 
   return (
     <section className="bg-linen px-6 py-20 lg:px-12 lg:py-24">
-      <div className="mx-auto max-w-[88rem]">
+      <div className="mx-auto max-w-[84rem]">
         <div className="text-center">
           <p className="label-caps text-stone">{common.testimonials.eyebrow}</p>
           <h2 className="mt-3 font-display text-[clamp(1.9rem,4vw,2.75rem)] font-medium text-ink">

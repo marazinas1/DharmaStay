@@ -61,7 +61,7 @@ export function AvailabilityBand() {
 
   return (
     <section id="laisvos-datos" className="scroll-mt-24 bg-linen px-6 pt-24 pb-14 lg:px-12">
-      <div className="mx-auto max-w-[88rem]">
+      <div className="mx-auto max-w-[84rem]">
         <div className="max-w-2xl">
           <p className="label-caps text-sage">{common.availabilityBand.eyebrow}</p>
           <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,2.625rem)] leading-tight font-medium text-ink">
