@@ -395,7 +395,7 @@ function Lightbox({
           <img
             src={current}
             alt={alt}
-            className="max-h-[72vh] w-auto max-w-full rounded-lg object-contain"
+            className="max-h-[80vh] w-auto max-w-full rounded-lg object-contain"
           />
         ) : null}
 
