@@ -3,6 +3,7 @@ import heroImageWebp from "@/assets/hero-telsiai-lake.webp";
 import { SearchBar } from "@/components/search/SearchBar";
 import { Enso } from "@/components/site/Enso";
 import { useContent } from "@/content";
+import { AVAILABILITY_SECTION_ID } from "@/lib/scroll-to";
 
 /**
  * Home V2 hero: the booking search is the first thing a visitor sees —
@@ -37,7 +38,9 @@ export function HeroV2() {
           {common.search.lead}
         </p>
 
-        <SearchBar id={AVAILABILITY_SECTION_ID} className="mt-12 w-full max-w-3xl" />
+        <div id={AVAILABILITY_SECTION_ID} className="w-full scroll-mt-28">
+          <SearchBar className="mx-auto mt-12 w-full max-w-3xl" />
+        </div>
       </div>
     </section>
   );
