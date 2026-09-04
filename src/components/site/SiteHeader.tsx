@@ -71,7 +71,7 @@ export function SiteHeader() {
     };
   }, []);
 
-  const solid = scrolled || menuOpen || pathname !== homePath;
+  const solid = scrolled || menuOpen || !isHeroPage;
   const linkTone = solid ? "text-stone hover:text-sage" : "text-warm-white/85 hover:text-warm-white";
 
   return (
