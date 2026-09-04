@@ -161,12 +161,20 @@
     border-color: var(--color-border);
   }
 
+  html {
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    /* reveal/parallax transforms must never create a sideways scroll on mobile */
+    overflow-x: clip;
   }
+
+
 
   h1,
   h2,
@@ -339,4 +347,24 @@
   border: 1px solid var(--color-border);
   padding: 0.6rem 0.8rem;
   text-align: left;
+}
+
+/* Calendar: drop native table layout so Safari/iOS cannot mis-measure the
+   month grid height and let the last week row overlap the content below. */
+[data-slot="calendar"] table,
+[data-slot="calendar"] thead,
+[data-slot="calendar"] tbody {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+[data-slot="calendar"] tr {
+  display: flex;
+  width: 100%;
+}
+
+[data-slot="calendar"] th,
+[data-slot="calendar"] td {
+  display: block;
 }

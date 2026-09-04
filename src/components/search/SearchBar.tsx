@@ -109,6 +109,8 @@ export function SearchBar({
   if (variant === "compact") {
     const day = (value: Date | undefined) =>
       value ? format(value, "d MMM yyyy", { locale: dateLocale }) : "—";
+    const shortDay = (value: Date | undefined) =>
+      value ? format(value, "MM-dd", { locale: dateLocale }) : "—";
 
     return (
       <form
@@ -122,10 +124,19 @@ export function SearchBar({
         )}
       >
         <div className="grid grid-cols-[1fr_1fr_auto] gap-3">
-          <Summary label={common.search.checkIn} value={day(range?.from)} />
-          <Summary label={common.search.checkOut} value={day(range?.to)} />
+          <Summary
+            label={common.search.checkIn}
+            value={day(range?.from)}
+            shortValue={shortDay(range?.from)}
+          />
+          <Summary
+            label={common.search.checkOut}
+            value={day(range?.to)}
+            shortValue={shortDay(range?.to)}
+          />
           <Summary label={common.search.nightsLabel} value={String(nights)} align="right" />
         </div>
+
 
         <DateRangeField range={range} onChange={setRange} inline months={1} />
 
@@ -171,16 +182,23 @@ export function SearchBar({
 function Summary({
   label,
   value,
+  shortValue,
   align = "left",
 }: {
   label: string;
   value: string;
+  shortValue?: string;
   align?: "left" | "right";
 }) {
   return (
     <div className={cn("min-w-0 px-2", align === "right" && "text-right")}>
       <span className="label-caps block text-stone/80">{label}</span>
-      <span className="mt-1 block truncate text-sm font-medium text-ink">{value}</span>
+      <span className="mt-1 block truncate text-sm font-medium text-ink">
+        {/* short form avoids truncation on narrow phones */}
+        <span className="sm:hidden">{shortValue ?? value}</span>
+        <span className="hidden sm:inline">{value}</span>
+      </span>
     </div>
   );
 }
+
