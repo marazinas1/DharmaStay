@@ -60,8 +60,6 @@ export const common = {
   },
   nav: {
     home: "Home",
-    home1: "Home 1",
-    home2: "Home 2",
     about: "About",
     rules: "House rules",
     stays: "Apartments",

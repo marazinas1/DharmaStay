@@ -1,5 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { homeV2Route } from "@/pages/home-v2";
-
-export const Route = createFileRoute("/home-v2")(homeV2Route("lt") as never);
+/** Home V2 is now the main home page — keep old preview links working. */
+export const Route = createFileRoute("/home-v2")({
+  beforeLoad: () => {
+    throw redirect({ to: "/", statusCode: 301 });
+  },
+});
