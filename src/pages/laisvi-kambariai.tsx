@@ -186,6 +186,7 @@ function RoomResultCard({
   const { common } = useContent();
   const { open } = useBooking();
   const [gallery, setGallery] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const view = toPropertyView(property, locale);
   const images = [view.image, ...property.image_urls].filter(
     (src, index, all): src is string => Boolean(src) && all.indexOf(src) === index,
@@ -193,55 +194,71 @@ function RoomResultCard({
   const perNight = total !== null && nights > 0 ? total / nights : view.priceFrom;
 
   return (
-    <article className="grid overflow-hidden rounded-lg border border-border bg-warm-white shadow-soft transition-all hover:-translate-y-0.5 hover:border-sage/40 hover:shadow-lift md:grid-cols-[minmax(0,20rem)_1fr] md:items-start md:gap-2 md:p-4">
-      <button
-        type="button"
-        onClick={() => setGallery(true)}
-        aria-label={common.results.openGallery}
-        className="group relative aspect-[4/3] w-full overflow-hidden bg-linen md:rounded-md"
-      >
-        {images[0] ? (
-          <img
-            src={images[0]}
-            alt={view.imageAlt}
-            loading="lazy"
-            decoding="async"
-            className="photo-zoom h-full w-full object-cover"
-          />
-        ) : null}
-        {images.length > 1 ? (
-          <span className="absolute bottom-3 left-3 rounded-md bg-ink/70 px-3 py-1 text-xs text-warm-white">
-            {common.results.openGallery} · {images.length}
-          </span>
-        ) : null}
-      </button>
+    <article
+      className={cn(
+        "overflow-hidden rounded-lg border bg-warm-white shadow-soft transition-colors",
+        expanded ? "border-sage/50 shadow-lift" : "border-border hover:border-sage/40",
+      )}
+    >
+      <div className="grid gap-4 p-4 md:grid-cols-[13rem_1fr_12rem] md:items-start md:gap-5">
+        <button
+          type="button"
+          onClick={() => setGallery(true)}
+          aria-label={common.results.openGallery}
+          className="group relative aspect-[4/3] w-full overflow-hidden rounded-md bg-linen"
+        >
+          {images[0] ? (
+            <img
+              src={images[0]}
+              alt={view.imageAlt}
+              loading="lazy"
+              decoding="async"
+              className="photo-zoom h-full w-full object-cover"
+            />
+          ) : null}
+          {images.length > 1 ? (
+            <span className="absolute bottom-2 left-2 rounded-md bg-ink/70 px-2.5 py-1 text-[0.7rem] text-warm-white">
+              {common.results.openGallery} · {images.length}
+            </span>
+          ) : null}
+        </button>
 
-      <div className="flex flex-col p-6 sm:p-7">
+        <div className="flex flex-col">
+          <h2 className="font-display text-[1.375rem] leading-snug font-semibold text-ink">
+            {view.name}
+          </h2>
+          {view.meta ? (
+            <p className="mt-2 text-xs tracking-wide text-stone/80">{view.meta}</p>
+          ) : null}
+          {view.description ? (
+            <p className="mt-3 line-clamp-2 text-[0.95rem] leading-relaxed text-stone">
+              {view.description}
+            </p>
+          ) : null}
+          <button
+            type="button"
+            onClick={() => setExpanded((value) => !value)}
+            aria-expanded={expanded}
+            className="mt-2 self-start text-sm font-medium text-sage underline underline-offset-4 transition-colors hover:text-sage-deep"
+          >
+            {expanded ? common.results.lessInfo : common.results.moreInfo}
+          </button>
+          {view.amenities.length > 0 ? (
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {view.amenities.slice(0, 4).map((amenity) => (
+                <li
+                  key={amenity}
+                  className="rounded-md border border-border px-3 py-1 text-xs text-stone"
+                >
+                  {amenity}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
 
-        <h2 className="font-display text-[1.375rem] leading-snug font-semibold text-ink">
-          {view.name}
-        </h2>
-        {view.meta ? <p className="mt-2 text-xs tracking-wide text-stone/80">{view.meta}</p> : null}
-        {view.description ? (
-          <p className="mt-3 line-clamp-3 text-[0.95rem] leading-relaxed text-stone">
-            {view.description}
-          </p>
-        ) : null}
-        {view.amenities.length > 0 ? (
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {view.amenities.slice(0, 4).map((amenity) => (
-              <li
-                key={amenity}
-                className="rounded-md border border-border px-3 py-1 text-xs text-stone"
-              >
-                {amenity}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-border pt-5">
-          <div>
+        <div className="flex flex-col items-start gap-4 border-t border-border pt-4 md:h-full md:items-end md:border-t-0 md:border-l md:pt-0 md:pl-5 md:text-right">
+          <div className="md:text-right">
             <p className="font-display text-2xl font-semibold text-ink">
               {total !== null
                 ? `${formatPrice(total)} €`
@@ -258,16 +275,42 @@ function RoomResultCard({
           </div>
           <button
             type="button"
-            onClick={() =>
-              open(property.id, { checkin, checkout, adults }, { name: property.name })
-            }
-            className="inline-flex items-center gap-2 rounded-md bg-sage px-6 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+            onClick={() => open(property.id, { checkin, checkout, adults }, { name: property.name })}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-sage px-5 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep md:mt-auto"
           >
             {common.cta.book}
             <ArrowRight className="h-4 w-4" aria-hidden />
           </button>
         </div>
       </div>
+
+      {expanded ? (
+        <div className="border-t border-border px-4 py-6 sm:px-6">
+          <h3 className="label-caps text-sage">{common.results.detailsTitle}</h3>
+          {view.description ? (
+            <p className="mt-3 whitespace-pre-line text-[0.95rem] leading-relaxed text-stone">
+              {view.description}
+            </p>
+          ) : null}
+          {view.amenities.length > 0 ? (
+            <>
+              <h4 className="mt-6 font-display text-lg font-semibold text-ink">
+                {common.results.amenitiesTitle}
+              </h4>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {view.amenities.map((amenity) => (
+                  <li
+                    key={amenity}
+                    className="rounded-md border border-border px-3 py-1 text-xs text-stone"
+                  >
+                    {amenity}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+        </div>
+      ) : null}
 
       {gallery ? (
         <Lightbox images={images} alt={view.imageAlt} onClose={() => setGallery(false)} />
