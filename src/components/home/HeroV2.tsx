@@ -37,7 +37,7 @@ export function HeroV2() {
           {common.search.lead}
         </p>
 
-        <SearchBar className="mt-12 w-full max-w-3xl" />
+        <SearchBar id={AVAILABILITY_SECTION_ID} className="mt-12 w-full max-w-3xl" />
       </div>
     </section>
   );
