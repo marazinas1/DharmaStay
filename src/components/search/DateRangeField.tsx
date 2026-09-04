@@ -28,16 +28,22 @@ export function nightsBetween(range: DateRange | undefined): number {
 export function DateRangeField({
   range,
   onChange,
+  open: openProp,
+  onOpenChange,
   className,
 }: {
   range: DateRange | undefined;
   onChange: (range: DateRange | undefined) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   className?: string;
 }) {
   const { common } = useContent();
   const locale = useLocale();
   const isMobile = useIsMobile();
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const open = openProp ?? uncontrolledOpen;
+  const setOpen = onOpenChange ?? setUncontrolledOpen;
   const today = useMemo(startOfToday, []);
   const dateLocale = locale === "en" ? enGB : ltLocale;
   const nights = nightsBetween(range);
@@ -54,6 +60,7 @@ export function DateRangeField({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
+
       <PopoverTrigger asChild>
         <button
           type="button"
