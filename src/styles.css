@@ -166,7 +166,10 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    /* reveal/parallax transforms must never create a sideways scroll on mobile */
+    overflow-x: clip;
   }
+
 
   h1,
   h2,
