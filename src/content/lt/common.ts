@@ -41,8 +41,6 @@ export const common = {
   },
   nav: {
     home: "Pagrindinis",
-    home1: "Home 1",
-    home2: "Home 2",
     about: "Apie",
     rules: "Apgyvendinimo taisyklės",
     stays: "Apartamentai",
