@@ -81,7 +81,7 @@ export function SiteHeader() {
         solid ? "border-b border-border/70 bg-linen/95 backdrop-blur-sm" : "bg-transparent",
       )}
     >
-      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-2 lg:px-12 lg:py-3">
+      <div className="mx-auto grid max-w-[88rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-2 lg:px-12 lg:py-3">
         <LocaleLink
           to="/"
           aria-label={`${common.brand} — ${common.nav.home}`}

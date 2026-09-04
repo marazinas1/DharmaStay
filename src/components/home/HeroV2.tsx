@@ -27,7 +27,7 @@ export function HeroV2() {
       </picture>
       <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/35 to-ink/70" />
 
-      <div className="relative mx-auto flex min-h-[92vh] max-w-5xl flex-col items-center justify-center px-6 pt-36 text-center lg:px-12">
+      <div className="relative mx-auto flex min-h-[92vh] max-w-6xl flex-col items-center justify-center px-6 pt-36 text-center lg:px-12">
         <Enso className="h-12 w-12 animate-[spin_22s_linear_infinite] text-warm-white/55" />
         <p className="label-caps mt-8 text-warm-white/80">{common.search.eyebrow}</p>
         <h1 className="mt-5 font-display text-[clamp(2.75rem,6.5vw,4rem)] leading-[1.06] font-normal text-warm-white">
