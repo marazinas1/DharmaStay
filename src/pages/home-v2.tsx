@@ -40,8 +40,7 @@ function HomeV2() {
       <StaysSection />
       <LocationSection />
       <ExtrasSection />
-      <Ratings />
-      <Testimonials />
+      <RatingsAndTestimonials />
       <BookingBand />
     </>
   );
