@@ -86,8 +86,15 @@ function ResultsPage({ locale }: { locale: Locale }) {
       <section className="bg-linen px-6 pb-24 lg:px-12">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
           <aside className="lg:sticky lg:top-28">
+            {/* keeps the calendar card top aligned with the first room card */}
+            {hasDates && !failed && !loading && rooms.length > 0 ? (
+              <p className="hidden pb-4 text-sm text-transparent lg:block" aria-hidden>
+                .
+              </p>
+            ) : null}
             <SearchBar variant="compact" initial={search} />
           </aside>
+
 
           <div>
             {!hasDates ? (
