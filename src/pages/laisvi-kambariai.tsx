@@ -190,12 +190,12 @@ function RoomResultCard({
   const perNight = total !== null && nights > 0 ? total / nights : view.priceFrom;
 
   return (
-    <article className="grid overflow-hidden rounded-md bg-warm-white shadow-soft transition-shadow hover:shadow-lift md:grid-cols-[minmax(0,18rem)_1fr]">
+    <article className="grid overflow-hidden rounded-lg border border-border bg-warm-white shadow-soft transition-all hover:-translate-y-0.5 hover:border-sage/40 hover:shadow-lift md:grid-cols-[minmax(0,20rem)_1fr] md:items-start md:gap-2 md:p-4">
       <button
         type="button"
         onClick={() => setGallery(true)}
         aria-label={common.results.openGallery}
-        className="group relative aspect-[4/3] w-full overflow-hidden bg-linen md:aspect-auto md:h-full"
+        className="group relative aspect-[4/3] w-full overflow-hidden bg-linen md:rounded-md"
       >
         {images[0] ? (
           <img
@@ -214,6 +214,7 @@ function RoomResultCard({
       </button>
 
       <div className="flex flex-col p-6 sm:p-7">
+
         <h2 className="font-display text-[1.375rem] leading-snug font-semibold text-ink">
           {view.name}
         </h2>
