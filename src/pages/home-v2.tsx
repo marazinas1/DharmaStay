@@ -5,9 +5,11 @@ import { IntroStrip } from "@/components/home/IntroStrip";
 import { LocationSection } from "@/components/home/LocationSection";
 import { Ratings } from "@/components/home/Ratings";
 import { StaysSection } from "@/components/home/StaysSection";
+import { Testimonials } from "@/components/home/Testimonials";
 import { getContent } from "@/content";
 import type { Locale } from "@/lib/locale";
 import { pageHead } from "@/lib/seo";
+
 
 /** Home V2 concept: search-first hero, no second availability band. */
 export function homeV2Route(locale: Locale) {
@@ -40,7 +42,9 @@ function HomeV2() {
       <LocationSection />
       <ExtrasSection />
       <Ratings />
+      <Testimonials />
       <BookingBand />
     </>
   );
 }
+

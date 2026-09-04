@@ -45,7 +45,7 @@ export function GuestsField({
         <button
           type="button"
           className={cn(
-            "flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left transition-colors hover:bg-linen focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage",
+            "flex w-full items-center gap-3 rounded-md px-5 py-3.5 text-left transition-colors hover:bg-linen focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage",
             className,
           )}
         >
@@ -58,7 +58,7 @@ export function GuestsField({
           </span>
         </button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-80 rounded-2xl border-border bg-warm-white p-5">
+      <PopoverContent align="start" className="w-80 rounded-md border-border bg-warm-white p-5">
         <div className="flex flex-col gap-5">
           {rows.map((row) => (
             <div key={row.key} className="flex items-center justify-between gap-4">
@@ -91,7 +91,7 @@ export function GuestsField({
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="mt-5 w-full rounded-full bg-sage px-5 py-2.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+          className="mt-5 w-full rounded-md bg-sage px-5 py-2.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
         >
           {s.done}
         </button>

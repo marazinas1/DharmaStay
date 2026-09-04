@@ -28,16 +28,22 @@ export function nightsBetween(range: DateRange | undefined): number {
 export function DateRangeField({
   range,
   onChange,
+  open: openProp,
+  onOpenChange,
   className,
 }: {
   range: DateRange | undefined;
   onChange: (range: DateRange | undefined) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   className?: string;
 }) {
   const { common } = useContent();
   const locale = useLocale();
   const isMobile = useIsMobile();
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const open = openProp ?? uncontrolledOpen;
+  const setOpen = onOpenChange ?? setUncontrolledOpen;
   const today = useMemo(startOfToday, []);
   const dateLocale = locale === "en" ? enGB : ltLocale;
   const nights = nightsBetween(range);
@@ -54,11 +60,12 @@ export function DateRangeField({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
+
       <PopoverTrigger asChild>
         <button
           type="button"
           className={cn(
-            "flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left transition-colors hover:bg-linen focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage",
+            "flex w-full items-center gap-3 rounded-md px-5 py-3.5 text-left transition-colors hover:bg-linen focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage",
             className,
           )}
         >
@@ -76,7 +83,7 @@ export function DateRangeField({
           </span>
         </button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-auto rounded-2xl border-border bg-warm-white p-4">
+      <PopoverContent align="start" className="w-auto rounded-md border-border bg-warm-white p-4">
         <Calendar
           mode="range"
           locale={dateLocale}
@@ -106,7 +113,7 @@ export function DateRangeField({
           <button
             type="button"
             onClick={() => onChange(undefined)}
-            className="rounded-full border border-border px-4 py-1.5 text-xs text-stone transition-colors hover:text-ink"
+            className="rounded-md border border-border px-4 py-1.5 text-xs text-stone transition-colors hover:text-ink"
           >
             {common.search.clear}
           </button>

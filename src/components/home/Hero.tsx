@@ -74,13 +74,13 @@ export function Hero() {
             <button
               type="button"
               onClick={() => scrollToId(AVAILABILITY_SECTION_ID)}
-              className="rounded-full bg-sage px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+              className="rounded-md bg-sage px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
             >
               {common.cta.checkDates}
             </button>
             <LocaleLink
               to="/apartamentai"
-              className="rounded-full border border-warm-white/60 px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-warm-white hover:text-ink"
+              className="rounded-md border border-warm-white/60 px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-warm-white hover:text-ink"
             >
               {home.hero.secondaryCta}
             </LocaleLink>

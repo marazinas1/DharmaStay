@@ -43,10 +43,10 @@
  */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
@@ -86,7 +86,7 @@
 }
 
 :root {
-  --radius: 0.875rem;
+  --radius: 6px;
   --background: oklch(0.968 0.007 80.7);
   --foreground: oklch(0.285 0.007 95.3);
   --card: oklch(0.986 0.006 84.6);
