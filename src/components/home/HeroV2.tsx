@@ -22,22 +22,22 @@ export function HeroV2() {
           height={1440}
           fetchPriority="high"
           decoding="async"
-          className="ken-burns absolute inset-0 h-full w-full object-cover"
+          className="hero-kenburns absolute inset-0 h-full w-full object-cover"
         />
       </picture>
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/35 to-ink/70" />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/35 to-ink/70" />
 
-      <div className="relative mx-auto flex min-h-[88vh] max-w-5xl flex-col items-center justify-center px-6 pt-36 text-center lg:px-12">
+      <div className="relative mx-auto flex min-h-[92vh] max-w-5xl flex-col items-center justify-center px-6 pt-36 text-center lg:px-12">
         <Enso className="h-12 w-12 animate-[spin_22s_linear_infinite] text-warm-white/55" />
-        <p className="label-caps mt-8 text-warm-white/75">{common.search.eyebrow}</p>
-        <h1 className="mt-5 font-display text-[clamp(2.75rem,6.5vw,4.5rem)] leading-[1.06] font-medium text-warm-white">
+        <p className="label-caps mt-8 text-warm-white/80">{common.search.eyebrow}</p>
+        <h1 className="mt-5 font-display text-[clamp(2.75rem,6.5vw,4rem)] leading-[1.06] font-normal text-warm-white">
           {common.search.title}
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-warm-white/85 sm:text-lg">
           {common.search.lead}
         </p>
 
-        <SearchBar className="mt-12 w-full" />
+        <SearchBar className="mt-12 w-full max-w-3xl" />
       </div>
     </section>
   );
