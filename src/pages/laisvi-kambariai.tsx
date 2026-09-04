@@ -244,7 +244,7 @@ function RoomResultCard({
           >
             {expanded ? common.results.lessInfo : common.results.moreInfo}
           </button>
-          {view.amenities.length > 0 ? (
+          {view.amenities.length > 0 && !expanded ? (
             <ul className="mt-4 flex flex-wrap gap-2">
               {view.amenities.slice(0, 4).map((amenity) => (
                 <li
