@@ -11,6 +11,8 @@ import { Enso } from "@/components/site/Enso";
 import { getContent, useContent, useLocale } from "@/content";
 import { availabilityQuery } from "@/lib/availability-queries";
 import type { Locale } from "@/lib/locale";
+import { cn } from "@/lib/utils";
+
 import { propertiesQueryFor } from "@/lib/property-queries";
 import { formatPrice, toPropertyView } from "@/lib/property-view";
 import type { Property } from "@/lib/rentivo-schemas";
