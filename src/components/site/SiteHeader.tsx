@@ -123,7 +123,7 @@ export function SiteHeader() {
                   </button>
                   {openGroup === entry.label ? (
                     <div className="absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-3">
-                      <ul className="overflow-hidden rounded-2xl border border-border bg-warm-white py-2 shadow-lift">
+                      <ul className="overflow-hidden rounded-md border border-border bg-warm-white py-2 shadow-lift">
                         {entry.items.map((item) => (
                           <li key={item.to}>
                             <LocaleLink
@@ -156,7 +156,7 @@ export function SiteHeader() {
             type="button"
             onClick={goToAvailability}
             className={cn(
-              "hidden rounded-full px-5 py-2.5 text-sm font-medium transition-colors lg:inline-flex",
+              "hidden rounded-md px-5 py-2.5 text-sm font-medium transition-colors lg:inline-flex",
               solid
                 ? "bg-sage text-warm-white hover:bg-sage-deep"
                 : "border border-warm-white/70 text-warm-white hover:bg-warm-white hover:text-ink",
@@ -244,7 +244,7 @@ export function SiteHeader() {
               setMenuOpen(false);
               goToAvailability();
             }}
-            className="mt-6 w-full rounded-full bg-sage px-5 py-3.5 text-sm font-medium text-warm-white"
+            className="mt-6 w-full rounded-md bg-sage px-5 py-3.5 text-sm font-medium text-warm-white"
           >
             {common.cta.checkDates}
           </button>

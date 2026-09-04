@@ -33,13 +33,13 @@ function NotFoundComponent() {
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <LocaleLink
             to="/"
-            className="rounded-full bg-sage px-6 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+            className="rounded-md bg-sage px-6 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
           >
             {home.notFound.home}
           </LocaleLink>
           <LocaleLink
             to="/apartamentai"
-            className="rounded-full border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
+            className="rounded-md border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
           >
             {home.notFound.stays}
           </LocaleLink>

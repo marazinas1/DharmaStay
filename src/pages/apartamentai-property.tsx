@@ -242,7 +242,7 @@ function PropertyPage({ locale }: { locale: Locale }) {
         <button
           type="button"
           onClick={openBooking}
-          className="rounded-full bg-sage px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+          className="rounded-md bg-sage px-7 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
         >
           {c.common.cta.book}
           {view.priceFrom === null
@@ -268,7 +268,7 @@ function PropertyPage({ locale }: { locale: Locale }) {
             />
           </Reveal>
           <Reveal direction="right" delay={100}>
-            <div className="rounded-2xl bg-linen p-8">
+            <div className="rounded-md bg-linen p-8">
               <p className="label-caps text-sage">{c.common.stays.availabilityTitle}</p>
               <p className="mt-4 text-sm leading-relaxed text-stone">
                 {data.occupied.length ? c.common.stays.availabilityLead : c.common.stays.noOccupied}
@@ -276,7 +276,7 @@ function PropertyPage({ locale }: { locale: Locale }) {
               <button
                 type="button"
                 onClick={openBooking}
-                className="mt-6 w-full rounded-full bg-sage px-6 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+                className="mt-6 w-full rounded-md bg-sage px-6 py-3.5 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
               >
                 {range?.from && range?.to ? c.common.cta.book : c.common.stays.pickDates}
               </button>
@@ -290,7 +290,7 @@ function PropertyPage({ locale }: { locale: Locale }) {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {grid.map((url, index) => (
               <Reveal key={url} delay={index * 90}>
-                <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-warm-white shadow-soft">
+                <div className="aspect-[4/3] overflow-hidden rounded-md bg-warm-white shadow-soft">
                   <img
                     src={url}
                     alt={`${data.name} — ${c.common.brand}`}

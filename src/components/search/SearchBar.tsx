@@ -73,7 +73,7 @@ export function SearchBar({
         submit();
       }}
       className={cn(
-        "grid gap-2 rounded-3xl bg-warm-white p-3 sm:grid-cols-[1.4fr_1fr_auto] sm:items-center",
+        "grid gap-2 rounded-md bg-warm-white p-3 sm:grid-cols-[1.4fr_1fr_auto] sm:items-center",
         variant === "hero" ? "shadow-lift" : "border border-border shadow-soft",
         className,
       )}
@@ -85,7 +85,7 @@ export function SearchBar({
       <button
         type="submit"
         disabled={!ready}
-        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-clay px-7 py-4 text-sm font-medium text-ink transition-colors hover:bg-sage hover:text-warm-white disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-full"
+        className="inline-flex items-center justify-center gap-2 rounded-md bg-clay px-7 py-4 text-sm font-medium text-ink transition-colors hover:bg-sage hover:text-warm-white disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-md"
       >
         <Search className="h-4 w-4" aria-hidden />
         {common.search.submit}

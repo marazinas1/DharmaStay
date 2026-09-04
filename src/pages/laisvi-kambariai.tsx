@@ -97,7 +97,7 @@ function ResultsPage({ locale }: { locale: Locale }) {
                   void availability.refetch();
                   void properties.refetch();
                 }}
-                className="mt-5 rounded-full bg-sage px-6 py-2.5 text-xs font-medium text-warm-white transition-colors hover:bg-sage-deep"
+                className="mt-5 rounded-md bg-sage px-6 py-2.5 text-xs font-medium text-warm-white transition-colors hover:bg-sage-deep"
               >
                 {common.results.retry}
               </button>
@@ -107,7 +107,7 @@ function ResultsPage({ locale }: { locale: Locale }) {
               {[0, 1, 2].map((key) => (
                 <div
                   key={key}
-                  className="h-56 animate-pulse rounded-2xl bg-warm-white/70 shadow-soft"
+                  className="h-56 animate-pulse rounded-md bg-warm-white/70 shadow-soft"
                 />
               ))}
             </div>
@@ -176,7 +176,7 @@ function RoomResultCard({
   const perNight = total !== null && nights > 0 ? total / nights : view.priceFrom;
 
   return (
-    <article className="grid overflow-hidden rounded-2xl bg-warm-white shadow-soft transition-shadow hover:shadow-lift md:grid-cols-[minmax(0,18rem)_1fr]">
+    <article className="grid overflow-hidden rounded-md bg-warm-white shadow-soft transition-shadow hover:shadow-lift md:grid-cols-[minmax(0,18rem)_1fr]">
       <button
         type="button"
         onClick={() => setGallery(true)}
@@ -193,7 +193,7 @@ function RoomResultCard({
           />
         ) : null}
         {images.length > 1 ? (
-          <span className="absolute bottom-3 left-3 rounded-full bg-ink/70 px-3 py-1 text-xs text-warm-white">
+          <span className="absolute bottom-3 left-3 rounded-md bg-ink/70 px-3 py-1 text-xs text-warm-white">
             {common.results.openGallery} · {images.length}
           </span>
         ) : null}
@@ -214,7 +214,7 @@ function RoomResultCard({
             {view.amenities.slice(0, 4).map((amenity) => (
               <li
                 key={amenity}
-                className="rounded-full border border-border px-3 py-1 text-xs text-stone"
+                className="rounded-md border border-border px-3 py-1 text-xs text-stone"
               >
                 {amenity}
               </li>
@@ -243,7 +243,7 @@ function RoomResultCard({
             onClick={() =>
               open(property.id, { checkin, checkout, adults }, { name: property.name })
             }
-            className="inline-flex items-center gap-2 rounded-full bg-sage px-6 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
+            className="inline-flex items-center gap-2 rounded-md bg-sage px-6 py-3 text-sm font-medium text-warm-white transition-colors hover:bg-sage-deep"
           >
             {common.cta.book}
             <ArrowRight className="h-4 w-4" aria-hidden />
@@ -291,7 +291,7 @@ function Lightbox({
           src={current}
           alt={alt}
           onClick={(event) => event.stopPropagation()}
-          className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
+          className="max-h-[75vh] w-auto max-w-full rounded-md object-contain"
         />
       ) : null}
       {images.length > 1 ? (
@@ -302,7 +302,7 @@ function Lightbox({
           <button
             type="button"
             onClick={() => setIndex((value) => (value - 1 + images.length) % images.length)}
-            className="rounded-full border border-warm-white/50 px-5 py-2 text-sm text-warm-white transition-colors hover:bg-warm-white hover:text-ink"
+            className="rounded-md border border-warm-white/50 px-5 py-2 text-sm text-warm-white transition-colors hover:bg-warm-white hover:text-ink"
           >
             {common.results.prev}
           </button>
@@ -312,7 +312,7 @@ function Lightbox({
           <button
             type="button"
             onClick={() => setIndex((value) => (value + 1) % images.length)}
-            className="rounded-full border border-warm-white/50 px-5 py-2 text-sm text-warm-white transition-colors hover:bg-warm-white hover:text-ink"
+            className="rounded-md border border-warm-white/50 px-5 py-2 text-sm text-warm-white transition-colors hover:bg-warm-white hover:text-ink"
           >
             {common.results.next}
           </button>

@@ -62,7 +62,7 @@ export function BookingDateRange({
     selected?.from && selected?.to ? differenceInCalendarDays(selected.to, selected.from) : 0;
 
   return (
-    <div className="rounded-xl border border-border bg-linen p-3 sm:p-4">
+    <div className="rounded-md border border-border bg-linen p-3 sm:p-4">
       <Calendar
         mode="range"
         locale={locale === "en" ? enGB : lt}
@@ -113,7 +113,7 @@ export function BookingDateRange({
           <button
             type="button"
             onClick={() => onChange("", "")}
-            className="ml-auto rounded-full border border-border px-3 py-1 text-xs text-stone transition-colors hover:text-ink"
+            className="ml-auto rounded-md border border-border px-3 py-1 text-xs text-stone transition-colors hover:text-ink"
           >
             {common.stays.clearDates}
           </button>

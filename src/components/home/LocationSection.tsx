@@ -42,14 +42,14 @@ export function LocationSection() {
               href={contact.mapUrl}
               target="_blank"
               rel="noreferrer"
-              className="mt-6 inline-flex rounded-full border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
+              className="mt-6 inline-flex rounded-md border border-sage px-6 py-3 text-sm font-medium text-sage transition-colors hover:bg-sage hover:text-warm-white"
             >
               {common.cta.openMap}
             </a>
           </Reveal>
 
           <Reveal delay={120} direction="right">
-            <div className="group overflow-hidden rounded-2xl shadow-soft">
+            <div className="group overflow-hidden rounded-md shadow-soft">
               <picture>
                 <source srcSet={locationImageWebp} type="image/webp" />
                 <img
@@ -67,7 +67,7 @@ export function LocationSection() {
         </div>
 
         <Reveal delay={80} className="mt-16">
-          <div className="h-[360px] overflow-hidden rounded-2xl shadow-soft [filter:grayscale(1)_contrast(0.95)] lg:h-[500px]">
+          <div className="h-[360px] overflow-hidden rounded-md shadow-soft [filter:grayscale(1)_contrast(0.95)] lg:h-[500px]">
             <ClientOnly fallback={<MapSkeleton />}>
               <Suspense fallback={<MapSkeleton />}>
                 <LocationMap />

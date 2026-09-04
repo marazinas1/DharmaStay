@@ -72,7 +72,7 @@ export function AvailabilityBand() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-8 rounded-2xl bg-warm-white p-6 shadow-soft sm:p-8 lg:grid-cols-[auto_1fr]">
+        <div className="mt-10 grid gap-8 rounded-md bg-warm-white p-6 shadow-soft sm:p-8 lg:grid-cols-[auto_1fr]">
           <div>
             <Calendar
               mode="range"
@@ -98,7 +98,7 @@ export function AvailabilityBand() {
                 <select
                   value={adults}
                   onChange={(event) => setAdults(Number(event.target.value))}
-                  className="rounded-full border border-border bg-warm-white px-4 py-1.5 text-sm text-ink"
+                  className="rounded-md border border-border bg-warm-white px-4 py-1.5 text-sm text-ink"
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
                     <option key={value} value={value}>
@@ -111,7 +111,7 @@ export function AvailabilityBand() {
                 <button
                   type="button"
                   onClick={() => setRange(undefined)}
-                  className="rounded-full border border-border px-4 py-1.5 text-xs text-stone transition-colors hover:text-ink"
+                  className="rounded-md border border-border px-4 py-1.5 text-xs text-stone transition-colors hover:text-ink"
                 >
                   {common.availabilityBand.reset}
                 </button>
@@ -131,7 +131,7 @@ export function AvailabilityBand() {
                 <button
                   type="button"
                   onClick={() => void refetch()}
-                  className="mt-4 rounded-full bg-sage px-5 py-2 text-xs font-medium text-warm-white transition-colors hover:bg-sage-deep"
+                  className="mt-4 rounded-md bg-sage px-5 py-2 text-xs font-medium text-warm-white transition-colors hover:bg-sage-deep"
                 >
                   {common.availabilityBand.retry}
                 </button>
@@ -205,7 +205,7 @@ function AvailabilityTypeCard({
 
   if (!free) {
     return (
-      <article className="rounded-2xl border border-border bg-linen/60 p-5 opacity-70">
+      <article className="rounded-md border border-border bg-linen/60 p-5 opacity-70">
         {body}
       </article>
     );
@@ -216,7 +216,7 @@ function AvailabilityTypeCard({
       to="/apartamentai/tipas/$categorySlug"
       params={{ categorySlug: categorySlug(group.code) }}
       search={{ nuo: dateFrom, iki: dateTo, sveciai: adults }}
-      className="group rounded-2xl border border-border bg-linen/60 p-5 transition-shadow hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage"
+      className="group rounded-md border border-border bg-linen/60 p-5 transition-shadow hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage"
     >
       {body}
     </LocaleLink>
