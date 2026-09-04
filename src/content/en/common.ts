@@ -261,6 +261,10 @@ export const common = {
     foundOne: "room available",
     foundFew: "rooms available",
     foundMany: "rooms available",
+    moreInfo: "More",
+    lessInfo: "Close",
+    detailsTitle: "Room details",
+    amenitiesTitle: "Room amenities",
   },
   testimonials: {
     eyebrow: "Booking.com reviews",
