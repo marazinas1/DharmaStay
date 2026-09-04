@@ -13,15 +13,22 @@ export const DEFAULT_GUESTS: Guests = { adults: 2, children: 0, infants: 0 };
 export function GuestsField({
   guests,
   onChange,
+  open: openProp,
+  onOpenChange,
   className,
 }: {
   guests: Guests;
   onChange: (guests: Guests) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   className?: string;
 }) {
   const { common } = useContent();
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const open = openProp ?? uncontrolledOpen;
+  const setOpen = onOpenChange ?? setUncontrolledOpen;
   const s = common.search;
+
 
   const parts = [
     `${guests.adults} ${plural(guests.adults, s.adultOne, s.adultFew, s.adultMany)}`,

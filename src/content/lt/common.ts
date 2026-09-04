@@ -216,6 +216,10 @@ export const common = {
     infantFew: "kūdikiai",
     infantMany: "kūdikių",
     needDates: "Pasirinkite datas",
+    checkIn: "Atvykimas",
+    checkOut: "Išvykimas",
+    nightsLabel: "Naktys",
+
   },
   results: {
     seoTitle: "Laisvi kambariai — Dharma Stay",
