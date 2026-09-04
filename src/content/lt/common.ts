@@ -2,6 +2,32 @@
  * Shared Lithuanian strings. Plain nested strings only — this whole folder can be
  * serialized to `lt.json` and mirrored as `en.json` / `ru.json` later.
  */
+type Testimonial = { name: string; country: string; quote: string; source: string };
+
+const testimonials: Testimonial[] = [
+  {
+    name: "Solveiga",
+    country: "Lietuva",
+    quote:
+      "Ir antras kartas nenuvylė. Kambarys tvarkingas, jaukus. Yra visko, ko reikia viešnagei.",
+    source: "Booking.com",
+  },
+  {
+    name: "Giedrė",
+    country: "Lietuva",
+    quote:
+      "Labai patogi vieta, švarus ir gražūs apartamentai, radom visas reikalingas higienos priemones.",
+    source: "Booking.com",
+  },
+  {
+    name: "Erika",
+    country: "Danija",
+    quote:
+      "Nuomojamės kambarį trims žmonėms, ir viskas patiko! Lovos patogios, pagalvės patogios, gražūs patogūs vonios kambarys. Virtuvytė maža bet visko ko reik lengvam gaminimui. Gražus vaizdas pro langą.",
+    source: "Booking.com",
+  },
+];
+
 export const common = {
   brand: "Dharma Stay",
   tagline: "Iš namų į namus.",
@@ -218,28 +244,6 @@ export const common = {
     title: "Ką sako svečiai",
     prev: "Ankstesni atsiliepimai",
     next: "Kiti atsiliepimai",
-    items: [
-      {
-        name: "Solveiga",
-        country: "Lietuva",
-        quote:
-          "Ir antras kartas nenuvylė. Kambarys tvarkingas, jaukus. Yra visko, ko reikia viešnagei.",
-        source: "Booking.com",
-      },
-      {
-        name: "Giedrė",
-        country: "Lietuva",
-        quote:
-          "Labai patogi vieta, švarus ir gražūs apartamentai, radom visas reikalingas higienos priemones.",
-        source: "Booking.com",
-      },
-      {
-        name: "Erika",
-        country: "Danija",
-        quote:
-          "Nuomojamės kambarį trims žmonėms, ir viskas patiko! Lovos patogios, pagalvės patogios, gražūs patogūs vonios kambarys. Virtuvytė maža bet visko ko reik lengvam gaminimui. Gražus vaizdas pro langą.",
-        source: "Booking.com",
-      },
-    ],
+    items: testimonials,
   },
 } as const;
