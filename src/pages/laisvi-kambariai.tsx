@@ -291,7 +291,7 @@ function Lightbox({
           src={current}
           alt={alt}
           onClick={(event) => event.stopPropagation()}
-          className="max-h-[75vh] w-auto max-w-full rounded-md object-contain"
+          className="max-h-[75vh] w-auto max-w-full rounded-lg object-contain"
         />
       ) : null}
       {images.length > 1 ? (
