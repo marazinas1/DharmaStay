@@ -84,7 +84,7 @@ export function DateRangeField({
           /* selection is driven by onDayClick for predictable re-picking */
         }}
         onDayClick={(day, modifiers) => {
-          if (modifiers.disabled) return;
+          if (modifiers["disabled"]) return;
           onChange(nextRange(range, day));
         }}
         disabled={{ before: today }}
