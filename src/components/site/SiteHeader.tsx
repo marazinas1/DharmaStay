@@ -28,6 +28,8 @@ export function SiteHeader() {
   const common = content.common;
   const nav = mainNav(locale);
   const homePath = localizePath("/", locale);
+  const heroPath = localizePath("/home-v2", locale);
+  const isHeroPage = pathname === homePath || pathname === heroPath;
 
   // The header CTA leads to the shared availability calendar on the home page.
   const goToAvailability = () => {
