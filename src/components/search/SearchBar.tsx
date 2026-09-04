@@ -109,6 +109,8 @@ export function SearchBar({
   if (variant === "compact") {
     const day = (value: Date | undefined) =>
       value ? format(value, "d MMM yyyy", { locale: dateLocale }) : "—";
+    const shortDay = (value: Date | undefined) =>
+      value ? format(value, "MM-dd", { locale: dateLocale }) : "—";
 
     return (
       <form
@@ -122,10 +124,19 @@ export function SearchBar({
         )}
       >
         <div className="grid grid-cols-[1fr_1fr_auto] gap-3">
-          <Summary label={common.search.checkIn} value={day(range?.from)} />
-          <Summary label={common.search.checkOut} value={day(range?.to)} />
+          <Summary
+            label={common.search.checkIn}
+            value={day(range?.from)}
+            shortValue={shortDay(range?.from)}
+          />
+          <Summary
+            label={common.search.checkOut}
+            value={day(range?.to)}
+            shortValue={shortDay(range?.to)}
+          />
           <Summary label={common.search.nightsLabel} value={String(nights)} align="right" />
         </div>
+
 
         <DateRangeField range={range} onChange={setRange} inline months={1} />
 
