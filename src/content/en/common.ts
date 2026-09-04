@@ -235,6 +235,10 @@ export const common = {
     infantFew: "infants",
     infantMany: "infants",
     needDates: "Choose dates",
+    checkIn: "Check-in",
+    checkOut: "Check-out",
+    nightsLabel: "Nights",
+
   },
   results: {
     seoTitle: "Available rooms — Dharma Stay",
