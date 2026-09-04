@@ -19,7 +19,7 @@ export function LocationSection() {
   const { common, home } = useContent();
   return (
     <section id="vieta" className="scroll-mt-24 bg-warm-white px-6 py-24 lg:px-12 lg:py-32">
-      <div className="mx-auto max-w-[88rem]">
+      <div className="mx-auto max-w-[84rem]">
         <EnsoDivider className="mb-16" />
 
         <div className="grid items-center gap-14 lg:grid-cols-2">

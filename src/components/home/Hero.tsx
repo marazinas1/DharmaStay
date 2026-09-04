@@ -59,7 +59,7 @@ export function Hero() {
 
       <div
         ref={contentRef}
-        className="hero-fade relative mx-auto flex min-h-[92vh] max-w-[88rem] flex-col justify-end px-6 pb-24 pt-40 lg:px-12 lg:pb-32"
+        className="hero-fade relative mx-auto flex min-h-[92vh] max-w-[84rem] flex-col justify-end px-6 pb-24 pt-40 lg:px-12 lg:pb-32"
       >
         <div className="max-w-2xl">
           <p className="label-caps text-warm-white/75">{home.hero.eyebrow}</p>

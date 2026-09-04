@@ -78,7 +78,7 @@ function ResultsPage({ locale }: { locale: Locale }) {
   return (
     <>
       <section className="bg-linen px-6 pt-32 pb-8 lg:px-12 lg:pt-36">
-        <div className="mx-auto max-w-[88rem] text-center">
+        <div className="mx-auto max-w-[84rem] text-center">
           <Enso className="mx-auto h-9 w-9 text-sage/70" />
           <p className="label-caps mt-6 text-sage">{common.results.eyebrow}</p>
           <h1 className="mt-4 font-display text-[clamp(2.25rem,5vw,3.25rem)] leading-[1.12] font-medium text-ink">
@@ -88,7 +88,7 @@ function ResultsPage({ locale }: { locale: Locale }) {
       </section>
 
       <section className="bg-linen px-6 pb-24 lg:px-12">
-        <div className="mx-auto grid max-w-[88rem] gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
+        <div className="mx-auto grid max-w-[84rem] gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
           <aside className="lg:sticky lg:top-28">
             {/* keeps the calendar card top aligned with the first room card */}
             {hasDates && !failed && !loading && rooms.length > 0 ? (
@@ -231,7 +231,7 @@ function RoomResultCard({
           {view.meta ? (
             <p className="mt-2 text-xs tracking-wide text-stone/80">{view.meta}</p>
           ) : null}
-          {view.description ? (
+          {view.description && !expanded ? (
             <p className="mt-3 line-clamp-2 text-[0.95rem] leading-relaxed text-stone">
               {view.description}
             </p>
@@ -244,7 +244,7 @@ function RoomResultCard({
           >
             {expanded ? common.results.lessInfo : common.results.moreInfo}
           </button>
-          {view.amenities.length > 0 ? (
+          {view.amenities.length > 0 && !expanded ? (
             <ul className="mt-4 flex flex-wrap gap-2">
               {view.amenities.slice(0, 4).map((amenity) => (
                 <li
