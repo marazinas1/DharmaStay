@@ -31,14 +31,18 @@ function toDate(value: string | undefined): Date | undefined {
 export function SearchBar({
   variant = "hero",
   initial,
+  onSearch,
   className,
 }: {
   variant?: "hero" | "compact";
   initial?: SearchValues;
+  /** When set, the parent handles the search instead of navigating. */
+  onSearch?: (values: Required<Pick<SearchValues, "nuo" | "iki">> & SearchValues) => void;
   className?: string;
 }) {
   const { common } = useContent();
   const navigate = useLocaleNavigate();
+  const [datesOpen, setDatesOpen] = useState(false);
   const [range, setRange] = useState<DateRange | undefined>(() => {
     const from = toDate(initial?.nuo);
     const to = toDate(initial?.iki);
@@ -51,20 +55,26 @@ export function SearchBar({
   });
 
   const submit = () => {
-    if (!range?.from || !range?.to) return;
+    if (!range?.from || !range?.to) {
+      setDatesOpen(true);
+      return;
+    }
+    const values = {
+      nuo: toApiDate(range.from),
+      iki: toApiDate(range.to),
+      suauge: guests.adults,
+      vaikai: guests.children,
+      kudikiai: guests.infants,
+    };
+    if (onSearch) {
+      onSearch(values);
+      return;
+    }
     void navigate({
       to: "/laisvi-kambariai",
-      search: {
-        nuo: toApiDate(range.from),
-        iki: toApiDate(range.to),
-        suauge: guests.adults,
-        vaikai: guests.children,
-        kudikiai: guests.infants,
-      },
+      search: values,
     } as unknown as Parameters<typeof navigate>[0]);
   };
-
-  const ready = Boolean(range?.from && range?.to);
 
   return (
     <form
@@ -78,14 +88,13 @@ export function SearchBar({
         className,
       )}
     >
-      <DateRangeField range={range} onChange={setRange} />
+      <DateRangeField range={range} onChange={setRange} open={datesOpen} onOpenChange={setDatesOpen} />
       <div className="sm:border-l sm:border-border">
         <GuestsField guests={guests} onChange={setGuests} />
       </div>
       <button
         type="submit"
-        disabled={!ready}
-        className="inline-flex items-center justify-center gap-2 rounded-md bg-clay px-7 py-4 text-sm font-medium text-ink transition-colors hover:bg-sage hover:text-warm-white disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-md"
+        className="inline-flex items-center justify-center gap-2 rounded-md bg-clay px-7 py-4 text-sm font-medium text-ink transition-colors hover:bg-sage hover:text-warm-white"
       >
         <Search className="h-4 w-4" aria-hidden />
         {common.search.submit}
