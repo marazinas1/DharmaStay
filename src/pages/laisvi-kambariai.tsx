@@ -86,11 +86,7 @@ function ResultsPage({ locale }: { locale: Locale }) {
       <section className="bg-linen px-6 pb-24 lg:px-12">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
           <aside className="lg:sticky lg:top-28">
-            <SearchBar
-              variant="compact"
-              initial={search}
-              className="text-left sm:grid-cols-1 sm:items-stretch"
-            />
+            <SearchBar variant="compact" initial={search} />
           </aside>
 
           <div>
@@ -126,7 +122,7 @@ function ResultsPage({ locale }: { locale: Locale }) {
               </div>
             ) : (
               <>
-                <p className="pb-6 text-sm text-stone">
+                <p className="pb-4 text-sm text-stone">
                   {rooms.length}{" "}
                   {plural(
                     rooms.length,
@@ -135,6 +131,7 @@ function ResultsPage({ locale }: { locale: Locale }) {
                     common.results.foundMany,
                   )}
                 </p>
+
                 <div className="grid gap-6">
                   {rooms.map((property) => (
                     <RoomResultCard
