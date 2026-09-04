@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 
 import { plural } from "@/components/search/plural";
@@ -437,7 +438,7 @@ function Lightbox({
           </div>
         </div>
       ) : null}
-    </div>
+    </div>,
+    document.body,
   );
-
 }
