@@ -42,7 +42,9 @@ function HomeV2() {
       <LocationSection />
       <ExtrasSection />
       <Ratings />
+      <Testimonials />
       <BookingBand />
     </>
   );
 }
+
