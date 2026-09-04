@@ -171,16 +171,23 @@ export function SearchBar({
 function Summary({
   label,
   value,
+  shortValue,
   align = "left",
 }: {
   label: string;
   value: string;
+  shortValue?: string;
   align?: "left" | "right";
 }) {
   return (
     <div className={cn("min-w-0 px-2", align === "right" && "text-right")}>
       <span className="label-caps block text-stone/80">{label}</span>
-      <span className="mt-1 block truncate text-sm font-medium text-ink">{value}</span>
+      <span className="mt-1 block truncate text-sm font-medium text-ink">
+        {/* short form avoids truncation on narrow phones */}
+        <span className="sm:hidden">{shortValue ?? value}</span>
+        <span className="hidden sm:inline">{value}</span>
+      </span>
     </div>
   );
 }
+
