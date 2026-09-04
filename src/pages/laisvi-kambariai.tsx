@@ -73,81 +73,91 @@ function ResultsPage({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <section className="bg-linen px-6 pt-32 pb-10 lg:px-12 lg:pt-36">
-        <div className="mx-auto max-w-5xl text-center">
+      <section className="bg-linen px-6 pt-32 pb-8 lg:px-12 lg:pt-36">
+        <div className="mx-auto max-w-6xl text-center">
           <Enso className="mx-auto h-9 w-9 text-sage/70" />
           <p className="label-caps mt-6 text-sage">{common.results.eyebrow}</p>
           <h1 className="mt-4 font-display text-[clamp(2.25rem,5vw,3.25rem)] leading-[1.12] font-medium text-ink">
             {common.results.title}
           </h1>
-          <SearchBar variant="compact" initial={search} className="mt-10 text-left" />
         </div>
       </section>
 
       <section className="bg-linen px-6 pb-24 lg:px-12">
-        <div className="mx-auto max-w-5xl">
-          {!hasDates ? (
-            <p className="py-10 text-center text-sm text-stone">{common.results.missingDates}</p>
-          ) : failed ? (
-            <div className="py-10 text-center text-sm text-stone">
-              <p>{common.results.error}</p>
-              <button
-                type="button"
-                onClick={() => {
-                  void availability.refetch();
-                  void properties.refetch();
-                }}
-                className="mt-5 rounded-md bg-sage px-6 py-2.5 text-xs font-medium text-warm-white transition-colors hover:bg-sage-deep"
-              >
-                {common.results.retry}
-              </button>
-            </div>
-          ) : loading ? (
-            <div className="grid gap-6">
-              {[0, 1, 2].map((key) => (
-                <div
-                  key={key}
-                  className="h-56 animate-pulse rounded-md bg-warm-white/70 shadow-soft"
-                />
-              ))}
-            </div>
-          ) : rooms.length === 0 ? (
-            <div className="py-12 text-center">
-              <p className="font-display text-2xl text-ink">{common.results.empty}</p>
-              <p className="mt-3 text-sm text-stone">{common.results.emptyHint}</p>
-            </div>
-          ) : (
-            <>
-              <p className="pb-6 text-sm text-stone">
-                {rooms.length}{" "}
-                {plural(
-                  rooms.length,
-                  common.results.foundOne,
-                  common.results.foundFew,
-                  common.results.foundMany,
-                )}
-              </p>
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
+          <aside className="lg:sticky lg:top-28">
+            <SearchBar
+              variant="compact"
+              initial={search}
+              className="text-left sm:grid-cols-1 sm:items-stretch"
+            />
+          </aside>
+
+          <div>
+            {!hasDates ? (
+              <p className="py-10 text-center text-sm text-stone">{common.results.missingDates}</p>
+            ) : failed ? (
+              <div className="py-10 text-center text-sm text-stone">
+                <p>{common.results.error}</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    void availability.refetch();
+                    void properties.refetch();
+                  }}
+                  className="mt-5 rounded-md bg-sage px-6 py-2.5 text-xs font-medium text-warm-white transition-colors hover:bg-sage-deep"
+                >
+                  {common.results.retry}
+                </button>
+              </div>
+            ) : loading ? (
               <div className="grid gap-6">
-                {rooms.map((property) => (
-                  <RoomResultCard
-                    key={property.id}
-                    property={property}
-                    locale={locale}
-                    nights={nights}
-                    total={totals.get(property.id) ?? null}
-                    checkin={search.nuo as string}
-                    checkout={search.iki as string}
-                    adults={seats}
+                {[0, 1, 2].map((key) => (
+                  <div
+                    key={key}
+                    className="h-56 animate-pulse rounded-md bg-warm-white/70 shadow-soft"
                   />
                 ))}
               </div>
-            </>
-          )}
+            ) : rooms.length === 0 ? (
+              <div className="py-12 text-center">
+                <p className="font-display text-2xl text-ink">{common.results.empty}</p>
+                <p className="mt-3 text-sm text-stone">{common.results.emptyHint}</p>
+              </div>
+            ) : (
+              <>
+                <p className="pb-6 text-sm text-stone">
+                  {rooms.length}{" "}
+                  {plural(
+                    rooms.length,
+                    common.results.foundOne,
+                    common.results.foundFew,
+                    common.results.foundMany,
+                  )}
+                </p>
+                <div className="grid gap-6">
+                  {rooms.map((property) => (
+                    <RoomResultCard
+                      key={property.id}
+                      property={property}
+                      locale={locale}
+                      nights={nights}
+                      total={totals.get(property.id) ?? null}
+                      checkin={search.nuo as string}
+                      checkout={search.iki as string}
+                      adults={seats}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </section>
     </>
   );
 }
+
 
 function RoomResultCard({
   property,
