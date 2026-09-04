@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { enGB, lt as ltLocale } from "date-fns/locale";
 import { CalendarDays } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -22,20 +22,34 @@ export function nightsBetween(range: DateRange | undefined): number {
 }
 
 /**
- * One range calendar for both dates: first click is check-in, second is
- * check-out, so an earlier departure can never be selected.
+ * Booking-engine range picking: the first click sets check-in, the second sets
+ * check-out, and any click on a completed range starts a fresh check-in — so
+ * changing dates never requires clearing first. The picker never closes itself
+ * on selection; the parent closes it on submit or when another field opens.
  */
+function nextRange(range: DateRange | undefined, day: Date): DateRange | undefined {
+  if (!range?.from || range.to) return { from: day };
+  if (isSameDay(day, range.from)) return undefined;
+  if (day < range.from) return { from: day };
+  return { from: range.from, to: day };
+}
+
 export function DateRangeField({
   range,
   onChange,
   open: openProp,
   onOpenChange,
+  inline = false,
+  months,
   className,
 }: {
   range: DateRange | undefined;
   onChange: (range: DateRange | undefined) => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Render the calendar always visible instead of inside a popover. */
+  inline?: boolean;
+  months?: number;
   className?: string;
 }) {
   const { common } = useContent();
@@ -58,9 +72,66 @@ export function DateRangeField({
       }`
     : common.search.datesPlaceholder;
 
+  const calendar = (
+    <>
+      <Calendar
+        mode="range"
+        locale={dateLocale}
+        weekStartsOn={1}
+        numberOfMonths={months ?? (isMobile ? 1 : 2)}
+        selected={range}
+        onSelect={() => {
+          /* selection is driven by onDayClick for predictable re-picking */
+        }}
+        onDayClick={(day, modifiers) => {
+          if (modifiers.disabled) return;
+          onChange(nextRange(range, day));
+        }}
+        disabled={{ before: today }}
+        startMonth={today}
+        className="pointer-events-auto [--cell-size:2.4rem] sm:[--cell-size:2.6rem]"
+        classNames={{
+          month: "flex w-full flex-col gap-4",
+          caption_label: "font-display text-lg font-medium capitalize text-ink",
+          weekday: "flex-1 select-none text-[0.7rem] uppercase tracking-[0.12em] text-stone/70",
+        }}
+      />
+      <div className="mt-3 flex items-center justify-between gap-3 border-t border-border pt-3">
+        <span className="text-xs text-stone">
+          {nights > 0
+            ? `${nights} ${plural(nights, common.search.nightOne, common.search.nightFew, common.search.nightMany)}`
+            : range?.from
+              ? common.search.checkOut
+              : common.search.needDates}
+        </span>
+        <span className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onChange(undefined)}
+            className="rounded-md border border-border px-4 py-1.5 text-xs text-stone transition-colors hover:text-ink"
+          >
+            {common.search.clear}
+          </button>
+          {inline ? null : (
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="rounded-md bg-sage px-4 py-1.5 text-xs font-medium text-warm-white transition-colors hover:bg-sage-deep"
+            >
+              {common.search.done}
+            </button>
+          )}
+        </span>
+      </div>
+    </>
+  );
+
+  if (inline) {
+    return <div className={cn("w-full", className)}>{calendar}</div>;
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
-
       <PopoverTrigger asChild>
         <button
           type="button"
@@ -84,40 +155,7 @@ export function DateRangeField({
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-auto rounded-md border-border bg-warm-white p-4">
-        <Calendar
-          mode="range"
-          locale={dateLocale}
-          weekStartsOn={1}
-          numberOfMonths={isMobile ? 1 : 2}
-          selected={range}
-          onSelect={(value) => {
-            onChange(value);
-            if (value?.from && value?.to) setOpen(false);
-          }}
-          min={1}
-          disabled={{ before: today }}
-          startMonth={today}
-          className="pointer-events-auto [--cell-size:2.4rem] sm:[--cell-size:2.6rem]"
-          classNames={{
-            month: "flex w-full flex-col gap-4",
-            caption_label: "font-display text-lg font-medium capitalize text-ink",
-            weekday: "flex-1 select-none text-[0.7rem] uppercase tracking-[0.12em] text-stone/70",
-          }}
-        />
-        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-          <span className="text-xs text-stone">
-            {nights > 0
-              ? `${nights} ${plural(nights, common.search.nightOne, common.search.nightFew, common.search.nightMany)}`
-              : common.search.needDates}
-          </span>
-          <button
-            type="button"
-            onClick={() => onChange(undefined)}
-            className="rounded-md border border-border px-4 py-1.5 text-xs text-stone transition-colors hover:text-ink"
-          >
-            {common.search.clear}
-          </button>
-        </div>
+        {calendar}
       </PopoverContent>
     </Popover>
   );
