@@ -242,6 +242,10 @@ export const common = {
     foundOne: "laisvas numeris",
     foundFew: "laisvi numeriai",
     foundMany: "laisvų numerių",
+    moreInfo: "Daugiau",
+    lessInfo: "Uždaryti",
+    detailsTitle: "Išsami informacija",
+    amenitiesTitle: "Kambario patogumai",
   },
   testimonials: {
     eyebrow: "Booking.com įvertinimai",
