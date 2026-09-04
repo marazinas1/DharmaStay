@@ -213,4 +213,52 @@ export const common = {
     foundFew: "rooms available",
     foundMany: "rooms available",
   },
+  testimonials: {
+    eyebrow: "Booking.com reviews",
+    title: "What guests say",
+    prev: "Previous reviews",
+    next: "Next reviews",
+    items: [
+      {
+        name: "Balys",
+        country: "Lithuania",
+        quote: "The property is at amazing spot, you can reach amazing places on foot.",
+        source: "Booking.com",
+      },
+      {
+        name: "Anilkumar",
+        country: "Switzerland",
+        quote:
+          "1. The apartment is spacious and clean. 2. The check-in process is easy, you just use the code given to you. 3. The owner was kind and refunded part of my stay as I needed to reduce the length of it.",
+        source: "Booking.com",
+      },
+      {
+        name: "Dominika",
+        country: "Lithuania",
+        quote:
+          "Quiet spacious room, good location. Though they do not have parking it was very easy to find parking next to it. Had all you could need.",
+        source: "Booking.com",
+      },
+      {
+        name: "Craig",
+        country: "Lithuania",
+        quote: "Was clean and tidy. Staff was helpful. When we called we got help straight away.",
+        source: "Booking.com",
+      },
+      {
+        name: "Vesta",
+        country: "Lithuania",
+        quote:
+          "Location, easy self check in, availability to sleep in different beds with a friend!",
+        source: "Booking.com",
+      },
+      {
+        name: "Marija",
+        country: "Lithuania",
+        quote:
+          "I loved how helpful the owners were - solving one issue upon our arrival immediately. Rooms are modern and clean. There were wide selection of extra items - dental kit, even shaving kit, hot air iron - I was impressed!",
+        source: "Booking.com",
+      },
+    ],
+  },
 };
