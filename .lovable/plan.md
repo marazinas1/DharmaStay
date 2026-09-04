@@ -39,11 +39,26 @@ I diffed the two codebases. The gap is well contained:
 3. Delete the old Home V1 sections that Home V2 no longer uses, wire `/` and `/en` to Home V2, keep `/home-v2` -> `/` redirects.
 4. Verify: `/`, `/en`, `/laisvi-kambariai`, `/en/laisvi-kambariai`, room-card expand, photo lightbox, hero calendar, mobile at 390 px.
 
-## Prompt to paste in Demo-Revoo
+## Exact prompt to give Kęstutis for Demo-Revoo
 
-> @Dharma Stay Boutique - perkelk į šį projektą visus šiandienos frontend pakeitimus: naują Home V2 (tapo vienintele pradžia), `/laisvi-kambariai` rezultatų puslapį su kalendoriumi ir kortelėmis, paieškos juostą, atsiliepimus, apvalinimo/pločio dizaino pataisas ir mobile fixus. Nekeisk backend dalies: `src/routes/api/`, `src/routes/_authenticated/`, `src/components/admin/`, `supabase/`, `src/lib/runtime-env.server.ts`, `src/lib/rentivo.functions.ts`. Iš `availability` schemos perkelk tik naują `free_units` lauką.
+Send this to Kęstutis (he can paste it into the Demo-Revoo chat):
+
+```text
+@Dharma Stay Boutique — perkelk į šį projektą tik frontend dalį iš šio GitHub repo: https://github.com/marazinas1/dharma-stay-boutique.git
+
+Reikalingi šiandienos pakeitimai:
+- Naujas Home V2 (vienintelė pradinė puslapio versija), senas Home V1 ištrinti, `/home-v2` redirectinti į `/`.
+- Naujas `/laisvi-kambariai` (ir `/en/laisvi-kambariai`) rezultatų puslapis su inline kalendoriumi kairėje ir kambarių kortelėmis dešinėje.
+- Hero kalendoriaus UX: pasirinkus abi datas neužsidaro, užsidaro tik paspaudus „Gerai"/„Ieškoti" arba šalia; paspaudus atvykimo datą iš naujo pradedamas naujas diapazonas.
+- Kambarių kortelės: 4:3 nuotrauka, kaina/deponas dešinėje, „Daugiau" išskleidžia aprašą ir patogumus, paspaudus nuotrauką — fullscreen galerija su rodyklėmis ir Esc.
+- Atsiliepimų blokas su Booking.com agregatais viršuje.
+- Dizaino standartas: konteineris 1344 px, mažesni apvalinimai (`rounded-md` vietoj `rounded-2xl/rounded-full`), mobile fixai.
+
+SVARBU: nekeisti backend dalies — palikti `supabase/`, `src/routes/api/`, `src/routes/_authenticated/`, `src/components/admin/`, `src/lib/runtime-env.server.ts` ir `src/lib/rentivo.functions.ts` tokias, kokie yra šiame Demo-Revoo projekte. Iš `src/lib/availability-schemas.ts` ir `src/lib/availability.server.ts` perkelti TIK naują `free_units` lauką, kurio reikia `/laisvi-kambariai` kainoms.
+```
 
 ## Notes
 
 - If Demo-Revoo has since diverged on any of the "overwrite" files, that agent should diff first and merge instead of blind-copy.
 - Nothing in this plan changes the current project; it is a transfer procedure.
+
